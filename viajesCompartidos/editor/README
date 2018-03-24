@@ -1,0 +1,106 @@
+
+		WYSIWYG Editor v1.0
+
+
+Por: Iván Arias (arias@elleondeoro.com)
+Visita: www.php-hispano.net y #php_para_torpes
+
+
+- Descripción:
+
+WYSIWYG Editor es un script programado integramente en javascript,
+el cual, con solo añadir una linea en la cabezera de tu página web,
+convertirá tus textareas en complejos editores WYSIWYG.
+
+WYSIWYG proviene de What You Si Is What You Get, que traducido
+viene a ser algo como Lo que ves es lo que obtienes. Nunca más
+tendrás que preocuparte por el BBCode o por los tags de HTML, con
+WYSIGYG Editor todo eso son cosas del pasado.
+
+WYSIWYG Editor proporciona tus usuarios la capacidad de crear textos
+con estilos de la manera mas cómoda, práctica y visual posible. Sólo
+con pulsar un botón el usuario podrá marcar un texto en negrita y
+ver el resultado al momento.
+
+
+- Instalación e integración:
+
+La instalación e integración del WYSIWYG Editor en tu página web es
+muy sencilla, tan sólo sube la carpeta WYSIWYG contenida en el
+archivo a tu servidor, y añade la siguiente linea en la cabezera
+(entre los tags <head> y </head>) de tu página web:
+
+<script language="javascript" src="WYSIWYG/source.js" type="text/javascript"></script>
+
+Es posible que no quieras convertir todos tus textareas, para lo cual
+el script incorpora un sistema de exclusion con el cual, especificando
+el id de los textareas que no quieres cambiar, puedes hacer que no
+sean convertiros en editores WYSIWYG. Para ello solo tienes que
+introducir un pequeño código en la pagina web:
+
+<script language="javascript" type="text/javascript">
+  var excluidos = new Array("id1", "id2", ...);
+</script>
+
+Especificando de esa manera, separado por comas, los ids de los
+textareas que deas excluir. Este código puede ir en cualquier punto
+de la página web, incluso en el body.
+
+
+- Seguridad:
+
+Instalar WYSIWYG-Editor en tu pagina web no quiere decir que no tengas
+porque bajar la guardia en tu web en lo que a seguridad se refiere,
+sino todo lo contrario. Los usuarios que utilicen algun explorador
+compatible y tengan JavaScript activado, no podrán introducir codigo
+malicioso en tu web directamente, pero los visitantes que no sean
+usuarios de un explorador compatible o tengan JavaScript desactivado,
+en vez del Editor veran un textarea normal, con lo que podran introducir
+codigo HTML y PHP a su antojo.
+
+Ademas de esto hay que añadir que no solo podemos recibir información
+desde dentro de nuestra propia pagina web, seria muy facil diseñar un
+form sencillo en un archivo HTML en el ordenador propio que enviase
+informacion a tu pagina web, por lo que debes extremar las precauciones
+y controlar que marcas de HTML vas a permitir y cuales no.
+
+Mi consejo es que analices que etiquetas HTML puede enviar el Editor
+desde cualquiera de los exploradores compatibles (por ejemplo Internet
+Explorer y FireFox no generan el mismo codigo), y que elimines cualquier
+etiqueta de HTML que no sean las que puedes recibir.
+
+
+- Compatibilidad:
+
+El archivo fue comprobado en las versiones 6.0 de Internet Explorer
+y 1.0.3 de Mozilla Firefox y el resultado es altamente satisfactorio.
+Se hicieron pruebas tambien satisfactorias en otros exploradores que
+tambien usan el motor Gecko (El mismo que usa FireFox).
+Para otros navegadores no se asegura la compatibilidad.
+
+
+- Notas:
+
+WYSIWYG-Editor permite diseñar facilmente textos con estilos, pero
+esto tiene un precio, el codigo HTML no siempre seguira los Standars
+de la W3C y el tamaño del texto sera mucho mayor de lo que sería con
+BBCodes o sistemas similares.
+
+En Internet Explorer puede que al hacer intro, en vez de salto de
+linea simple, haga un salto de linea doble. Para hacer un salto de
+linea simple debes presionar Shift + Enter. (Gracias _ONe_)
+
+Trabajando con PHP hay que tener cuidado cuando recibes un texto de
+un form y lo muestras por pantalla. Las magic quotes pueden hacer
+que no se muestre correctamente el texto, antes de mostrarlo de nuevo
+en el explorador es conveniente que hagas un strip slashes del texto.
+(Gracias Voronwe)
+
+
+- Agradecimientos:
+
+Me gustaria agradecer a todos los amigos del canal #php_para_torpes
+del iRC-Hispano el gran apoyo recibido, especialmente a _ONe_ y
+Voronwe por probar el script y comentarme fallos y mejoras.
+
+No olvideis visitar www.php-hispano.net
