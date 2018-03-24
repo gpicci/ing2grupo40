@@ -34,25 +34,5 @@ date_default_timezone_set("America/Argentina/Buenos_Aires");
   define("COM_DIR", "common");
   define("EXP_BROWSE_DIR", "export");
 
-  /*DATOS PARA PAYU PRUEBA*/
-  /*define("PAYU_APIKEY","4Vj8eK4rloUd272L48hsrarnUA");
-  define("PAYU_MERCHANTID","508029");
-  define("PAYU_ACCOUNTID","512322");
-  define("PAYU_LINK","http://localhost/lewtel/");
-  define("PAYU_TEST","1");
-  define("PAYU_ACTION","https://gateway.payulatam.com/ppp-web-gateway/");*/
-
-  /*DATOS PARA PAYU PRODUCCION*/
-  define("PAYU_APILOGIN","7aaa154f2ab8b90");
-  define("PAYU_APIKEY","7fg8hbanivc42p56q3q541a6b8");
-  define("PAYU_MERCHANTID","522444");
-  define("PAYU_ACCOUNTID","524072");
-  define("PAYU_LINK","http://www.sistemapatagon.com.ar/");
-  define("PAYU_TEST","0");
-  define("PAYU_ACTION","https://gateway.payulatam.com/ppp-web-gateway/");
-
-  /*DATOS PARA FW*/
-  define("FWIP","190.220.23.1");
-
 
 ?>
