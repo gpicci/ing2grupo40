@@ -1,14 +1,13 @@
 <?php
-require_once('log.php');
-require_once("utilLogin.php");
-require_once("config.php");
+
+require_once("common/utilLogin.php");
 
 $error=null;
 
-$accion="inicio";
-
 if(isset($_POST['Ingresar']))	{
-	$error=realizarLogin($_POST['username'], $_POST['password'], $accion);	
+  $error=realizarLogin($_POST['username'], $_POST['password'], 'inicio');
+} elseif(isset($_POST['Registrarse'])){
+  $error=realizarLogin('registro', 'tlccae2018', 'usuarioView&folder=views&op=a');
 }
 
 ?>
@@ -31,16 +30,17 @@ if(isset($_POST['Ingresar']))	{
 					<div class="errors">
 						<p><em><?php echo $error; ?></em></p>
 					</div>
-<?php } ?>				
+<?php } ?>
 					<form action="<?php $_SERVER['PHP_SELF']; ?>" method="post">
-		
+
 					<fieldset>
 						<legend>Ingrese sus datos para comenzar.</legend>
-						<div><label for="username">Usuario</label><input type="text" id="username" name="username" value="" /></div>
+						<div><label for="username">Mail</label><input type="text" id="username" name="username" value="" /></div>
 						<div><label for="password">Password</label><input onkeypress="return isValidKey(event)"  type="password" id="password" name="password" value="" /></div>
 					</fieldset>
 					<div class="buttonrow">
 						<input type="submit" name="Ingresar" value="Ingresar" class="button" />
+						<input type="submit" name="Registrarse" value="Registrarse" class="button" />
 					</div>
 					</form>
 				</div>
