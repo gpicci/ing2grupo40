@@ -21,10 +21,10 @@ date_default_timezone_set("America/Argentina/Buenos_Aires");
   /*DATOS PARA NAVEGACION*/
   define("DB_DIR", "db");
   define("VIEWS_DIR", "views");
-  define("ABM_DIR", "views");
-  define("ABM_BROWSE_DIR", "browse");
+  define("ABM_DIR", "abm");
+  define("BROWSE_DIR", "browse");
   define("COM_DIR", "common");
-  define("EXP_BROWSE_DIR", "export");
+  define("EXP_DIR", "export");
 
 
 ?>

@@ -1,62 +1,24 @@
-function clearFilter(theForm, sort, pagTotal, pagActual, filterId, clearValue) {
-	document.getElementById('pagsTotal').value = pagTotal;
-	document.getElementById('pagActual').value = pagActual;
-	document.getElementById('sort').value = sort;
-	document.getElementById(filterId).value = clearValue;
-	document.getElementById(theForm).submit();
-}
-
-function submitForm(theForm, sort, pagTotal, pagActual) {
-	document.getElementById('pagsTotal').value = pagTotal;
-	document.getElementById('pagActual').value = pagActual;
-	document.getElementById('sort').value = sort;
-	//document.getElementById('filtro').value = filtro;
-	document.getElementById(theForm).submit();
-}
-
-function changePageUsuario(theForm, sort, pagTotal, pagActual) {
-	document.getElementById('pagsTotal').value = pagTotal;
-	document.getElementById('pagActual').value = pagActual;
-	document.getElementById('sort').value = sort;
-	if (document.getElementById(theForm).idUsuario.length == undefined) {
-		document.getElementById(theForm).idUsuario.value = -1;
+function checkUsuario(theForm) {
+	// Validacion de campos obligatorios
+	if ((document.getElementById('nombre').value == '') ||
+		(document.getElementById('apellido').value == '') ||
+		(document.getElementById('fecha_nacimiento').value == '') ||
+		(document.getElementById('correo_electronico').value == '') ||		
+		(document.getElementById('clave').value == '')) {
+		alert('Ingrese un valor para los datos obligatorios.');
 	} else {
-		for (i=0;i<document.getElementById(theForm).idUsuario.length;i++){
-			document.getElementById(theForm).idUsuario[i].value = -1;
-		}
+		document.getElementById(theForm).submit();
 	}
-	document.getElementById(theForm).submit();
 }
 
-function changePageCliente(theForm, sort, pagTotal, pagActual,order) {
-	document.getElementById('pagsTotal').value = pagTotal;
-	document.getElementById('pagActual').value = pagActual;
-	document.getElementById('sort').value = sort;
-	document.getElementById('order').value = order;
-	//document.getElementById('filtro').value = filtro;
-	if (document.getElementById(theForm).idCliente.length == undefined) {
-		document.getElementById(theForm).idCliente.value = -1;
-	} else {
-		for (i=0;i<document.getElementById(theForm).idCliente.length;i++){
-			document.getElementById(theForm).idCliente[i].value = -1;
-		}
+function validarEmail(email ) {
+	if ((email != ' ')&&(email != '')&&(email != null)){
+      expr = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+      if ( !expr.test(email) ) {
+        alert('Verifique la direccion de correo');
+        return false;
+      }
 	}
 
-	document.getElementById(theForm).submit();
-}
-
-function changePageClienteSeleccion(theForm, sort, pagTotal, pagActual,order) {
-	document.getElementById('pagsTotal').value = pagTotal;
-	document.getElementById('pagActual').value = pagActual;
-	document.getElementById('sort').value = sort;
-	//document.getElementById('filtro').value = filtro;
-	if (document.getElementById(theForm).idCliente.length == undefined) {
-		document.getElementById(theForm).idCliente.value = -1;
-	} else {
-		for (i=0;i<document.getElementById(theForm).idCliente.length;i++){
-			document.getElementById(theForm).idCliente[i].value = -1;
-		}
-	}
-
-	document.getElementById(theForm).submit();
+	return true;
 }

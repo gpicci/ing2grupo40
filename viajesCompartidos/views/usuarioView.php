@@ -1,11 +1,14 @@
 <?php
+require_once(DB_DIR.'/usuarioDB.php');
 
 if ($_REQUEST["op"] == "m") {
-  $rs = getUsuario($_REQUEST["idUsuario"]);
+	
+  $db = DB::singleton();
+  $rs = getUsuario($_SESSION["user_id"]);
   $row = $db->fetch_assoc($rs);
 
   $usuario = array();
-  $usuario["usuario_id"] = $_REQUEST["idUsuario"];
+  $usuario["usuario_id"] = $_SESSION["user_id"];
   $usuario["nombre"] = $row["nombre"];
   $usuario["apellido"] = $row["apellido"];
   $usuario["fecha_nacimiento"] = $row['fecha_nacimiento'];
@@ -33,7 +36,7 @@ if ($_REQUEST['op'] == 'm') {
 
 			echo "<form id=\"formUsuarioView\" method=\"post\" action=\"main.php?accion=usuarioABM&op=m&folder=".ABM_DIR."\">";
 ?>
-				<input type="hidden"	name="idUsuario" value="<?php print($_REQUEST["idUsuario"]); ?>">
+				<input type="hidden"	name="idUsuario" value="<?php print($usuario["usuario_id"]); ?>">
 <?php } else {
 			echo "<form id=\"formUsuarioView\" method=\"post\" action=\"main.php?accion=usuarioABM&op=a&folder=".ABM_DIR."\">";
 			?>
@@ -61,7 +64,11 @@ if ($_REQUEST['op'] == 'm') {
 	<div id="left">
 		<div class="box">
 			<?php
-			echo "<div><a href=\"login.php\">Volver</a></div>";
+			if ($_REQUEST['op'] == 'a') {
+				echo "<div><a href=\"login.php\">Volver</a></div>";
+			} else {
+				echo "<div><a href=\"main.php?accion=inicio\">Volver</a></div>";
+			}
 			?>
 <?php
 		print('<div><hr/></div>');

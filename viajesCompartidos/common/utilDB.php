@@ -1,5 +1,5 @@
 <?php
-require_once("../db/db.php");
+require_once("./db/db.php");
 
 function getCountRecs($tabla, $campoFiltro, $filtro = '%') {
 	$db = DB::singleton();
