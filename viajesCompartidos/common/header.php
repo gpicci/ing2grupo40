@@ -22,7 +22,7 @@ echo "<div id=\"header\">";
 			</li>
 			<li class="topmenu"><a href="#" style="height:18px;line-height:18px;"><span>VEHICULOS</span></a>
 				<ul>
-					<li><a href="main.php?accion=vehiculoView&folder=views&op=a">AGREGAR VEHICULO</a></li>
+					<li><a href="main.php?accion=vehiculoView&op=a">AGREGAR VEHICULO</a></li>
 					<li><a href="main.php?accion=vehiculos">LISTADO DE VEHICULOS</a></li>
 				</ul>
 			</li>

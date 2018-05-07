@@ -22,3 +22,12 @@ function validarEmail(email ) {
 
 	return true;
 }
+
+function isValidKey(evt)
+{
+	tecla = (document.all) ? evt.keyCode : evt.which; // 2
+    if (tecla==8) return true; // 3
+    patron =/[A-Za-z\w\r]/; // 4
+    te = String.fromCharCode(tecla); // 5
+    return patron.test(te); // 6
+}

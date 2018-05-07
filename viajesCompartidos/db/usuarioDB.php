@@ -67,6 +67,7 @@ function usuarioAlta(
 		$clave) {
 
 	$db = DB::singleton();
+	
 	$query =
 	"INSERT INTO usuario (
 	  nombre,
@@ -77,7 +78,7 @@ function usuarioAlta(
 	"VALUES (
 			'".$nombre."',
 			'".$apellido."',
-			str_to_date('".$fecha_nacimiento."','%Y-%m-%d'),
+			str_to_date('".$fecha_nacimiento."','%d-%m-%Y'),
 			'".$correo."',
 			'".$clave."')";
 
@@ -102,11 +103,11 @@ function usuarioModifica(
 	$query = "UPDATE usuario ".
 				"SET nombre = '".$nombre."',".
 				"    apellido = '".$apellido."',".
-				"    fecha_nacimiento = str_to_date('".$fecha_nacimiento."','%Y-%m-%d'),".
+				"    fecha_nacimiento = str_to_date('".$fecha_nacimiento."','%d-%m-%Y'),".
 				"    correo_electronico = '".$correo."',".
 				"    clave = '".$clave."' ".
 				"WHERE usuario_id = ".$id;
-applog($query);
+
 	$rs = $db->executeQuery($query);
 
 	if (!$rs) {

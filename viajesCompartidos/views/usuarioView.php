@@ -44,8 +44,9 @@ if ($_REQUEST['op'] == 'm') {
 				<fieldset>
 					<legend>Datos del usuario</legend>
 					<div><label for="nombre">Nombre<em>*</em></label><input id="nombre" type="text" size="80" maxlength="100" onBlur="caps(this)" name="nombre" value="<?php print($usuario['nombre']); ?>" /></div>
-					<div><label for="direccion">Apellido<em>*</em></label><input id="apellido" type="text" size="80" maxlength="100" onBlur="caps(this)" name="apellido" value="<?php print($usuario['apellido']); ?>" /></div>
-					<div><label for="fecha_nacimiento">Fecha Nacimiento<em>*</em></label><input id="fecha_nacimiento" type="text" size="20" maxlength="20" name="fecha_nacimiento" value="<?php print($usuario['fecha_nacimiento']); ?>" /></div>
+					<div><label for="direccion">Apellido<em>*</em></label><input id="apellido" type="text" size="80" maxlength="100" onBlur="caps(this)" name="apellido" value="<?php print($usuario['apellido']); ?>" /></div>					
+					<div><label for="direccion">Fecha de Nacimiento<em>*</em></label><input type="text" name="fecha_nacimiento" id="fecha_nacimiento" value="<?php print(($usuario["fecha_nacimiento"]!= '%') ? $usuario["fecha_nacimiento"]: ''); ?>" />
+        			<a id="calendarFechaNacimiento" href="javascript:OpenCal('fecha_nacimiento');" style="width:16px"><img class="calendar" src="./img/calendar.png" width="16" height="16" /></a>											
 					<div><label for="correo_electronico">Correo Electronico<em>*</em></label><input id="correo_electronico" type="text" size="20" maxlength="20" name="correo_electronico" value="<?php print($usuario['correo_electronico']); ?>" /></div>
 					<div><label for="clave">Clave<em>*</em></label><input id="clave" type="text" name="clave" size="50" maxlength="50" value="<?php print($usuario['clave']); ?>" /></div>					
  					</fieldset>

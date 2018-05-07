@@ -18,7 +18,7 @@ if ($_REQUEST["op"] == "m") {
 
 } else {
 	$vehiculo = array();
-	$idMarca= 1;
+	$marca_id= 1;
 	$vehiculo["vehiculo_id"] = null;
 	$vehiculo["modelo_id"] = null;
 	$vehiculo["usuario_id"] = null;
@@ -44,13 +44,13 @@ if ($_REQUEST['op'] == 'm') {
 					<div><label for="marca_id">Marca </label>
 						<?php
 							$rs = getMarcas();
-							comboBox("marca_id", $rs, "marca_id", "nombre_marca", "", $idMarca, "onchange=\"getModelos(this)\"");
+							comboBox("marca_id", $rs, "marca_id", "nombre_marca", "", $marca_id, "onchange=submit()");
 						?>
 					</div>
 					<div><label>Modelo <em>*</em></label>
 						<?php
-							$rs = getModelosPorMarca($idMarca);
-							comboBox("modelo_id", $rs, "modelo_id", "nombre_modelo", "NINGUNA", $vehiculo["modelo_id"], "");
+							$rs1 = getModelosPorMarca($marca_id);
+							comboBox("modelo_id", $rs1, "modelo_id", "nombre_modelo", "NINGUNA", $vehiculo["modelo_id"], "");
 						?>
 					</div>
 					<div><label for="cantidad_asientos">Cantidad de Asientos</label><input id="cantidad_asientos" type="text" size="20" maxlength="20" name="cantidad_asientos" value="<?php print($vehiculo['cantidad_asientos']); ?>" /></div>
@@ -71,7 +71,7 @@ if ($_REQUEST['op'] == 'm') {
 	<div id="left">
 		<div class="box">
 			<?php
-			echo "<div><a href=\"main.php?accion=vehiculos&folder=".ABM_BROWSE_DIR."\">Volver</a></div>";
+			echo "<div><a href=\"main.php?accion=vehiculos&folder=".BROWSE_DIR."\">Volver</a></div>";
 			?>
 <?php
 		print('<div><hr/></div>');

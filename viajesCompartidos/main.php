@@ -35,9 +35,9 @@
 <?php
 
 	//acciones que requieren tratamientos particulares
-	if ($accion=="vehiculoView") {
-		include("./views/vehiculoViewHeader.php");
-	}
+//	if ($accion=="vehiculoView") {
+	//	include("./vehiculoViewHeader.php");
+//	}
 
    // incluimos el header de la pagina si no es un popup
    if ($popup<>1) {
@@ -55,27 +55,6 @@
 
 
 ?>
-<script language="javascript" type="text/javascript">
-  var excluidos = new Array(
-		  "d_observaciones_ap",
-		  "d_comentario",
-		  "d_area_cobertura",
-		  "d_comentario_pc",
-		  "observaciones",
-		  "d_texto",
-		  "anotacionCierre",
-		  "d_observacion",
-		  "d_observaciones",
-		  "d_visibilidad_nodo",
-		  "d_observacion_altura",
-		  "d_dificultad_acceso",
-		  "d_tiempo_instalacion",
-		  "d_permiso_acceso",
-		  "d_observaciones_generales",
-		  "d_comentario",
-		  "d_comentario_pc",
-		  "d_area_cobertura");
-</script>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -96,7 +75,6 @@
 	<script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 	<script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
-  	<script type="text/javascript" src="js/filtroCombo.js"></script>
 
 </head>
 
