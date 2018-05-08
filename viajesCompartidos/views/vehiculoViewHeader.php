@@ -14,7 +14,7 @@ function getModelos(sel)
 	
 	ajax = new sack();
 	
-	ajax.requestFile = 'getModelos.php?marca_id='+marca_id;	// Specifying which file to get
+	ajax.requestFile = './views/getModelos.php?marca_id='+marca_id;	// Specifying which file to get
 	ajax.onCompletion = function(){ createModelos() };	// Specify function that will be executed after file has been found
 	ajax.runAJAX();		// Execute AJAX function
 }

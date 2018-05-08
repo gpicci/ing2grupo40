@@ -35,9 +35,9 @@
 <?php
 
 	//acciones que requieren tratamientos particulares
-//	if ($accion=="vehiculoView") {
-	//	include("./vehiculoViewHeader.php");
-//	}
+	if ($accion=="vehiculoView") {
+	  include("./views/vehiculoViewHeader.php");
+	}
 
    // incluimos el header de la pagina si no es un popup
    if ($popup<>1) {

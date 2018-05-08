@@ -22,8 +22,8 @@ echo "<div id=\"header\">";
 			</li>
 			<li class="topmenu"><a href="#" style="height:18px;line-height:18px;"><span>VEHICULOS</span></a>
 				<ul>
-					<li><a href="main.php?accion=vehiculoView&op=a">AGREGAR VEHICULO</a></li>
-					<li><a href="main.php?accion=vehiculos">LISTADO DE VEHICULOS</a></li>
+					<li><a href="main.php?accion=vehiculoView&op=a&folder=<?php print(VIEWS_DIR); ?>">AGREGAR VEHICULO</a></li>
+					<li><a href="main.php?accion=vehiculos&folder=<?php print(BROWSE_DIR); ?>">LISTADO DE VEHICULOS</a></li>
 				</ul>
 			</li>
 			<li class="topmenu"><a href="#" style="height:18px;line-height:18px;"><span>VIAJES PROPIOS</span></a>

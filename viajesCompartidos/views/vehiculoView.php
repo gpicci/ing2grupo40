@@ -5,16 +5,17 @@ require_once("./db/vehiculoDB.php");
 require_once("./common/combo.php");
 
 if ($_REQUEST["op"] == "m") {
-  $rs = getVehiculoPorId($_REQUEST["idVehiculo"]);
+	$rs = getVehiculoPorId($_REQUEST["vehiculo_id"]);
   $row = $db->fetch_assoc($rs);
 
   $vehiculo = array();
-  $vehiculo["vehiculo_id"] = $_REQUEST["idVehiculo"];
+  $vehiculo["vehiculo_id"] = $_REQUEST["vehiculo_id"];
   $vehiculo["marca_id"] = $row["marca_id"];
   $vehiculo["modelo_id"] = $row["modelo_id"];
   $vehiculo["usuario_id"] = $row["usuario_id"];
   $vehiculo["cantidad_asientos"] = $row['cantidad_asientos'];
   $vehiculo["patente"] = $row['patente'];
+  $marca_id = $row["marca_id"];
 
 } else {
 	$vehiculo = array();
@@ -44,7 +45,7 @@ if ($_REQUEST['op'] == 'm') {
 					<div><label for="marca_id">Marca </label>
 						<?php
 							$rs = getMarcas();
-							comboBox("marca_id", $rs, "marca_id", "nombre_marca", "", $marca_id, "onchange=submit()");
+							comboBox("marca_id", $rs, "marca_id", "nombre_marca", "", $marca_id, "onchange=\"getModelos(this)\""); 
 						?>
 					</div>
 					<div><label>Modelo <em>*</em></label>

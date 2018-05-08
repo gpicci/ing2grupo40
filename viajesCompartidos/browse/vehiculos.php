@@ -5,9 +5,12 @@
 
 	// Obtener el id actual, por defecto es el primero
 	$idUsuario = (isset($_SESSION['user_id'])) ? $_SESSION['user_id']: -1;	
+	$vehiculo_id = -1;
+	$cant = 0;
 	
 ?>
 	<form name='formVehiculos' id='formVehiculos' method='post' action='' >	
+	<input type='hidden' name='op' id='op' value='' />
 	<div id="content">
 		<div id="right">
 <?php
@@ -20,61 +23,51 @@
 ?>
 	<table>
 		<tr>
-      	<td><b>Sel</b></td>
-         <td><b>Marca</b></td>
-         <td><b>Modelo</b></td>
-         <td><b>Patente</b></td>
-         <td><b>Cantidad de Aisentos</b></td>
+      	<td align="center"><b>SEL</b></td>
+         <td align="center"><b>MARCA</b></td>
+         <td align="center"><b>MODELO</b></td>
+         <td align="center"><b>PATENTE</b></td>
+         <td align="center"><b>CANTIDAD DE ASIENTOS</b></td>
    	</tr>
 <?php 
 	while ($row = $db->fetch_assoc($rs)) {
+		$cant = $cant+1;
 		print('<tr>');
-		if ($idUsuario == -1) {
-			$idUsuario = $row['c_id'];
-		 	print('<td><input type="radio" name="idUsuario" id="idUsuario" value="'.$row['c_id'].'" checked="checked" /></td>');
+		if ($vehiculo_id == -1) {
+			$vehiculo_id= $row['vehiculo_id'];
+		 	print('<td align="center"><input type="radio" name="vehiculo_id" id="vehiculo_id" value="'.$row['vehiculo_id'].'" checked="checked" /></td>');
 		} else {
-		 	if ($idUsuario == $row['c_id']) {
-		 		print('<td><input type="radio" name="idUsuario" id="idUsuario" value="'.$row['c_id'].'" checked="checked" /></td>');
+			if ($vehiculo_id== $row['vehiculo_id']) {
+		 		print('<td align="center"><input type="radio" name="vehiculo_id" id="vehiculo_id" value="'.$row['vehiculo_id'].'" checked="checked" /></td>');
 		 	} else {
-		 		print('<td><input type="radio" name="idUsuario" id="idUsuario" value="'.$row['c_id'].'" /></td>');
+		 		print('<td align="center"><input type="radio" name="vehiculo_id" id="vehiculo_id" value="'.$row['vehiculo_id'].'" /></td>');
 		 	}
 		} 
-		print('<td>' . $row['d_nombre'] . '</td>
-         <td>' . $row['d_direccion'] . '</td>
-         <td>' . $row['d_telefono1'] . '</td>
-         <td>' . $row['d_mail1'] . '</td>
-         <td>' . $row['d_nombre_usuario'] . '</td>
-         <td>' . $row['d_descripcion_rol'] . '</td>
+		print('
+         <td align="center">' . $row['nombre_marca'] . '</td>
+         <td align="center">' . $row['nombre_modelo'] . '</td>
+         <td align="center">' . $row['patente'] . '</td>
+         <td align="center">' . $row['cantidad_asientos'] . '</td>
 		</tr>');
 	}
 	print("</table>");
 }
 
-//getPageFooter('formVehiculos', $pagsTotal, $pagActual, $sort, $filtro, 'Usuario');
-getPageFooter('formVehiculos', $pagsTotal, $pagActual, $sort, 'Usuario');
 ?>
 		</div>
 	</div>
 	<div id="left">
 		<div class="box">
-			<div>Total usuarios: <?php print(usuarioGetCantidad()); ?></div>
+			<div>Total usuarios: <?php print($cant); ?></div>
 			<div><hr/></div>
-			<div><a href="javascript:performAltaUsuario('formVehiculos');">Nuevo Usuario</a></div>
+			<div><a href="javascript:performAltaVehiculo('formVehiculos');">Nuevo Vehiculo</a></div>
 			<div><hr/></div>
-			<div><a href="javascript:performModUsuario('formVehiculos');">Modifica Usuario</a></div>
+			<div><a href="javascript:performModVehiculo('formVehiculos');">Modifica Vehiculo</a></div>
 			<div><hr/></div>
-			<div><a href="javascript:performBajaUsuario('formVehiculos');">Elimina Usuario</a></div>
+			<div><a href="javascript:performBajaVehiculo('formVehiculos');">Elimina Vehiculo</a></div>
 			<div><hr/></div>
 			<div><p><br/></p></div>        
-			<div><hr/></div>
-			<fieldset>
-				<legend>Filtro (por nombre)</legend>
-					<input type="text" name="filtro" id="filtro" value="<?php print(($filtro != '%') ? $filtro : ''); ?>" />
-					<p>
-						<a href="javascript:changePageUsuario('formVehiculos', '<?php print($sort); ?>', -1, -1, document.formVehiculos.filtro.value);">Aplicar</a>
-						<a href="javascript:clearFilter('formVehiculos', '<?php print($sort); ?>', -1, -1, 'filtro', '%')">Quitar</a>
-					</p>
-			</fieldset>
+			<div><hr/></div>			
 		</div>
 	</div>
 	</form>

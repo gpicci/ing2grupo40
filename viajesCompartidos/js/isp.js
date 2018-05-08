@@ -31,3 +31,24 @@ function isValidKey(evt)
     te = String.fromCharCode(tecla); // 5
     return patron.test(te); // 6
 }
+
+function performAltaVehiculo(theForm) {
+	document.getElementById('op').value = 'a';
+	document.getElementById(theForm).action = 'main.php?accion=vehiculoView&folder=views';
+	document.getElementById(theForm).submit();
+}
+
+function performModVehiculo(theForm) {
+	document.getElementById('op').value = 'm';
+	document.getElementById(theForm).action = 'main.php?accion=vehiculoView&folder=views';
+	document.getElementById(theForm).submit();
+}
+
+function performBajaVehiculo(theForm) {
+	check = confirm('Confirme la eliminacion del vehiculo.');
+	if (check) {
+		document.getElementById('op').value = 'b';
+		document.getElementById(theForm).action = 'main.php?accion=vehiculoABM&folder=abm';
+		document.getElementById(theForm).submit();
+	}
+}

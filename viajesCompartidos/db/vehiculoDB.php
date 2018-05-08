@@ -43,21 +43,72 @@ function getVehiculosPorUsuario(
 	$usuario_id) {
 	$db = DB::singleton();
 	
-	$query = "SELECT
-	modelo_id,
-	nombre_modelo,
-	cantidad_asientos,
-	patente,
-    m.d_descripcion as d_modelo,
-    mm.d_descripcion as d_marca
-  FROM
-    vehiculo v,
-	modelo m,
-	marca mm
-  WHERE m_baja = 0
-  and	v.modelo_id = m.modelo_id
-  and	m.marca_id = mm.marca_id
-  and	usuario_id = ".$usuario_id;
+	$query = "
+	SELECT
+	  v.vehiculo_id,
+	  v.patente,
+	  v.cantidad_asientos,
+	  mm.nombre_marca,
+	  m.nombre_modelo
+    FROM
+	  vehiculo v,
+	  modelo m,
+	  marca mm
+  	WHERE v.m_baja = 0
+  	AND	v.modelo_id = m.modelo_id
+  	AND	m.marca_id = mm.marca_id
+  	and	v.usuario_id = ".$usuario_id;
+	
+	$rs = $db->executeQuery($query);
+	
+	if (!$rs) {
+		applog($db->db_error(), 1);
+	}
+	
+	return $rs;
+}
+
+function getVehiculoPorId(
+		$vehiculo_id) {
+			$db = DB::singleton();
+			
+			$query = "
+	SELECT
+	  v.vehiculo_id,
+	  v.patente,
+	  v.cantidad_asientos,
+	  v.usuario_id,
+	  mm.nombre_marca,
+	  m.nombre_modelo,
+	  mm.marca_id,
+	  m.modelo_id
+    FROM
+	  vehiculo v,
+	  modelo m,
+	  marca mm
+  	WHERE v.m_baja = 0
+  	AND	v.modelo_id = m.modelo_id
+  	AND	m.marca_id = mm.marca_id
+  	and	v.vehiculo_id = ".$vehiculo_id;
+
+			$rs = $db->executeQuery($query);
+			
+			if (!$rs) {
+				applog($db->db_error(), 1);
+			}
+			
+			return $rs;
+}
+
+function vehiculoBaja($id) {
+	$db = DB::singleton();
+	
+	$str_f_baja = "'".formatPHPFecha(date("d-m-Y"))."'";
+	
+	$query = "UPDATE vehiculo
+	          SET 	 m_baja = 1,
+					f_baja = str_to_date(".$str_f_baja.",'%Y%m%d') ".
+					" WHERE vehiculo_id = ".$id;
 	
 	$rs = $db->executeQuery($query);
 	
