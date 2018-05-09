@@ -1,5 +1,5 @@
 <?php
-  include_once("./db/db.php");
+  include_once($_SERVER['DOCUMENT_ROOT']."/viajes/db/db.php");
 
   function comboBox(
     $formFieldName,
@@ -12,7 +12,7 @@
   	$defaultSelectKey=-1) {
 
   	$db = DB::singleton();
-  	
+
     echo "<select style=\"font-size:12px;font-family:arial;\" id=\"$formFieldName\" onClick=\"this.select()\" name=\"$formFieldName\" $additionalData>";
 
    	$showDefault = true;
@@ -44,7 +44,7 @@
     echo "</select>";
 
   }
-  
+
   function comboBox2(
   		$formFieldName,
   		$resultSet,
@@ -54,13 +54,13 @@
   		$selectedKey,
   		$additionalData,
   		$defaultSelectKey=-1) {
-  			
+
   			$db = DB::singleton();
-  			
+
   			echo "<select style=\"font-size:12px;font-family:arial;\" id=\"$formFieldName\" name=\"$formFieldName\" $additionalData>";
-  			
+
   			$showDefault = true;
-  			
+
   			while ($row = $db->fetch_assoc($resultSet)) {
   				if ($row[$keyFieldName]==$selectedKey) {
   					$selected = "selected";
@@ -68,13 +68,13 @@
   				} else {
   					$selected = "";
   				}
-  				
+
   				echo "<OPTION value=".$row[$keyFieldName]." $selected >".$row[$listFieldName]."</OPTION>";
   			};
-  			
+
   			//si no hay una opcion por defecto
   			//if (isSet($defaultDescription) and ($defaultDescription<>"") and ($showDefault)) {
-  			
+
   			//modifico para que siempre muestra la defaultDescription pero que la seleccione
   			//solo si no encuentra $selectedKey en el resultSet
   			if (isSet($defaultDescription) and ($defaultDescription<>"") ) {
@@ -84,9 +84,9 @@
   					echo "<OPTION value=$defaultSelectKey >$defaultDescription</OPTION>";
   				}
   			};
-  			
+
   			echo "</select>";
-  			
+
   }
 
   function radioGroup(

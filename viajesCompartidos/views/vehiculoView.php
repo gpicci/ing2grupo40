@@ -35,17 +35,17 @@ if ($_REQUEST['op'] == 'm') {
 
 			echo "<form id=\"formVehiculoView\" method=\"post\" action=\"main.php?accion=usuarioABM&op=m&folder=".ABM_DIR."\">";
 ?>
-				<input type="hidden"	name="idVehiculo" value="<?php print($_REQUEST["idVehiculo"]); ?>">
+				<input type="hidden"	name="vehiculo_id" value="<?php print($_REQUEST["vehiculo_id"]); ?>">
 <?php } else {
 			echo "<form id=\"formVehiculoView\" method=\"post\" action=\"main.php?accion=usuarioABM&op=a&folder=".ABM_DIR."\">";
-			?> 
+			?>
 <?php } ?>
 				<fieldset>
 					<legend>Datos del vehiculo</legend>
 					<div><label for="marca_id">Marca </label>
 						<?php
 							$rs = getMarcas();
-							comboBox("marca_id", $rs, "marca_id", "nombre_marca", "", $marca_id, "onchange=\"getModelos(this)\""); 
+							comboBox("marca_id", $rs, "marca_id", "nombre_marca", "", $marca_id, "onchange=\"getModelos(this)\"");
 						?>
 					</div>
 					<div><label>Modelo <em>*</em></label>

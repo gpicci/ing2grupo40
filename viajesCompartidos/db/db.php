@@ -1,6 +1,6 @@
 <?php
-require_once('./config.php');
-require_once('./common/log.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/viajes/config.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/viajes/common/log.php');
 
 /**
  * DB Class
