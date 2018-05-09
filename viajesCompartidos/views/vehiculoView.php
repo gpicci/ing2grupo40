@@ -33,16 +33,16 @@ if ($_REQUEST["op"] == "m") {
 <?php
 if ($_REQUEST['op'] == 'm') {
 
-			echo "<form id=\"formVehiculoView\" method=\"post\" action=\"main.php?accion=usuarioABM&op=m&folder=".ABM_DIR."\">";
+			echo "<form id=\"formVehiculoView\" method=\"post\" action=\"main.php?accion=vehiculoABM&op=m&folder=".ABM_DIR."\">";
 ?>
 				<input type="hidden"	name="vehiculo_id" value="<?php print($_REQUEST["vehiculo_id"]); ?>">
 <?php } else {
-			echo "<form id=\"formVehiculoView\" method=\"post\" action=\"main.php?accion=usuarioABM&op=a&folder=".ABM_DIR."\">";
+			echo "<form id=\"formVehiculoView\" method=\"post\" action=\"main.php?accion=vehiculoABM&op=a&folder=".ABM_DIR."\">";
 			?>
 <?php } ?>
 				<fieldset>
 					<legend>Datos del vehiculo</legend>
-					<div><label for="marca_id">Marca </label>
+					<div><label for="marca_id">Marca <em>*</em></label>
 						<?php
 							$rs = getMarcas();
 							comboBox("marca_id", $rs, "marca_id", "nombre_marca", "", $marca_id, "onchange=\"getModelos(this)\"");
@@ -54,14 +54,14 @@ if ($_REQUEST['op'] == 'm') {
 							comboBox("modelo_id", $rs1, "modelo_id", "nombre_modelo", "NINGUNA", $vehiculo["modelo_id"], "");
 						?>
 					</div>
-					<div><label for="cantidad_asientos">Cantidad de Asientos</label><input id="cantidad_asientos" type="text" size="20" maxlength="20" name="cantidad_asientos" value="<?php print($vehiculo['cantidad_asientos']); ?>" /></div>
-					<div><label for="patente">Patente</label><input id="patente" type="text" size="20" maxlength="20" name="patente" value="<?php print($vehiculo['patente']); ?>" /></div>
+					<div><label for="cantidad_asientos">Cantidad de Asientos<em>*</em></label><input id="cantidad_asientos" type="text" size="20" maxlength="20" name="cantidad_asientos" value="<?php print($vehiculo['cantidad_asientos']); ?>" /></div>
+					<div><label for="patente">Patente<em>*</em></label><input id="patente" type="text" size="20" maxlength="20" name="patente" value="<?php print($vehiculo['patente']); ?>" /></div>
 				</fieldset>
 				<div class="buttonrow">
 					<?php if ($_REQUEST['op'] == 'a') { ?>
-						<input type="button" name="agregar" value="Agregar" class="button" onClick="checkUsuario('formVehiculoView');">
+						<input type="button" name="agregar" value="Agregar" class="button" onClick="checkVehiculo('formVehiculoView');">
 					<?php } else { ?>
-						<input type="button" name="modificar" value="Modificar" class="button" onClick="checkUsuario('formVehiculoView');">
+						<input type="button" name="modificar" value="Modificar" class="button" onClick="checkVehiculo('formVehiculoView');">
 					<?php } ?>
 					<input type="reset" value="Borrar cambios" class="button">
 				</div>

@@ -119,4 +119,26 @@ function vehiculoBaja($id) {
 	return $rs;
 }
 
+function vehiculoAlta(
+	$modelo_id,
+	$n_cantidad_aisentos,
+	$patente) {
+	$db = DB::singleton();
+	
+	$str_f_baja = "'".formatPHPFecha(date("d-m-Y"))."'";
+	
+	$query = "UPDATE vehiculo
+	          SET 	 m_baja = 1,
+					f_baja = str_to_date(".$str_f_baja.",'%Y%m%d') ".
+					" WHERE vehiculo_id = ".$id;
+	
+	$rs = $db->executeQuery($query);
+	
+	if (!$rs) {
+		applog($db->db_error(), 1);
+	}
+	
+	return $rs;
+}
+
 ?>

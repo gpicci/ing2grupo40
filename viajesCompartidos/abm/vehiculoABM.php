@@ -3,23 +3,17 @@ require_once(DB_DIR.'/vehiculoDB.php');
 
 if ($_REQUEST['op'] == 'a') {
   vehiculoAlta(
-    $_REQUEST['nombre'], 
-  	$_REQUEST['apellido'], 
-  	$_REQUEST['fecha_nacimiento'], 
-  	$_REQUEST['correo_electronico'], 
-  	$_REQUEST['clave']);
+    $_REQUEST['modelo_id'], 
+  	$_REQUEST['cantidad_asientos'], 
+  	$_REQUEST['patente']);
   
-  header('Location: login.php');
 } elseif ($_REQUEST['op'] == 'm') {
 	vehiculoModifica(
-	$_REQUEST['idUsuario'],
-	$_REQUEST['nombre'],
-	$_REQUEST['apellido'],
-	$_REQUEST['fecha_nacimiento'],
-	$_REQUEST['correo_electronico'],
-	$_REQUEST['clave']);
+	$_REQUEST['vehiculo_id'],
+	$_REQUEST['modelo_id'],
+	$_REQUEST['cantidad_asientos'],
+	$_REQUEST['patente']);
 	
-	header('Location: main.php?accion=inicio');
 } elseif ($_REQUEST['op'] == 'b') {
 	vehiculoBaja($_REQUEST['vehiculo_id']);
 }

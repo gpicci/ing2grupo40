@@ -52,3 +52,14 @@ function performBajaVehiculo(theForm) {
 		document.getElementById(theForm).submit();
 	}
 }
+
+function checkVehiculo(theForm) {
+	// Validacion de campos obligatorios
+	if ((document.getElementById('modelo_id').value == '') ||
+		(document.getElementById('cantidad_asientos').value == '') ||	
+		(document.getElementById('patente').value == '')) {
+		alert('Ingrese un valor para los datos obligatorios.');
+	} else {
+		document.getElementById(theForm).submit();
+	}
+}
