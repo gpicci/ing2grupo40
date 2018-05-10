@@ -121,16 +121,47 @@ function vehiculoBaja($id) {
 
 function vehiculoAlta(
 	$modelo_id,
-	$n_cantidad_aisentos,
+	$usuario_id,
+	$n_cantidad_asientos,
 	$patente) {
 	$db = DB::singleton();
 	
 	$str_f_baja = "'".formatPHPFecha(date("d-m-Y"))."'";
 	
-	$query = "UPDATE vehiculo
-	          SET 	 m_baja = 1,
-					f_baja = str_to_date(".$str_f_baja.",'%Y%m%d') ".
-					" WHERE vehiculo_id = ".$id;
+	$query = "INSERT INTO vehiculo (
+			modelo_id,
+			usuario_id,
+			cantidad_asientos,
+			patente)
+			VALUES (".
+			$modelo_id.",".
+			$usuario_id.",".
+			$n_cantidad_asientos.",upper('".
+			$patente."'))";
+	        
+	
+	$rs = $db->executeQuery($query);
+	
+	if (!$rs) {
+		applog($db->db_error(), 1);
+	}
+	
+	return $rs;
+}
+
+function vehiculoModifica(
+  $vehiculo_id,
+  $modelo_id,
+  $cantidad_asientos,
+  $patente) {
+
+  $db = DB::singleton();	
+	
+  $query = "UPDATE vehiculo
+	        SET 	 modelo_id = ".$modelo_id.",
+					 cantidad_asientos = ".$cantidad_asientos.",
+					 patente = '".$patente."'
+	        WHERE	 vehiculo_id = ".$vehiculo_id;
 	
 	$rs = $db->executeQuery($query);
 	
