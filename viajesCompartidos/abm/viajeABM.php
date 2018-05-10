@@ -24,6 +24,6 @@ if ($_REQUEST['op'] == 'a') {
 	vehiculoBaja($_REQUEST['vehiculo_id']);
 }
 
-header('Location: main.php?accion=vehiculos&folder='.BROWSE_DIR);
+header('Location: main.php?accion=viajes&folder='.BROWSE_DIR);
 
 ?>
