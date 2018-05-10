@@ -49,7 +49,8 @@ function getVehiculosPorUsuario(
 	  v.patente,
 	  v.cantidad_asientos,
 	  mm.nombre_marca,
-	  m.nombre_modelo
+	  m.nombre_modelo,
+	  CONCAT(nombre_marca,'-',nombre_modelo,': ',patente) as nombre_vehiculo
     FROM
 	  vehiculo v,
 	  modelo m,
@@ -124,9 +125,7 @@ function vehiculoAlta(
 	$usuario_id,
 	$n_cantidad_asientos,
 	$patente) {
-	$db = DB::singleton();
-	
-	$str_f_baja = "'".formatPHPFecha(date("d-m-Y"))."'";
+	$db = DB::singleton();	
 	
 	$query = "INSERT INTO vehiculo (
 			modelo_id,

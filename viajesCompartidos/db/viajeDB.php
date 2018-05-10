@@ -87,4 +87,108 @@ function getViajePorId(
 			
 			return $rs;
 }
+
+function getTiposDeViaje() {
+			
+  $db = DB::singleton();
+			
+  $query = "
+  SELECT
+	tipo_viaje_id,
+	nombre
+  FROM
+	tipo_de_viaje t";
+			
+  $rs = $db->executeQuery($query);
+			
+  if (!$rs) {
+	applog($db->db_error(), 1);
+  }
+			
+  return $rs;
+}
+
+function getDiasSemana() {
+	
+	$db = DB::singleton();
+	
+	$query = "
+  SELECT
+	dia_semana_id,
+	dia_semana_nombre
+  FROM
+	dia_semana d";
+	
+	$rs = $db->executeQuery($query);
+	
+	if (!$rs) {
+		applog($db->db_error(), 1);
+	}
+	
+	return $rs;
+}
+
+function getLocalidad() {
+	
+	$db = DB::singleton();
+	
+	$query = "
+  SELECT
+	localidad_id,
+	nombre_localidad
+  FROM
+	localidad l";
+	
+	$rs = $db->executeQuery($query);
+	
+	if (!$rs) {
+		applog($db->db_error(), 1);
+	}
+	
+	return $rs;
+}
+
+function viajeAlta(
+  $usuario_id,			
+  $vehiculo_id,
+  $localidad_origen_id,
+  $localidad_destino_id,
+  $duracion,
+  $costo,
+  $tipo_viaje_id,
+  $fecha_salida,
+  $dia_semana) {
+			
+  $db = DB::singleton();					
+			
+  $query = "INSERT INTO viajes (
+	usuario_id,
+    vehiculo_id,
+	localidad_origen_id,
+	localidad_destino_id,
+	tipo_viaje_id,
+	dia_semana,
+	fecha_salida,
+	duracion,
+	costo)
+  VALUES (".
+  	$usuario_id.",".
+  	$vehiculo_id.",".
+  	$localidad_origen_id.",".
+  	$localidad_destino_id.",".
+  	$duracion.",".
+  	$costo.",".
+  	$tipo_viaje_id.",
+  	str_to_date('".$fecha_salida."','%d-%m-%Y'),".
+  	$dia_semana.")";
+			
+  $rs = $db->executeQuery($query);
+			
+  if (!$rs) {
+	applog($db->db_error(), 1);
+  }
+			
+  return $rs;
+}
+
 ?>
