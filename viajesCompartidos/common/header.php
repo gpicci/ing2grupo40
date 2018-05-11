@@ -29,7 +29,7 @@ echo "<div id=\"header\">";
 			<li class="topmenu"><a href="#" style="height:18px;line-height:18px;"><span>VIAJES PROPIOS</span></a>
 				<ul>
 					<li><a href="main.php?accion=viajeView&op=a&folder=<?php print(VIEWS_DIR); ?>">AGREGAR VIAJE</a></li>
-					<li><a href="main.php?accion=dispositivosPendientes">LISTADO DE VIAJES</a></li>
+					<li><a href="main.php?accion=viajes&folder=<?php print(BROWSE_DIR); ?>">LISTADO DE VIAJES</a></li>
 					<li><a href="main.php?accion=dispositivosPendientes">CON APROBACIONES PENDIENTES</a></li>
 				</ul>
 			</li>

@@ -67,13 +67,13 @@ if ($_REQUEST['op'] == 'm') {
 					<div><label for="localidad_origen_id">Localidad Origen<em>*</em></label>
 						<?php
 							$rs = getLocalidad();
-							comboBox("localidad_id", $rs, "localidad_id", "nombre_localidad", "", $viaje["localidad_origen_id"], "");
+							comboBox("localidad_origen_id", $rs, "localidad_id", "nombre_localidad", "", $viaje["localidad_origen_id"], "");
 						?>
 					</div>	
 					<div><label for="localidad_destino_id">Localidad Destino<em>*</em></label>
 						<?php
 							$rs = getLocalidad();
-							comboBox("localidad_id", $rs, "localidad_id", "nombre_localidad", "", $viaje["localidad_destino_id"], "");
+							comboBox("localidad_destino_id", $rs, "localidad_id", "nombre_localidad", "", $viaje["localidad_destino_id"], "");
 						?>
 					</div>	
 					<div><label for="vehiculo_id">Vehiculo<em>*</em></label>

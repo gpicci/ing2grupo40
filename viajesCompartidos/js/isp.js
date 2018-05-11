@@ -73,3 +73,12 @@ function checkViaje(theForm) {
 		document.getElementById(theForm).submit();
 	}
 }
+
+function performBajaViaje(theForm) {
+	check = confirm('Confirme la eliminacion del viaje.');
+	if (check) {
+		document.getElementById('op').value = 'b';
+		document.getElementById(theForm).action = 'main.php?accion=viajeABM&folder=abm';
+		document.getElementById(theForm).submit();
+	}
+}

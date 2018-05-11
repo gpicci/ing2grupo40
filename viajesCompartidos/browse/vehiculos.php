@@ -17,7 +17,7 @@
 	$rs = getVehiculosPorUsuario($idUsuario);
 	
 	if($db->num_rows($rs) == 0) {
-		print('No hay usuarios ingresados.');
+		print('No hay vehiculos ingresados.');
 	} else {
 		// Table header
 ?>
@@ -58,7 +58,7 @@
 	</div>
 	<div id="left">
 		<div class="box">
-			<div>Total usuarios: <?php print($cant); ?></div>
+			<div>Total vehiculos: <?php print($cant); ?></div>
 			<div><hr/></div>
 			<div><a href="javascript:performAltaVehiculo('formVehiculos');">Nuevo Vehiculo</a></div>
 			<div><hr/></div>
