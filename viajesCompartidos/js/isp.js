@@ -74,6 +74,18 @@ function checkViaje(theForm) {
 	}
 }
 
+function performAltaViaje(theForm) {
+	document.getElementById('op').value = 'a';
+	document.getElementById(theForm).action = 'main.php?accion=viajeView&folder=views';
+	document.getElementById(theForm).submit();
+}
+
+function performModViaje(theForm) {
+	document.getElementById('op').value = 'm';
+	document.getElementById(theForm).action = 'main.php?accion=viajeView&folder=views';
+	document.getElementById(theForm).submit();
+}
+
 function performBajaViaje(theForm) {
 	check = confirm('Confirme la eliminacion del viaje.');
 	if (check) {

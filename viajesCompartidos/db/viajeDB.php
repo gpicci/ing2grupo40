@@ -59,16 +59,21 @@ function getViajePorId(
 			$query = "
 	SELECT
 	  v.viaje_id,
-	  v.vechiculo_id,
+	  v.vehiculo_id,
+	  v.duracion,
+	  v.costo,
+	  v.localidad_origen_id,
+	  v.localidad_destino_id,
+	  v.tipo_viaje_id,
+	  v.dia_semana,
+	  v.fecha_salida,
 	  m.nombre_marca,
 	  mm.nombre_modelo,
 	  vv.patente,
 	  vv.cantidad_asientos,
 	  lo.nombre_localidad AS localidad_id_origen,
 	  ld.nombre_localidad AS localidad_id_destino,
-	  t.nombre AS d_tipo_viaje,
-	  v.duracion,
-	  v.costo
+	  t.nombre AS d_tipo_viaje	  
 	FROM
 	  viaje v,
 	  vehiculo vv,
@@ -78,7 +83,7 @@ function getViajePorId(
 	  localidad ld,
 	  tipo_de_viaje t
 	WHERE v.m_baja = 0
-	AND	  v.vechiculo_id = vv.vehiculo_id
+	AND	  v.vehiculo_id = vv.vehiculo_id
 	AND   vv.modelo_id = mm.modelo_id
 	AND   mm.marca_id = m.marca_id
 	AND   v.localidad_origen_id = lo.localidad_id
@@ -207,6 +212,40 @@ function viajeBaja($id) {
 	          SET 	 m_baja = 1,
 					f_baja = str_to_date(".$str_f_baja.",'%Y%m%d') ".
 					" WHERE viaje_id = ".$id;
+	
+	$rs = $db->executeQuery($query);
+	
+	if (!$rs) {
+		applog($db->db_error(), 1);
+	}
+	
+	return $rs;
+}
+
+function viajeModifica(
+	$viaje_id,	
+	$vehiculo_id,
+	$localidad_origen_id,
+	$localidad_destino_id,
+	$duracion,
+	$costo,
+	$tipo_viaje_id,
+	$fecha_salida,
+	$dia_semana) {
+	$db = DB::singleton();
+	
+	$str_f_baja = "'".formatPHPFecha(date("d-m-Y"))."'";
+	
+	$query = "UPDATE viaje
+	          SET 	vehiculo_id = ".$vehiculo_id.",
+					localidad_origen_id = ".$localidad_origen_id.",
+					localidad_destino_id = ".$localidad_destino_id.",
+					duracion = ".$duracion.",
+					costo = ".$costo.",
+					tipo_viaje_id = ".$tipo_viaje_id.",
+					dia_semana = ".$dia_semana.",
+					fecha_salida = str_to_date('".$fecha_salida."','%Y-%m-%d') ".
+					" WHERE viaje_id = ".$viaje_id;
 	
 	$rs = $db->executeQuery($query);
 	
