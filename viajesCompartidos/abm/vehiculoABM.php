@@ -1,6 +1,15 @@
 <?php
 require_once(DB_DIR.'/vehiculoDB.php');
 
+function validarBaja($id, &$mensajes) {
+    if (GetCantViajePorVehiculo($id != 0)) {
+        $mensajes[]="El vehiculo tiene viajes asignados";
+        return false;
+    } else {
+        return true;
+    }
+}
+
 if ($_REQUEST['op'] == 'a') {
   vehiculoAlta(
     $_REQUEST['modelo_id'], 
@@ -16,7 +25,14 @@ if ($_REQUEST['op'] == 'a') {
 	  $_REQUEST['patente']);
 	
 } elseif ($_REQUEST['op'] == 'b') {
-	vehiculoBaja($_REQUEST['vehiculo_id']);
+    $mensajes=array();
+    
+    if (validarBaja($_REQUEST['vehiculo_id'], $mensajes)) {
+        vehiculoBaja($_REQUEST['vehiculo_id']);
+    } else {
+        $_SESSION['mensajesPendientes'] = $mensajes;
+    }
+    
 }
 
 header('Location: main.php?accion=vehiculos&folder='.BROWSE_DIR);
