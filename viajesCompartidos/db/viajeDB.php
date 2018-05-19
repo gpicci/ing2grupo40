@@ -203,24 +203,6 @@ function viajeAlta(
   return $rs;
 }
 
-function viajeBaja($id) {
-	$db = DB::singleton();
-	
-	$str_f_baja = "'".formatPHPFecha(date("d-m-Y"))."'";
-	
-	$query = "UPDATE viaje
-	          SET 	 m_baja = 1,
-					f_baja = str_to_date(".$str_f_baja.",'%Y%m%d') ".
-					" WHERE viaje_id = ".$id;
-	
-	$rs = $db->executeQuery($query);
-	
-	if (!$rs) {
-		applog($db->db_error(), 1);
-	}
-	
-	return $rs;
-}
 
 function viajeModifica(
 	$viaje_id,	
@@ -254,6 +236,115 @@ function viajeModifica(
 	}
 	
 	return $rs;
+}
+
+function GetCantPaxPorViaje($viaje_id = 0, $estado_id=0 ) {
+    $db = DB::singleton();
+
+    //en la tabla de estados el id=2 corresponde a pasajero aprobado para viaje
+    $query = "SELECT COUNT(1) cant FROM pasajero WHERE viaje_id = $viaje_id ";
+    if ($estado_id!=0) {
+        $query.="AND estado_id= $estado_id ";
+    }
+    
+    $rs = $db->executeQuery($query);
+    $row = $db->fetch_assoc($rs);
+    
+    $result = $row['cant'];
+    
+    return $result;
+}
+
+function GetUsuarioPorViaje($viaje_id = 0 ) {
+    $db = DB::singleton();
+    
+    //en la tabla de estados el id=2 corresponde a pasajero aprobado para viaje
+    $query = "SELECT usuario_id FROM viaje WHERE viaje_id = $viaje_id ";
+    
+    $rs = $db->executeQuery($query);
+    $row = $db->fetch_assoc($rs);
+    
+    $result = $row['usuario_id'];
+    
+    return $result;
+}
+
+function getPaxPorViaje($viaje_id=0, $estado_id=0) {
+        //$estado_id es el filtro por estado, si está en 0 devuelve todo
+        $db = DB::singleton();
+        
+        $query = "
+                SELECT 
+                	p.usuario_id, u.apellido, u.nombre, e.descripcion_estado estado
+                FROM
+                pasajero p
+                	INNER JOIN usuario u
+                	ON p.usuario_id = u.usuario_id
+                	INNER JOIN estado e
+                	ON p.estado_id = e.estado_id
+                WHERE
+                	viaje_id = $viaje_id
+                ";
+        
+        if ($estado_id!=0) {
+            $query.="AND p.estado_id=2 ";
+        }
+        
+        $query.="Order by u.apellido, u.nombre ";
+        
+        $rs = $db->executeQuery($query);
+        
+        if (!$rs) {
+            applog($db->db_error(), 1);
+        }
+        
+        return $rs;
+      
+}
+
+function viajeBaja($id) {
+    $db = DB::singleton();
+    
+    $str_f_baja = "'".formatPHPFecha(date("d-m-Y"))."'";
+ 
+    $query = "DELETE from pasajero ".
+             " WHERE viaje_id = ".$id;
+    
+    $rs = $db->executeQuery($query);
+    if (!$rs) {
+        applog($db->db_error(), 1);
+        return ;
+    }
+    
+    $cantAprob = getPaxPorViaje($id, 2);
+    if ($cantAprob>0) {
+        $idUsuario = GetUsuarioPorViaje($id);
+        $id_usuario_evaluador = 0;  //id de un usuario que haría de avaluador 
+                                    //para las calificaciones generadas por el sistema
+        $puntaje = -1;
+        
+        $query = "INSERT INTO calificacion(viaje_id, usuario_evalua_id, usuario_evaluado_id, puntaje, comentario) ".
+            "VALUES ($id,  $id_usuario_evaluador, $idUsuario, $puntaje, 'Baja de viaje con postulantes aprobados') ";
+        $rs = $db->executeQuery($query);
+        
+        if (!$rs) {
+            applog($db->db_error(), 1);
+            return;
+        }
+    }
+    
+    $query = "UPDATE viaje
+	          SET 	 m_baja = 1,
+					f_baja = str_to_date(".$str_f_baja.",'%Y%m%d') ".
+					" WHERE viaje_id = ".$id;
+    
+    $rs = $db->executeQuery($query);
+    
+    if (!$rs) {
+        applog($db->db_error(), 1);
+    }
+    
+    return $rs;
 }
 
 ?>

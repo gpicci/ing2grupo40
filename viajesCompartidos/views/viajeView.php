@@ -3,8 +3,10 @@ require_once(DB_DIR.'/viajeDB.php');
 require_once(DB_DIR.'/vehiculoDB.php');
 require_once("./common/combo.php");
 
+//id de estado correspondiente a los pasajero aprobados
+$aprobado_id = 2;
 
-if ($_REQUEST["op"] == "m") {
+if (($_REQUEST["op"] == "m") || ($_REQUEST["op"] == "b")) {
 	
   $db = DB::singleton();
   $rs = getViajePorId($_REQUEST["viaje_id"]);
@@ -39,9 +41,9 @@ if ($_REQUEST["op"] == "m") {
 		<div id="right">
 			<div class="form-container">
 <?php
-if ($_REQUEST['op'] == 'm') {
+if (($_REQUEST['op'] == 'm') || ($_REQUEST['op'] == 'b')) {
 
-			echo "<form id=\"formViajeView\" method=\"post\" action=\"main.php?accion=viajeABM&op=m&folder=".ABM_DIR."\">";
+    echo "<form id=\"formViajeView\" method=\"post\" action=\"main.php?accion=viajeABM&op=".$_REQUEST['op']."&folder=".ABM_DIR."\">";
 ?>
 				<input type="hidden"	name="viaje_id" value="<?php print($viaje["viaje_id"]); ?>">
 <?php } else {
@@ -84,12 +86,59 @@ if ($_REQUEST['op'] == 'm') {
 					</div>								
 					<div><label for="duracion">Duracion (en horas)<em>*</em></label><input id="duracion" type="text" name="duracion" size="10" maxlength="50" value="<?php print($viaje['duracion']); ?>" /></div>					
 					<div><label for="costo">Costo total del viaje<em>*</em></label><input id="costo" type="text" name="costo" size="10" maxlength="50" value="<?php print($viaje['costo']); ?>" /></div>					
+   					<br><br>
+    					<?php
+    					$rs = getPaxPorViaje($_REQUEST["viaje_id"]);
+    					
+    					if($db->num_rows($rs) == 0) {
+    					    print('El viaje no tiene copilotos aprobados ni pendientes');
+    					} else {
+    					    // Table header
+    					    ?>
+    					<table>
+    					<tr>
+    					<td><b>Sel</b></td>
+    					<td><b>Nombre</a></b></td>
+    					<td><b>Estado</b></td>
+    					</tr>
+    					<?php
+    					   while ($row = $db->fetch_assoc($rs)) {
+    					    print('<tr>');
+    					    $idUsuario=-1;
+    					    if ($idUsuario == -1) {
+    					        $idUsuario = $row['usuario_id'];
+    					        print('<td><input type="radio" name="idUsuario" id="idUsuario" value="'.$row['usuario_id'].'" checked="checked" /></td>');
+    					    } else {
+    					        if ($idUsuario == $row['usuario_id']) {
+    					            print('<td><input type="radio" name="idUsuario" id="idUsuario" value="'.$row['usuario_id'].'" checked="checked" /></td>');
+    					        } else {
+    					            print('<td><input type="radio" name="idUsuario" id="idUsuario" value="'.$row['usuario_id'].'" /></td>');
+    					        }
+    					    }
+    					    print('<td>' . $row['apellido'] . ", ". $row['nombre'] . '</td>');
+                            print('<td>' . $row['estado'] . '</td>');
+                    		print ('</tr>');
+                        					}
+    					print("</table>");
+    					}
+    					
+    					$cantAprob = GetCantPaxPorViaje($_REQUEST["viaje_id"], $aprobado_id );
+    					echo "<br><br>";
+    					
+    					if (($cantAprob>0) && ($_REQUEST['op'] == 'b')) {
+    					    echo "<fieldset><div style=\"color: #FF0000;\"><b>";
+    					    echo "Atencion: el viaje tiene pasajeros aprobados, eliminarlo bajara su puntuacion";
+    					    echo "</div></fieldset>";
+        				}
+					?>
  					</fieldset>
 				<div class="buttonrow">
 					<?php if ($_REQUEST['op'] == 'a') { ?>
 						<input type="button" name="agregar" value="Agregar" class="button" onClick="checkViaje('formViajeView');">
-					<?php } else { ?>
+					<?php  } else if ($_REQUEST['op'] == 'm') { ?>
 						<input type="button" name="modificar" value="Modificar" class="button" onClick="checkViaje('formViajeView');">
+					<?php  } else if ($_REQUEST['op'] == 'b') { ?>
+						<input type="button" name="modificar" value="Eliminar" class="button" onClick="checkViaje('formViajeView');">
 					<?php } ?>
 					<input type="reset" value="Borrar cambios" class="button">
 				</div>
@@ -101,9 +150,9 @@ if ($_REQUEST['op'] == 'm') {
 		<div class="box">
 			<?php
 			if ($_REQUEST['op'] == 'a') {
-				echo "<div><a href=\"login.php\">Volver</a></div>";
+				echo "<div><a href=\"lmain.php?accion=viajes&folder=browse\">Volver</a></div>";
 			} else {
-				echo "<div><a href=\"main.php?accion=inicio\">Volver</a></div>";
+				echo "<div><a href=\"main.php?accion=viajes&folder=browse\">Volver</a></div>";
 			}
 			?>
 <?php
