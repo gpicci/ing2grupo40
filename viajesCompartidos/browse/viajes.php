@@ -11,10 +11,18 @@
 ?>
 	<form name='formViajes' id='formViajes' method='post' action='' >	
 	<input type='hidden' name='op' id='op' value='' />
+	<input type='hidden' name='usuario_id' id='op' value='<?php print ($idUsuario)?>' />
 	<div id="content">
 		<div id="right">
 <?php
-	$rs = getViajesPorUsuario($idUsuario);
+    if ( (isSet($_REQUEST['propios'])) && ($_REQUEST['propios']==0) )  {
+        $propios = 0;
+        $rs = getViajesPorUsuario($idUsuario, $propios);
+    } else {
+        $propios = 1;
+        $rs = getViajesPorUsuario($idUsuario, $propios);
+    }
+	
 	
 	if($db->num_rows($rs) == 0) {
 		print('No hay viajes ingresados.');
@@ -62,14 +70,19 @@
 	</div>
 	<div id="left">
 		<div class="box">
-			<div>Total usuarios: <?php print($cant); ?></div>
+			<div>Total viajes: <?php print($cant); ?></div>
 			<div><hr/></div>
+			<?php if ($propios==1) { ?>
 			<div><a href="javascript:performAltaViaje('formViajes');">Nuevo Viaje</a></div>
 			<div><hr/></div>
 			<div><a href="javascript:performModViaje('formViajes');">Modifica Viaje</a></div>
 			<div><hr/></div>
 			<div><a href="javascript:performBajaViaje('formViajes');">Elimina Viaje</a></div>
 			<div><hr/></div>
+			<?php } else { ?>
+				<div><a href="javascript:performPostulacion('formViajes');">Postularse a Viaje</a></div>
+				<div><hr/></div>
+			<?php }; ?>
 			<div><p><br/></p></div>        
 			<div><hr/></div>			
 		</div>

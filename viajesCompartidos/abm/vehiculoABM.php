@@ -2,7 +2,7 @@
 require_once(DB_DIR.'/vehiculoDB.php');
 
 function validarBaja($id, &$mensajes) {
-    if (GetCantViajePorVehiculo($id != 0)) {
+    if (GetCantViajePorVehiculo($id) != 0) {
         $mensajes[]="El vehiculo tiene viajes asignados";
         return false;
     } else {
