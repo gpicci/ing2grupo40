@@ -6,9 +6,10 @@ $db = DB::singleton();
 
 $nombreUsuario = "USUARIO: ".$_SESSION['nombre_usuario'];
 
-echo "<div id=\"header\">";
+//echo "<div id=\"header\">";
 ?>
 <body>
+	<div id="header">
 	<p id="alignleft"><?php print(VIEW_PAGE_TITLE.' - '.VIEW_EMPRESA); ?></p>
 	<p id="alignright"><?php print($nombreUsuario);?>
 	</p>
