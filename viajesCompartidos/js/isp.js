@@ -74,6 +74,18 @@ function checkViaje(theForm) {
 	}
 }
 
+function apruebaPostulacion(theForm) {
+	document.getElementById('op').value = 'v';
+	document.getElementById(theForm).action = 'main.php?accion=viajeABM&folder=abm';
+	document.getElementById(theForm).submit();
+}
+
+function desapruebaPostulacion(theForm) {
+	document.getElementById('op').value = 'z';
+	document.getElementById(theForm).action = 'main.php?accion=viajeABM&folder=abm';
+	document.getElementById(theForm).submit();
+}
+
 function performAltaViaje(theForm) {
 	document.getElementById('op').value = 'a';
 	document.getElementById(theForm).action = 'main.php?accion=viajeView&folder=views';
@@ -90,4 +102,13 @@ function performBajaViaje(theForm) {
 		document.getElementById('op').value = 'b';
 		document.getElementById(theForm).action = 'main.php?accion=viajeView&folder=views';
 		document.getElementById(theForm).submit();
+}
+
+function performPostulacion(theForm) {
+	check = confirm('Confirme la postulacion al viaje seleccionado.');
+	if (check) {
+		document.getElementById('op').value = 'p';
+		document.getElementById(theForm).action = 'main.php?accion=viajeABM&folder=abm';
+		document.getElementById(theForm).submit();
+	}
 }

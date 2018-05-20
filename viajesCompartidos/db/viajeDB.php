@@ -3,7 +3,7 @@ require_once('db.php');
 require_once('./common/log.php');
 
 function getViajesPorUsuario(
-  $usuario_id) {
+  $usuario_id, $propios=1 ) {
 	
   $db = DB::singleton();
 
@@ -39,9 +39,14 @@ function getViajesPorUsuario(
 	AND   v.localidad_origen_id = lo.localidad_id
 	AND   v.localidad_destino_id = ld.localidad_id
 	AND   v.tipo_viaje_id = t.tipo_viaje_id
-	AND   v.dia_semana = d.dia_semana_id
-	AND   v.usuario_id = ".$usuario_id;
-
+	AND   v.dia_semana = d.dia_semana_id ";
+    
+    if ($propios==1) {  
+	   $query .= "AND   v.usuario_id = ".$usuario_id;
+    } else {
+       $query .= "AND   v.usuario_id <> ".$usuario_id;
+    }
+    
   $rs = $db->executeQuery($query);
 
   if (!$rs) {
@@ -287,7 +292,7 @@ function getPaxPorViaje($viaje_id=0, $estado_id=0) {
                 ";
         
         if ($estado_id!=0) {
-            $query.="AND p.estado_id=2 ";
+            $query.="AND p.estado_id= ".$estado_id;
         }
         
         $query.="Order by u.apellido, u.nombre ";
@@ -324,7 +329,7 @@ function viajeBaja($id) {
         $puntaje = -1;
         
         $query = "INSERT INTO calificacion(viaje_id, usuario_evalua_id, usuario_evaluado_id, puntaje, comentario) ".
-            "VALUES ($id,  $id_usuario_evaluador, $idUsuario, $puntaje, 'Baja de viaje con postulantes aprobados') ";
+            "VALUES ($id,  ID_VALIDADOR_APLICACION, $idUsuario, $puntaje, 'Baja de viaje con postulantes aprobados') ";
         $rs = $db->executeQuery($query);
         
         if (!$rs) {
@@ -346,5 +351,40 @@ function viajeBaja($id) {
     
     return $rs;
 }
+
+function viajePostulaCopiloto($viaje_id, $usuario_id) {
+    $db = DB::singleton();
+    
+    $str_f_baja = "'".formatPHPFecha(date("d-m-Y"))."'";
+    
+    $query = "INSERT INTO pasajero (tipo_pasajero_id, viaje_id, usuario_id, estado_id)
+              VALUES (".TIPO_COPILOTO.",$viaje_id, $usuario_id, ".ID_APROBACION_PENDIENTE.")";
+    $rs = $db->executeQuery($query);
+    
+    if (!$rs) {
+        applog($db->db_error(), 1);
+    }
+    
+    return $rs;
+}
+
+function viajeEstadoCopiloto($viaje_id, $idUsuarioPax, $idEstado) {
+    $db = DB::singleton();
+    
+    $str_f_baja = "'".formatPHPFecha(date("d-m-Y"))."'";
+    
+    $query = "UPDATE pasajero ".
+        "   SET  estado_id = $idEstado ".
+        "WHERE viaje_id = $viaje_id and usuario_id = " . $idUsuarioPax; 
+    
+    $rs = $db->executeQuery($query);
+    
+    if (!$rs) {
+        applog($db->db_error(), 1);
+    }
+    
+    return $rs;
+}
+
 
 ?>

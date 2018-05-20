@@ -35,7 +35,7 @@ echo "<div id=\"header\">";
 			</li>
 			<li class="topmenu"><a href="#" style="height:18px;line-height:18px;"><span>VIAJES</span></a>
 				<ul>
-					<li><a href="main.php?accion=dispositivos">BUSCAR VIAJE</a></li>
+					<li><a href="main.php?accion=viajes&propios=0&folder=<?php print(BROWSE_DIR); ?>">VIAJES DE OTROS</a></li>
 					<li><a href="main.php?accion=dispositivosPendientes">PENDIENTES</a></li>
 					<li><a href="main.php?accion=dispositivos">APROBADOS</a></li>
 					<li><a href="main.php?accion=dispositivos">TERMINADOS</a></li>

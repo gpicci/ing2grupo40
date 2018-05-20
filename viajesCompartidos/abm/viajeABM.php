@@ -27,8 +27,23 @@ if ($_REQUEST['op'] == 'a') {
 	
 } elseif ($_REQUEST['op'] == 'b') {
 	viajeBaja($_REQUEST['viaje_id']);
+	
+} elseif ($_REQUEST['op'] == 'p') {
+    viajePostulaCopiloto($_REQUEST['viaje_id'], $_REQUEST['usuario_id']);
+} elseif ($_REQUEST['op'] == 'v') {
+    viajeEstadoCopiloto($_REQUEST['viaje_id'], $_REQUEST['idUsuarioPax'], ID_APROBADO);
+} elseif ($_REQUEST['op'] == 'z') {
+    viajeEstadoCopiloto($_REQUEST['viaje_id'], $_REQUEST['idUsuarioPax'], ID_APROBACION_PENDIENTE);
 }
 
-header('Location: main.php?accion=viajes&folder='.BROWSE_DIR);
+
+if ($_REQUEST['op'] == 'p') {
+    header('Location: main.php?accion=viajes&propios=0&folder='.BROWSE_DIR);
+} elseif (($_REQUEST['op'] == 'v') || ($_REQUEST['op'] == 'z')){
+    header('Location: main.php?accion=viajeView&folder=views&op=m&viaje_id='.$_REQUEST['viaje_id']);
+} else {
+    header('Location: main.php?accion=viajes&folder='.BROWSE_DIR);
+}
+
 
 ?>
