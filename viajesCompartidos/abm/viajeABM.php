@@ -29,11 +29,11 @@ if ($_REQUEST['op'] == 'a') {
 	viajeBaja($_REQUEST['viaje_id']);
 	
 } elseif ($_REQUEST['op'] == 'p') {
-    viajePostulaCopiloto($_REQUEST['viaje_id'], $_REQUEST['usuario_id']);
+    viajePostulaCopiloto($_REQUEST['viaje_id'], $_REQUEST['usuario_id'], $_REQUEST["tarjeta_id"]);
 } elseif ($_REQUEST['op'] == 'v') {
-    viajeEstadoCopiloto($_REQUEST['viaje_id'], $_REQUEST['idUsuarioPax'], ID_APROBADO);
+    viajeSetEstadoCopiloto($_REQUEST['viaje_id'], $_REQUEST['idUsuarioPax'], ID_APROBADO);
 } elseif ($_REQUEST['op'] == 'z') {
-    viajeEstadoCopiloto($_REQUEST['viaje_id'], $_REQUEST['idUsuarioPax'], ID_APROBACION_PENDIENTE);
+    viajeSetEstadoCopiloto($_REQUEST['viaje_id'], $_REQUEST['idUsuarioPax'], ID_APROBACION_PENDIENTE);
 }
 
 

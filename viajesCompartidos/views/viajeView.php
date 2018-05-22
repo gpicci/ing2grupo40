@@ -122,18 +122,20 @@ if (($_REQUEST['op'] == 'm') || ($_REQUEST['op'] == 'b')) {
                         					}
     					print("</table>");
     					}
-    					
-    					if ($_REQUEST["op"] == "m") {
+
+    					$cantPax = GetCantPaxPorViaje($_REQUEST["viaje_id"]);
+    					if ( ($_REQUEST["op"] == "m") && ($cantPax>0)) {
     					    print("<input type=\"button\" name=\"aprobar\" value=\"Aprobar postulacion\" class=\"button\" onClick=\"apruebaPostulacion('formViajeView');\">");
     					    print("<input type=\"button\" name=\"aprobar\" value=\"Desaprobar postulacion\" class=\"button\" onClick=\"desapruebaPostulacion('formViajeView');\">");
     					}
+    					
     					
     					if ($_REQUEST["op"] != "a") {
     					    $cantAprob = GetCantPaxPorViaje($_REQUEST["viaje_id"], ID_APROBADO );
     					} else {
     					    $cantAprob = 0;
     					}
-    					
+
     					echo "<br><br>";
     					
     					if (($cantAprob>0) && ($_REQUEST['op'] == 'b')) {

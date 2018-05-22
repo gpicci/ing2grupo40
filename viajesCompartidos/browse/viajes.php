@@ -11,7 +11,7 @@
 ?>
 	<form name='formViajes' id='formViajes' method='post' action='' >
 	<input type='hidden' name='op' id='op' value='' />
-	<input type='hidden' name='usuario_id' id='op' value='<?php print ($idUsuario)?>' />
+	<input type='hidden' name='usuario_id' id='usuario_id' value='<?php print ($idUsuario)?>' />
 	<div id="content">
 		<div id="right">
 <?php
@@ -38,6 +38,14 @@
          	<td align="center"><b>ORIGEN</b></td>
          	<td align="center"><b>DESTINO</b></td>
          	<td align="center"><b>VEHICULO</b></td>
+         	<td align="center"><b>ASIENTOS</b></td>
+<?php
+            if ($propios!=1) {
+                print ('<td align="center"><b>APROBACION</b></td>');
+            }
+?>         	
+			<td align="center"><b>Postulados</b></td>
+			<td align="center"><b>Aprobados</b></td>
    	</tr>
 <?php
 	while ($row = $db->fetch_assoc($rs)) {
@@ -59,8 +67,28 @@
          <td align="center">' . $row['fecha_salida'] . '</td>
          <td align="center">' . $row['localidad_origen'] . '</td>
 		 <td align="center">' . $row['localidad_destino'] . '</td>
-		 <td align="center">' . $row['nombre_vehiculo'] . '</td>
-		</tr>');
+         <td align="center">' . $row['nombre_vehiculo'] . '</td>
+		 <td align="center">' . $row['cantidad_asientos'] . '</td>');
+                        if ($propios!=1) {
+                            $rsPostulacion = viajeEstadoCopiloto($row['viaje_id'], $idUsuario );
+                            if($db->num_rows($rsPostulacion) == 0) {
+                                $estadoPostulacion = "Sin postularse"; 
+                            } else {
+                                $rowP = $db->fetch_assoc($rsPostulacion);
+                                $estadoPostulacion =  $rowP["descripcion_estado"];
+                            }
+                            print ('<td align="center"> '. $estadoPostulacion . '</td>');
+                        }
+                        
+        $pendientes = 0;
+        $aprobados = 0;
+        $postulados = 0;
+        getPaxPorEstado($row['viaje_id'], $aprobados, $pendientes, $postulados);
+        print('
+        <td align="center">' . $postulados . '</td>
+        <td align="center">' . $aprobados . '</td>');
+        
+		print ('</tr>');
 	}
 	print("</table>");
 }

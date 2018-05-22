@@ -105,16 +105,31 @@ function performBajaViaje(theForm) {
 }
 
 function performPostulacion(theForm) {
-	check = confirm('Confirme la postulacion al viaje seleccionado.');
-	if (check) {
 		document.getElementById('op').value = 'p';
-		document.getElementById(theForm).action = 'main.php?accion=viajeABM&folder=abm';
+		document.getElementById(theForm).action = 'main.php?accion=postulacionView&folder=views';
 		document.getElementById(theForm).submit();
-	}
 }
 
 function performVerViaje(theForm) {
 	document.getElementById('op').value = 'v';
 	document.getElementById(theForm).action = 'main.php?accion=viajeView&folder=views';
 	document.getElementById(theForm).submit();
+}
+
+function performCerrarViaje(theForm) {
+	check = confirm('Confirme el cierre del viaje (ya no se aceptaran postulaciones y se emitira el cobro)');
+	if (check) {	
+		document.getElementById('op').value = 'c';
+		document.getElementById(theForm).action = 'main.php?accion=viajeABM&folder=views';
+		document.getElementById(theForm).submit();
+	}
+}
+
+function checkPostulacion(theForm) {
+	// Validacion de campos obligatorios
+	if ( (document.getElementById('tarjeta_id').value == -1) ) {
+		alert('Ingrese un valor para los datos obligatorios.');
+	} else {
+		document.getElementById(theForm).submit();
+	}
 }

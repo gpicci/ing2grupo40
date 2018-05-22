@@ -292,7 +292,7 @@ function getPaxPorViaje($viaje_id=0, $estado_id=0) {
                 ";
         
         if ($estado_id!=0) {
-            $query.="AND p.estado_id= ".$estado_id;
+            $query.="AND p.estado_id= ".$estado_id." ";
         }
         
         $query.="Order by u.apellido, u.nombre ";
@@ -352,13 +352,13 @@ function viajeBaja($id) {
     return $rs;
 }
 
-function viajePostulaCopiloto($viaje_id, $usuario_id) {
+function viajePostulaCopiloto($viaje_id, $usuario_id, $tarjeta_id) {
     $db = DB::singleton();
     
     $str_f_baja = "'".formatPHPFecha(date("d-m-Y"))."'";
     
-    $query = "INSERT INTO pasajero (tipo_pasajero_id, viaje_id, usuario_id, estado_id)
-              VALUES (".TIPO_COPILOTO.",$viaje_id, $usuario_id, ".ID_APROBACION_PENDIENTE.")";
+    $query = "INSERT INTO pasajero (tipo_pasajero_id, viaje_id, usuario_id, estado_id, tarjeta_id)
+              VALUES (".TIPO_COPILOTO.",$viaje_id, $usuario_id, ".ID_APROBACION_PENDIENTE.", $tarjeta_id) ";
     $rs = $db->executeQuery($query);
     
     if (!$rs) {
@@ -368,7 +368,7 @@ function viajePostulaCopiloto($viaje_id, $usuario_id) {
     return $rs;
 }
 
-function viajeEstadoCopiloto($viaje_id, $idUsuarioPax, $idEstado) {
+function viajeSetEstadoCopiloto($viaje_id, $idUsuarioPax, $idEstado) {
     $db = DB::singleton();
     
     $str_f_baja = "'".formatPHPFecha(date("d-m-Y"))."'";
@@ -386,5 +386,89 @@ function viajeEstadoCopiloto($viaje_id, $idUsuarioPax, $idEstado) {
     return $rs;
 }
 
+function viajeEstadoCopiloto($viaje_id, $idUsuarioPax ) {
+    $db = DB::singleton();
+    
+    $query = "   
+                SELECT e.estado_id, e.descripcion_estado
+                FROM
+                pasajero p
+                INNER JOIN estado e
+                ON p.estado_id = e.estado_id
+                WHERE
+                p.viaje_id = $viaje_id
+                AND p.usuario_id = $idUsuarioPax ";
+
+    $rs = $db->executeQuery($query);
+    
+    if (!$rs) {
+        applog($db->db_error(), 1);
+    }
+    
+    return $rs;
+}
+
+function existePostulacion($viaje_id = 0, $usuario_id=0 ) {
+    $db = DB::singleton();
+    
+    //en la tabla de estados el id=2 corresponde a pasajero aprobado para viaje
+    $query = "SELECT COUNT(1) cant FROM pasajero 
+              WHERE viaje_id = $viaje_id and usuario_id = $usuario_id ";
+    
+    $rs = $db->executeQuery($query);
+    $row = $db->fetch_assoc($rs);
+    
+    $result = $row['cant'];
+    
+    return $result;
+}
+
+function getPaxPorEstado($viaje_id=0, &$aprobados, &$pendientes, &$total) {
+    //$estado_id es el filtro por estado, si está en 0 devuelve todo
+    $db = DB::singleton();
+    
+    $query = "
+            SELECT SUM(IF(estado_id=2, 1, 0)) aprobados, SUM(IF(estado_id=1, 1, 0))  pendientes, COUNT(1) total
+            FROM pasajero
+            WHERE
+            viaje_id = $viaje_id ";
+
+
+    $rs = $db->executeQuery($query);
+    $row = $db->fetch_assoc($rs);
+    
+    $aprobados = $row['aprobados'];
+    $pendientes = $row['pendientes'];
+    $total = $row['total'];
+    
+    
+    return $total;
+}
+
+function viajeCierre($id) {
+    $db = DB::singleton();
+    
+    $str_f_baja = "'".formatPHPFecha(date("d-m-Y"))."'";
+  
+    $pendientes = 0;
+    $aprobados = 0;
+    $postulados = 0;
+    getPaxPorEstado($id, $aprobados, $pendientes, $postulados);
+    
+    $rsViaje = getViajePorId($_REQUEST["viaje_id"]);
+    $rowViaje = $db->fetch_assoc($rs);
+    
+    $importaViaje = $rowViaje["costo"];
+    $importeUnitario = $importeViaje / ($aprobados + 1);  //es +1 si en pasajero no incluimos al piloto
+
+    $query = "UPDATE viaje set m_cerrado = 1 WHERE viaje_id = $id ";
+    $rs = $db->executeQuery($query);
+    
+    if (!$rs) {
+        applog($db->db_error(), 1);
+    }
+    
+    return $rs;
+}
 
 ?>
