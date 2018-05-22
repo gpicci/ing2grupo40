@@ -86,6 +86,8 @@
 				} elseif ($cant>0) { ?>
 				<div><a href="javascript:performPostulacion('formViajes');">Postularse a Viaje</a></div>
 				<div><hr/></div>
+				<div><a href="javascript:performVerViaje('formViajes');">Ver Detalle</a></div>
+				<div><hr/></div>
 			<?php }; ?>
 			<div><p><br/></p></div>
 			<div><hr/></div>
