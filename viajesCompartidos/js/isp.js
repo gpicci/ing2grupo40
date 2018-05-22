@@ -112,3 +112,9 @@ function performPostulacion(theForm) {
 		document.getElementById(theForm).submit();
 	}
 }
+
+function performVerViaje(theForm) {
+	document.getElementById('op').value = 'v';
+	document.getElementById(theForm).action = 'main.php?accion=viajeView&folder=views';
+	document.getElementById(theForm).submit();
+}
