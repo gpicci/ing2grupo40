@@ -18,7 +18,7 @@ $nombreUsuario = "USUARIO: ".$_SESSION['nombre_usuario'];
 		<ul id="css3menu1" class="topmenu">
 			<li class="topfirst"><a href="#" style="height:18px;line-height:18px;"><span>USUARIO</span></a>
 				<ul>
-					<li><a href="main.php?accion=usuarioView&op=m&folder=<?php print(VIEWS_DIR); ?>">MODIFICAR PERFIL</a></li>
+					<li><a href="main.php?accion=usuarioView&op=m&folder=<?php print(VIEWS_DIR); ?>">MI PERFIL</a></li>
 				</ul>
 			</li>
 			<li class="topmenu"><a href="#" style="height:18px;line-height:18px;"><span>VEHICULOS</span></a>

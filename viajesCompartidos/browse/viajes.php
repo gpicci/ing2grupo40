@@ -80,6 +80,8 @@
 					<div><hr/></div>
 					<div><a href="javascript:performBajaViaje('formViajes');">Elimina Viaje</a></div>
 					<div><hr/></div>
+					<div><a href="javascript:performCerrarViaje('formViajes');">Cerrar Viaje</a></div>
+					<div><hr/></div>
 				<?php }
 				} elseif ($cant>0) { ?>
 				<div><a href="javascript:performPostulacion('formViajes');">Postularse a Viaje</a></div>
