@@ -34,6 +34,8 @@ if ($_REQUEST['op'] == 'a') {
     viajeSetEstadoCopiloto($_REQUEST['viaje_id'], $_REQUEST['idUsuarioPax'], ID_APROBADO);
 } elseif ($_REQUEST['op'] == 'z') {
     viajeSetEstadoCopiloto($_REQUEST['viaje_id'], $_REQUEST['idUsuarioPax'], ID_APROBACION_PENDIENTE);
+} elseif ($_REQUEST['op'] == 'c') {
+    viajeCierre($_REQUEST['viaje_id']);
 }
 
 

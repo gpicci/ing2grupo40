@@ -445,6 +445,25 @@ function getPaxPorEstado($viaje_id=0, &$aprobados, &$pendientes, &$total) {
     return $total;
 }
 
+function costosViaje($viaje_id, &$costoPax, &$comision) {
+    $db = DB::singleton();
+    
+    $pendientes = 0;
+    $aprobados = 0;
+    $postulados = 0;
+    getPaxPorEstado($viaje_id, $aprobados, $pendientes, $postulados);
+    
+    $rsViaje = getViajePorId($_REQUEST["viaje_id"]);
+    $rowViaje = $db->fetch_assoc($rsViaje);
+    
+    $importeViaje = $rowViaje["costo"];
+    $costoPax = $importeViaje / ($aprobados + 1);  //es +1 si en pasajero no incluimos al piloto
+    
+    $comision = round( (COMISION * $importeViaje / 100), 2);
+    
+    return $importeViaje;
+}
+
 function viajeCierre($id) {
     $db = DB::singleton();
     
@@ -456,11 +475,30 @@ function viajeCierre($id) {
     getPaxPorEstado($id, $aprobados, $pendientes, $postulados);
     
     $rsViaje = getViajePorId($_REQUEST["viaje_id"]);
-    $rowViaje = $db->fetch_assoc($rs);
+    $rowViaje = $db->fetch_assoc($rsViaje);
     
     $importaViaje = $rowViaje["costo"];
     $importeUnitario = $importeViaje / ($aprobados + 1);  //es +1 si en pasajero no incluimos al piloto
+    $comision = round( (COMISION * $importeViaje / 100), 2);
+    
+    // cargo pago de los pasajero aprobados 
+    $query = "UPDATE pasajero set monto_pagado = ".$importeUnitario." ".
+             " WHERE viaje_id = $id and estado_id = ".ID_APROBADO;
+    $rs = $db->executeQuery($query);
+    if (!$rs) {
+        applog($db->db_error(), 1);
+        return;
+    }
 
+    // elimino postulaciones de pasajeros pendientes de aprobacion
+    $query = "DELETE FROM pasajero ".
+        " WHERE viaje_id = $id and estado_id = ".ID_APROBACION_PENDIENTE;
+    $rs = $db->executeQuery($query);
+    if (!$rs) {
+        applog($db->db_error(), 1);
+        return;
+    }
+    
     $query = "UPDATE viaje set m_cerrado = 1 WHERE viaje_id = $id ";
     $rs = $db->executeQuery($query);
     
