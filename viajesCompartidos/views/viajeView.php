@@ -96,7 +96,8 @@ if (($_REQUEST['op'] == 'm') || ($_REQUEST['op'] == 'b')) {
     					    }
     					} else {
     					    // Table header
-    					    ?>     					<table>
+    					    ?>  <div><label >Postulaciones al viaje</label>
+    					    	<table>
     					<tr>
     					<td><b>Sel</b></td>
     					<td><b>Nombre</a></b></td>
@@ -126,8 +127,8 @@ if (($_REQUEST['op'] == 'm') || ($_REQUEST['op'] == 'b')) {
     					if ($_REQUEST["op"] != "a") {
         					$cantPax = GetCantPaxPorViaje($_REQUEST["viaje_id"]);
         					if ( ($_REQUEST["op"] == "m") && ($cantPax>0)) {
-        					    print("<input type=\"button\" name=\"aprobar\" value=\"Aprobar postulacion\" class=\"button\" onClick=\"apruebaPostulacion('formViajeView');\">");
-        					    print("<input type=\"button\" name=\"aprobar\" value=\"Desaprobar postulacion\" class=\"button\" onClick=\"desapruebaPostulacion('formViajeView');\">");
+        					    print("<input type=\"button\" name=\"aprobar\" value=\"Aprobar\" class=\"button\" onClick=\"apruebaPostulacion('formViajeView');\">");
+        					    print("<input type=\"button\" name=\"rechazar\" value=\"Rechazar\" class=\"button\" onClick=\"desapruebaPostulacion('formViajeView');\">");
         					}
     					}
     					

@@ -184,4 +184,18 @@ function GetCantViajePorVehiculo($vehiculo_id = 0) {
     return $result;
 }
 
+function cantAsientosPorVehiculo($vehiculo_id = 0) {
+    $db = DB::singleton();
+    
+    $query = "SELECT cantidad_asientos as cant FROM viaje WHERE vehiculo_id = $vehiculo_id ";
+    
+    $rs = $db->executeQuery($query);
+    $row = $db->fetch_assoc($rs);
+    
+    $result = $row['cant'];
+    
+    return $result;
+}
+
+
 ?>
