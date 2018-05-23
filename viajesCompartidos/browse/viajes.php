@@ -61,6 +61,16 @@
 		 		print('<td align="center"><input type="radio" name="viaje_id" id="viaje_id" value="'.$row['viaje_id'].'" /></td>');
 		 	}
 		}
+		
+		//la columna de cant. de asientos la voy a utilizar para
+		//cant. de asientos si el viaje esta abierto
+		//y para mostrar que esta cerrado si es este el caso
+		if ($row["cerrado"]==1) {
+		    $asientos = "<div style=\"color: #FF0000;\"><b> Viaje Cerrado</div>";
+		} else {
+		    $asientos = $row['cantidad_asientos'];
+		}
+		
 		print('
          <td align="center">' . $row['d_tipo_viaje'] . '</td>
          <td align="center">' . $row['dia_semana'] . '</td>
@@ -68,7 +78,7 @@
          <td align="center">' . $row['localidad_origen'] . '</td>
 		 <td align="center">' . $row['localidad_destino'] . '</td>
          <td align="center">' . $row['nombre_vehiculo'] . '</td>
-		 <td align="center">' . $row['cantidad_asientos'] . '</td>');
+		 <td align="center">' . $asientos . '</td>');
                         if ($propios!=1) {
                             $rsPostulacion = viajeEstadoCopiloto($row['viaje_id'], $idUsuario );
                             if($db->num_rows($rsPostulacion) == 0) {
@@ -83,7 +93,8 @@
         $pendientes = 0;
         $aprobados = 0;
         $postulados = 0;
-        getPaxPorEstado($row['viaje_id'], $aprobados, $pendientes, $postulados);
+        $rechazados = 0;
+        getPaxPorEstado($row['viaje_id'], $aprobados, $pendientes, $rechazados, $postulados);
         print('
         <td align="center">' . $postulados . '</td>
         <td align="center">' . $aprobados . '</td>');

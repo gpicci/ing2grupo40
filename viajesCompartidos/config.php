@@ -29,6 +29,7 @@ date_default_timezone_set("America/Argentina/Buenos_Aires");
   /*DATOS PARA LOGIGA DE NEGOCIO*/
   define("ID_APROBACION_PENDIENTE", 1);
   define("ID_APROBADO", 2);
+  define("ID_RECHAZADO", 3);
   define("ID_VALIDADOR_APLICACION", 0);
   define("TIPO_PILOTO", 1);
   define("TIPO_COPILOTO", 2);

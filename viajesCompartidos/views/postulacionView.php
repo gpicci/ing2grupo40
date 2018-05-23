@@ -10,11 +10,16 @@ if ($_REQUEST["op"] == "p") {
   $usuario_id = $_REQUEST["usuario_id"];
   $op = $_REQUEST["op"];
   
-  if (existePostulacion($viaje_id, $usuario_id)) {
-      $mensajes[]="Ya se ha postulado al viaje";
+  if (existePostulacion($viaje_id, $usuario_id) ) {
+      $_SESSION['mensajesPendientes'][]="Ya se ha postulado al viaje previamente";
       header('Location: main.php?accion=viajes&propios=0&folder='.BROWSE_DIR);
   }
 
+  if (viajeCerrado($viaje_id) ) {
+      $_SESSION['mensajesPendientes'][]="El viaje fue cerrado, no es posible postularse";
+      header('Location: main.php?accion=viajes&propios=0&folder='.BROWSE_DIR);
+  }
+  
 }
 ?>
 	<div id="content">

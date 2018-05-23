@@ -22,7 +22,8 @@ function getViajesPorUsuario(
 	  v.costo,
 	  CONCAT(nombre_marca,'-',nombre_modelo,': ',patente) as nombre_vehiculo,
 	  d.dia_semana_nombre dia_semana,
-	  fecha_salida
+	  fecha_salida,
+      v.m_cerrado cerrado
 	FROM
 	  viaje v,
 	  vehiculo vv,
@@ -78,7 +79,8 @@ function getViajePorId(
 	  vv.cantidad_asientos,
 	  lo.nombre_localidad AS localidad_id_origen,
 	  ld.nombre_localidad AS localidad_id_destino,
-	  t.nombre AS d_tipo_viaje	  
+	  t.nombre AS d_tipo_viaje,
+      v.m_cerrado cerrado	  
 	FROM
 	  viaje v,
 	  vehiculo vv,
@@ -423,12 +425,15 @@ function existePostulacion($viaje_id = 0, $usuario_id=0 ) {
     return $result;
 }
 
-function getPaxPorEstado($viaje_id=0, &$aprobados, &$pendientes, &$total) {
+function getPaxPorEstado($viaje_id=0, &$aprobados, &$pendientes, &$rechazados, &$total) {
     //$estado_id es el filtro por estado, si está en 0 devuelve todo
     $db = DB::singleton();
     
     $query = "
-            SELECT SUM(IF(estado_id=2, 1, 0)) aprobados, SUM(IF(estado_id=1, 1, 0))  pendientes, COUNT(1) total
+            SELECT IFNULL(SUM(IF(estado_id=2, 1, 0)),0) aprobados, 
+                    IFNULL(SUM(IF(estado_id=1, 1, 0)),0)  pendientes,
+                    IFNULL(SUM(IF(estado_id=3, 1, 0)),0)  rechazados, 
+                    IFNULL(COUNT(1),0) total
             FROM pasajero
             WHERE
             viaje_id = $viaje_id ";
@@ -439,6 +444,7 @@ function getPaxPorEstado($viaje_id=0, &$aprobados, &$pendientes, &$total) {
     
     $aprobados = $row['aprobados'];
     $pendientes = $row['pendientes'];
+    $rechazados = $row['rechazados'];
     $total = $row['total'];
     
     
@@ -451,7 +457,7 @@ function costosViaje($viaje_id, &$costoPax, &$comision) {
     $pendientes = 0;
     $aprobados = 0;
     $postulados = 0;
-    getPaxPorEstado($viaje_id, $aprobados, $pendientes, $postulados);
+    getPaxPorEstado($viaje_id, $aprobados, $pendientes, $rechazados, $postulados);
     
     $rsViaje = getViajePorId($_REQUEST["viaje_id"]);
     $rowViaje = $db->fetch_assoc($rsViaje);
@@ -472,7 +478,7 @@ function viajeCierre($id) {
     $pendientes = 0;
     $aprobados = 0;
     $postulados = 0;
-    getPaxPorEstado($id, $aprobados, $pendientes, $postulados);
+    getPaxPorEstado($id, $aprobados, $pendientes, $rechazados, $postulados);
     
     $rsViaje = getViajePorId($_REQUEST["viaje_id"]);
     $rowViaje = $db->fetch_assoc($rsViaje);
@@ -507,6 +513,17 @@ function viajeCierre($id) {
     }
     
     return $rs;
+}
+
+function viajeCerrado($viaje_id) {
+    $db = DB::singleton();
+    
+    $rsViaje = getViajePorId($_REQUEST["viaje_id"]);
+    $rowViaje = $db->fetch_assoc($rsViaje);
+    
+    $cerrado = $rowViaje["cerrado"];
+    
+    return $cerrado;
 }
 
 ?>

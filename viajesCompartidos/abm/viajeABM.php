@@ -1,5 +1,6 @@
 <?php
 require_once(DB_DIR.'/viajeDB.php');
+require_once(DB_DIR.'/vehiculoDB.php');
 
 if ($_REQUEST['op'] == 'a') {
   viajeAlta(
@@ -29,11 +30,20 @@ if ($_REQUEST['op'] == 'a') {
 	viajeBaja($_REQUEST['viaje_id']);
 	
 } elseif ($_REQUEST['op'] == 'p') {
+    //postulacion para copiloto
     viajePostulaCopiloto($_REQUEST['viaje_id'], $_REQUEST['usuario_id'], $_REQUEST["tarjeta_id"]);
 } elseif ($_REQUEST['op'] == 'v') {
-    viajeSetEstadoCopiloto($_REQUEST['viaje_id'], $_REQUEST['idUsuarioPax'], ID_APROBADO);
+    //aprobacion de postulacion
+    $asientos = cantAsientosPorVehiculo($_REQUEST['vehiculo_id']);
+    getPaxPorEstado($viaje_id=0, $aprobados, $pendientes, $rechazados, $total);
+    if (($aprobados + 1) >= $asientos) {
+        $_SESSION['mensajesPendientes'][]="No hay asientos disponibles para nuevos pasajeros";
+    } else {
+        viajeSetEstadoCopiloto($_REQUEST['viaje_id'], $_REQUEST['idUsuarioPax'], ID_APROBADO);
+    }
 } elseif ($_REQUEST['op'] == 'z') {
-    viajeSetEstadoCopiloto($_REQUEST['viaje_id'], $_REQUEST['idUsuarioPax'], ID_APROBACION_PENDIENTE);
+    //rechazo postulacion
+    viajeSetEstadoCopiloto($_REQUEST['viaje_id'], $_REQUEST['idUsuarioPax'], ID_RECHAZADO);
 } elseif ($_REQUEST['op'] == 'c') {
     viajeCierre($_REQUEST['viaje_id']);
 }
