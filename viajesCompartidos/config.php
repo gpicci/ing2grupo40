@@ -32,4 +32,6 @@ date_default_timezone_set("America/Argentina/Buenos_Aires");
   define("ID_VALIDADOR_APLICACION", 0);
   define("TIPO_PILOTO", 1);
   define("TIPO_COPILOTO", 2);
+  define("COMISION", 10);
+  
 ?>

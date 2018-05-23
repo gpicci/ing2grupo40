@@ -125,7 +125,7 @@ function performCerrarViaje(theForm) {
 	check = confirm('Confirme el cierre del viaje (ya no se aceptaran postulaciones y se emitira el cobro)');
 	if (check) {	
 		document.getElementById('op').value = 'c';
-		document.getElementById(theForm).action = 'main.php?accion=viajeABM&folder=views';
+		document.getElementById(theForm).action = 'main.php?accion=cierreViajeView&folder=views';
 		document.getElementById(theForm).submit();
 	}
 }
