@@ -11,7 +11,5 @@
 	$_SESSION = array();
 	session_destroy();
 	
-	if (!(isset($_REQUEST['proceso']))){
-		header('Location: login.php');
-	}
+	header('Location: login.php');	
 ?>

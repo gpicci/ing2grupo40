@@ -64,19 +64,21 @@ if ($_REQUEST['op'] == 'm') {
 	</div>
 	<div id="left">
 		<div class="box">
-			<?php
-			if ($_REQUEST['op'] == 'a') {
-				echo "<div><a href=\"login.php\">Volver</a></div>";
-			} else {
-				echo "<div><a href=\"main.php?accion=inicio\">Volver</a></div>";
-			}
-			?>
-<?php
-		print('<div><hr/></div>');
-		print('<div><p><br/></p></div>');
-		print('<div><hr/></div>');
-?>
-			<div>* Datos obligatorios</div>
-		</div>
+			<?php if ($_REQUEST['op'] == 'a') { ?>
+				<div><hr/></div>
+				<div><a href="login.php">Volver</a></div>
+			<?php } else { ?>
+				<div><p><br/></p></div>						
+				<div><a href="main.php?accion=inicio">Volver</a></div>
+				<div><hr/></div>				
+				<div><p><br/></p></div>
+				<div><a href="main.php?accion=inicio">Tarjetas de Credito</a></div>
+			<?php } ?> 
+		<div><hr/></div>
+		<div><p><br/></p></div>
+		<div><p><br/></p></div>
+		<div><hr/></div>
+		<div>* Datos obligatorios</div>
 	</div>
+  </div>
 </body>

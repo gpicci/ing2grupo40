@@ -11,7 +11,7 @@ function validarUsuario($correo, $clave) {
 			WHERE correo_electronico = '".$correo."' ".
    			"AND   clave = '".$clave."'";
 
-   $rs = $db->executeQuery($query);
+	$rs = $db->executeQuery($query);
 
 
    if (!$rs) {
@@ -20,7 +20,7 @@ function validarUsuario($correo, $clave) {
    	$row = $db->fetch_assoc($rs);
    	$res = $row['numero'];
    }
-
+   
    return $res;
 }
 
