@@ -31,16 +31,11 @@ $nombreUsuario = "USUARIO: ".$_SESSION['nombre_usuario'];
 				<ul>
 					<li><a href="main.php?accion=viajeView&op=a&folder=<?php print(VIEWS_DIR); ?>">AGREGAR VIAJE</a></li>
 					<li><a href="main.php?accion=viajes&folder=<?php print(BROWSE_DIR); ?>">LISTADO DE VIAJES</a></li>
-					<li><a href="main.php?accion=dispositivosPendientes">CON APROBACIONES PENDIENTES</a></li>
 				</ul>
 			</li>
 			<li class="topmenu"><a href="#" style="height:18px;line-height:18px;"><span>VIAJES</span></a>
 				<ul>
 					<li><a href="main.php?accion=viajes&propios=0&folder=<?php print(BROWSE_DIR); ?>">VIAJES DE OTROS</a></li>
-					<li><a href="main.php?accion=dispositivosPendientes">PENDIENTES</a></li>
-					<li><a href="main.php?accion=dispositivos">APROBADOS</a></li>
-					<li><a href="main.php?accion=dispositivos">TERMINADOS</a></li>
-					<li><a href="main.php?accion=dispositivos">SIN PUNTAJE</a></li>
 				</ul>
 			</li>
 			<li class="toplast"><a href="logout.php" style="height:18px;line-height:18px;">CERRAR SESION</a></li>
