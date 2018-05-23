@@ -7,7 +7,12 @@ function checkUsuario(theForm) {
 		(document.getElementById('clave').value == '')) {
 		alert('Ingrese un valor para los datos obligatorios.');
 	} else {
-		document.getElementById(theForm).submit();
+		if (validarEmail(document.getElementById('correo_electronico').value)){
+			document.getElementById(theForm).submit();
+		}
+		else {			
+			alert('Verifique la direccion de correo antes de grabar.');			
+		}
 	}
 }
 
