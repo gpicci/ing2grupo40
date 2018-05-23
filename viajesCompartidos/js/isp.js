@@ -11,7 +11,7 @@ function checkUsuario(theForm) {
 			document.getElementById(theForm).submit();
 		}
 		else {			
-			alert('Verifique la direccion de correo antes de grabar.');			
+			alert('Verifique la direccion de correo.');			
 		}
 	}
 }
