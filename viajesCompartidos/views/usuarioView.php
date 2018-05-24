@@ -42,6 +42,14 @@ if ($_REQUEST['op'] == 'm') {
 			?>
 <?php } ?>
 				<fieldset>
+					<?php
+					if ($_REQUEST['op'] == 'm') { ?>
+					<div class="image-container"><label for="foto">
+						<img src=<?php if ($usuario['foto']==''){
+							echo("./img/avatar-vacio.png"); }else{echo $usuario['foto'] ;}?> class="image" id="img" >
+     					<input type="file" id="foto" name="myimage" accept="image/*" class="inputfile" onchange="preview_image(event)" style="display:none;">
+    				</label></div>
+    				<?php } ?>
 					<legend>Datos del usuario</legend>
 					<div><label for="nombre">Nombre<em>*</em></label><input id="nombre" type="text" size="80" maxlength="100" onBlur="caps(this)" name="nombre" value="<?php print($usuario['nombre']); ?>" /></div>
 					<div><label for="direccion">Apellido<em>*</em></label><input id="apellido" type="text" size="80" maxlength="100" onBlur="caps(this)" name="apellido" value="<?php print($usuario['apellido']); ?>" /></div>
