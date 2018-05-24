@@ -15,16 +15,18 @@ if ($_REQUEST["op"] == "m") {
   $tarjeta["d_nombre_titular"] = $row["d_nombre_titular"];
   $tarjeta["n_mes_vence"] = $row['n_mes_vence'];
   $tarjeta["n_anio_vence"] = $row['n_anio_vence'];
-  $tarjeta["n_anio_vence"] = $row['n_anio_vence'];
+  $tarjeta["n_codigo_verificado"] = $row['n_codigo_verificado'];
 
 } else {
 	$tarjeta = array();
-	$marca_id= 1;
-	$tarjeta["id_tarjeta"] = null;
-	$tarjeta["modelo_id"] = null;
-	$tarjeta["usuario_id"] = null;
-	$tarjeta["cantidad_asientos"] = null;
-	$tarjeta["patente"] = '';
+	$tarjeta["id_tarjeta"] = 0;
+	$tarjeta["id_empresa"] = 0;
+	$tarjeta["n_tarjeta"] = '';
+	$tarjeta["d_nombre_titular"] = '';
+	$tarjeta["n_mes_vence"] = 0;
+	$tarjeta["n_anio_vence"] = 0;
+	$tarjeta["n_codigo_verificado"] = 0;
+	
 }
 ?>
 	<div id="content">
@@ -48,14 +50,8 @@ if ($_REQUEST['op'] == 'm') {
 							comboBox("id_empresa", $rs, "id_empresa", "nombre_empresa", "", $tarjeta["id_empresa"], "");
 						?>
 					</div>
-					<div><label>Modelo <em>*</em></label>
-						<?php
-							$rs1 = getModelosPorMarca($marca_id);
-							comboBox("modelo_id", $rs1, "modelo_id", "nombre_modelo", "NINGUNA", $tarjeta["modelo_id"], "");
-						?>
-					</div>
-					<div><label for="cantidad_asientos">Cantidad de Asientos<em>*</em></label><input id="cantidad_asientos" type="text" size="20" maxlength="20" name="cantidad_asientos" value="<?php print($tarjeta['cantidad_asientos']); ?>" /></div>
-					<div><label for="patente">Patente<em>*</em></label><input id="patente" type="text" size="20" maxlength="20" name="patente" value="<?php print($tarjeta['patente']); ?>" /></div>
+					<div><label for="n_tarjeta">Numero<em>*</em></label><input id="n_tarjeta" type="text" size="20" maxlength="20" name="n_tarjeta" value="<?php print($tarjeta['n_tarjeta']); ?>" /></div>
+					<div><label for="n_tarjeta">Numero<em>*</em></label><input id="n_tarjeta" type="text" size="20" maxlength="20" name="n_tarjeta" value="<?php print($tarjeta['n_tarjeta']); ?>" /></div>					
 				</fieldset>
 				<div class="buttonrow">
 					<?php if ($_REQUEST['op'] == 'a') { ?>
