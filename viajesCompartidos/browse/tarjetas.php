@@ -5,7 +5,7 @@
 
 	// Obtener el id actual, por defecto es el primero
 	$idUsuario = (isset($_SESSION['user_id'])) ? $_SESSION['user_id']: -1;	
-	$vehiculo_id = -1;
+	$id_tarjeta = -1;
 	$cant = 0;
 	
 ?>
@@ -14,10 +14,10 @@
 	<div id="content">
 		<div id="right">
 <?php
-	$rs = getVehiculosPorUsuario($idUsuario);
+	$rs = getTarjetasUsuario($idUsuario);
 	
 	if($db->num_rows($rs) == 0) {
-		print('No hay vehiculos ingresados.');
+		print('No hay tarjetas ingresadas.');
 	} else {
 		// Table header
 ?>
@@ -26,27 +26,28 @@
       	<td align="center"><b>SEL</b></td>
          <td align="center"><b>EMPRESA</b></td>
          <td align="center"><b>NUMERO</b></td>
-         <td align="center"><b>VENCIMIENTO</b></td>         
+         <td align="center"><b>VENCIMIENTO</b></td>
+         <td align="center"><b>TITULAR</b></td>         
    	</tr>
 <?php 
 	while ($row = $db->fetch_assoc($rs)) {
 		$cant = $cant+1;
 		print('<tr>');
-		if ($vehiculo_id == -1) {
-			$vehiculo_id= $row['vehiculo_id'];
-		 	print('<td align="center"><input type="radio" name="vehiculo_id" id="vehiculo_id" value="'.$row['vehiculo_id'].'" checked="checked" /></td>');
+		if ($id_tarjeta == -1) {
+			$id_tarjeta= $row['id_tarjeta'];
+		 	print('<td align="center"><input type="radio" name="id_tarjeta" id="id_tarjeta" value="'.$row['id_tarjeta'].'" checked="checked" /></td>');
 		} else {
-			if ($vehiculo_id== $row['vehiculo_id']) {
-		 		print('<td align="center"><input type="radio" name="vehiculo_id" id="vehiculo_id" value="'.$row['vehiculo_id'].'" checked="checked" /></td>');
+			if ($id_tarjeta== $row['id_tarjeta']) {
+		 		print('<td align="center"><input type="radio" name="id_tarjeta" id="id_tarjeta" value="'.$row['id_tarjeta'].'" checked="checked" /></td>');
 		 	} else {
-		 		print('<td align="center"><input type="radio" name="vehiculo_id" id="vehiculo_id" value="'.$row['vehiculo_id'].'" /></td>');
+		 		print('<td align="center"><input type="radio" name="id_tarjeta" id="id_tarjeta" value="'.$row['id_tarjeta'].'" /></td>');
 		 	}
 		} 
 		print('
-         <td align="center">' . $row['nombre_marca'] . '</td>
-         <td align="center">' . $row['nombre_modelo'] . '</td>
-         <td align="center">' . $row['patente'] . '</td>
-         <td align="center">' . $row['cantidad_asientos'] . '</td>
+         <td align="center">' . $row['empresa'] . '</td>
+         <td align="center">' . $row['n_tarjeta'] . '</td>
+         <td align="center">' . $row['f_vencimiento'] . '</td>
+         <td align="center">' . $row['d_nombre_titular'] . '</td>
 		</tr>');
 	}
 	print("</table>");
@@ -59,11 +60,11 @@
 		<div class="box">
 			<div>Total vehiculos: <?php print($cant); ?></div>
 			<div><hr/></div>
-			<div><a href="javascript:performAltaVehiculo('formTarjetas');">Nuevo Vehiculo</a></div>
+			<div><a href="javascript:performAltaVehiculo('formTarjetas');">Nueva Tarjeta</a></div>
 			<div><hr/></div>
-			<div><a href="javascript:performModVehiculo('formTarjetas');">Modifica Vehiculo</a></div>
+			<div><a href="javascript:performModVehiculo('formTarjetas');">Modifica Tarjeta</a></div>
 			<div><hr/></div>
-			<div><a href="javascript:performBajaVehiculo('formTarjetas');">Elimina Vehiculo</a></div>
+			<div><a href="javascript:performBajaVehiculo('formTarjetas');">Elimina Tarjeta</a></div>
 			<div><hr/></div>
 			<div><p><br/></p></div>        
 			<div><hr/></div>			
