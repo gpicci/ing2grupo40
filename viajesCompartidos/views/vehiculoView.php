@@ -5,9 +5,15 @@ require_once("./db/vehiculoDB.php");
 require_once("./common/combo.php");
 
 if ($_REQUEST["op"] == "m") {
-	$rs = getVehiculoPorId($_REQUEST["vehiculo_id"]);
+    $cantViajes = GetCantViajePorVehiculo($_REQUEST["vehiculo_id"]);
+    if ($cantViajes>0) {
+        $_SESSION['mensajesPendientes'][] = "El vehiculo está asignado a un viaje, no puede modificarse";
+        header('Location: main.php?accion=vehiculos&folder='.BROWSE_DIR);
+    }
+    
+  $rs = getVehiculoPorId($_REQUEST["vehiculo_id"]);
   $row = $db->fetch_assoc($rs);
-
+  
   $vehiculo = array();
   $vehiculo["vehiculo_id"] = $_REQUEST["vehiculo_id"];
   $vehiculo["marca_id"] = $row["marca_id"];

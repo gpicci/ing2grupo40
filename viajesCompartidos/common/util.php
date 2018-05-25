@@ -22,7 +22,7 @@ function formatMSSQLFecha($fechaMSSQL) {
 	   	$anio = substr($fechaMSSQL, 0, 4);
 	   	$mes = substr($fechaMSSQL, 5, 2);
 	   	$dia = substr($fechaMSSQL, 8, 2);
-		$fecha = $dia.'/'.$mes.'/'.$anio;
+		$fecha = $dia.'-'.$mes.'-'.$anio;
 	}
 	
 	return $fecha;

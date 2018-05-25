@@ -174,9 +174,12 @@ function vehiculoModifica(
 function GetCantViajePorVehiculo($vehiculo_id = 0) {
     $db = DB::singleton();
     
-    $query = "SELECT count(1) as cant FROM viaje WHERE vehiculo_id = $vehiculo_id ";
+    $query = "SELECT count(1) cant FROM viaje WHERE vehiculo_id = $vehiculo_id ".
+        " and (ifNull(m_cerrado,0))=0 ".
+        " and (ifNull(m_baja,0))=0 ";
     
     $rs = $db->executeQuery($query);
+    
     $row = $db->fetch_assoc($rs);
     
     $result = $row['cant'];
@@ -187,7 +190,7 @@ function GetCantViajePorVehiculo($vehiculo_id = 0) {
 function cantAsientosPorVehiculo($vehiculo_id = 0) {
     $db = DB::singleton();
     
-    $query = "SELECT cantidad_asientos as cant FROM viaje WHERE vehiculo_id = $vehiculo_id ";
+    $query = "SELECT cantidad_asientos as cant FROM vehiculo WHERE vehiculo_id = $vehiculo_id ";
     
     $rs = $db->executeQuery($query);
     $row = $db->fetch_assoc($rs);
