@@ -21,7 +21,7 @@ if (($_REQUEST["op"] == "m") || ($_REQUEST["op"] == "b")) {
   $viaje["localidad_destino_id"] = $row['localidad_destino_id'];
   $viaje["tipo_viaje_id"] = $row['tipo_viaje_id'];
   $viaje["dia_semana"] = $row['dia_semana'];
-  $viaje["fecha_salida"] = $row["fecha_salida"];
+  $viaje["fecha_salida"] = formatMSSQLFecha($row["fecha_salida"]);
   $viaje["duracion"] = $row["duracion"];
   $viaje["costo"] = $row["costo"];
   $viaje["cerrado"] = $row["cerrado"];
