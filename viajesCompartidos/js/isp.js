@@ -3,15 +3,15 @@ function checkUsuario(theForm) {
 	if ((document.getElementById('nombre').value == '') ||
 		(document.getElementById('apellido').value == '') ||
 		(document.getElementById('fecha_nacimiento').value == '') ||
-		(document.getElementById('correo_electronico').value == '') ||		
+		(document.getElementById('correo_electronico').value == '') ||
 		(document.getElementById('clave').value == '')) {
 		alert('Ingrese un valor para los datos obligatorios.');
 	} else {
 		if (validarEmail(document.getElementById('correo_electronico').value)){
 			document.getElementById(theForm).submit();
 		}
-		else {			
-			alert('Verifique la direccion de correo.');			
+		else {
+			alert('Verifique la direccion de correo.');
 		}
 	}
 }
@@ -35,6 +35,15 @@ function isValidKey(evt)
     patron =/[A-Za-z\w\r]/; // 4
     te = String.fromCharCode(tecla); // 5
     return patron.test(te); // 6
+}
+
+function isNumberKey(evt)
+{
+   var charCode = (evt.which) ? evt.which : event.keyCode
+   if (charCode > 31 && (charCode < 48 || charCode > 57))
+      return false;
+
+   return true;
 }
 
 function performAltaVehiculo(theForm) {
@@ -61,7 +70,7 @@ function performBajaVehiculo(theForm) {
 function checkVehiculo(theForm) {
 	// Validacion de campos obligatorios
 	if ((document.getElementById('modelo_id').value == '') ||
-		(document.getElementById('cantidad_asientos').value == '') ||	
+		(document.getElementById('cantidad_asientos').value == '') ||
 		(document.getElementById('patente').value == '')) {
 		alert('Ingrese un valor para los datos obligatorios.');
 	} else {
@@ -71,7 +80,7 @@ function checkVehiculo(theForm) {
 
 function checkViaje(theForm) {
 	// Validacion de campos obligatorios
-	if ((document.getElementById('duracion').value == '') ||	
+	if ((document.getElementById('duracion').value == '') ||
 		(document.getElementById('costo').value == '')) {
 		alert('Ingrese un valor para los datos obligatorios.');
 	} else {
@@ -123,7 +132,7 @@ function performVerViaje(theForm) {
 
 function performCerrarViaje(theForm) {
 	check = confirm('Confirme el cierre del viaje (ya no se aceptaran postulaciones y se emitira el cobro)');
-	if (check) {	
+	if (check) {
 		document.getElementById('op').value = 'c';
 		document.getElementById(theForm).action = 'main.php?accion=cierreViajeView&folder=views';
 		document.getElementById(theForm).submit();
@@ -147,3 +156,45 @@ function checkPostulacion(theForm) {
             }
             reader.readAsDataURL(event.target.files[0]);
         }
+
+ function checkTarjeta(theForm) {
+	// Validacion de campos obligatorios
+	if ((document.getElementById('n_tarjeta').value == '') ||
+		(document.getElementById('n_codigo_verificador').value == '') ||
+		(document.getElementById('d_nombre_titular').value == '')) {
+		alert('Ingrese un valor para los datos obligatorios.');
+	} else {
+		if (document.getElementById('n_tarjeta').value.length < 16) {
+			alert('Debe ingresar 16 digitos para el numero de tarjeta');
+		} else {
+			if (document.getElementById('n_codigo_verificador').value.length < 3) {
+				alert('Debe ingresar 3 digitos para el codigo verificador de tarjeta');
+			} else {
+				document.getElementById(theForm).submit();
+			}
+		}
+
+	}
+
+}
+
+function performAltaTarjeta(theForm) {
+	document.getElementById('op').value = 'a';
+	document.getElementById(theForm).action = 'main.php?accion=tarjetaView&folder=views';
+	document.getElementById(theForm).submit();
+}
+
+function performModTarjeta(theForm) {
+	document.getElementById('op').value = 'm';
+	document.getElementById(theForm).action = 'main.php?accion=tarjetaView&folder=views';
+	document.getElementById(theForm).submit();
+}
+
+function performBajaTarjeta(theForm) {
+	check = confirm('Confirme la eliminacion del vehiculo.');
+	if (check) {
+		document.getElementById('op').value = 'b';
+		document.getElementById(theForm).action = 'main.php?accion=tarjetaABM&folder=abm';
+		document.getElementById(theForm).submit();
+	}
+}

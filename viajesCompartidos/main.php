@@ -1,14 +1,14 @@
 <?php
-  require_once("config.php"); 
+  require_once("config.php");
 
   if (isset($_REQUEST["popup"])) {
   	require_once("./common/sessionSetPopup.php");
   	$popup = $_REQUEST["popup"];
-  } else {  	
+  } else {
   	require_once("./common/sessionSet.php");
   	$popup = 0;
   }
-  
+
 
   if (isset($_REQUEST["accion"])) {
   	$accion = $_REQUEST["accion"];
@@ -22,15 +22,15 @@
   		$accion = "inicio";
   	}
   };
-  
-  
+
+
   if (isset($_REQUEST["folder"])) {
   	$folder_accion = $_REQUEST["folder"] . "/";
   	$_SESSION["folder_actual"] = $_REQUEST["folder"] . "/";
   } else {
   	$folder_accion = "";
   }
-  
+
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -59,7 +59,7 @@
     if (isset($_SESSION['mensajesPendientes'])) {
         $mensajes=$_SESSION['mensajesPendientes'];
         $cant = count($mensajes);
-        
+
         if ($cant>0) {
             echo "<div id=\"content\">";
             echo "<div class=\"form-container\">";
@@ -73,11 +73,11 @@
             echo "</form>";
             echo "</div>";
             echo "</div>";
-            
+
         }
         $_SESSION['mensajesPendientes']=array();
     }
-    
+
 	//acciones que requieren tratamientos particulares
 	if ($accion=="vehiculoView") {
 	  include("./views/vehiculoViewHeader.php");
@@ -85,16 +85,16 @@
 
    // incluimos el header de la pagina si no es un popup
    if ($popup<>1) {
-   	if ($accion == 'usuarioView') {
+   	if (($accion == 'usuarioView')&&($_REQUEST["op"]== 'a')){
    		include("./common/headerRegistro.php");
    	} else{
    		include("./common/header.php");
    	}
-   } else {   	
+   } else {
    	//hay que hacer echo del tag body
      echo "<body>";
-   }   
-  
+   }
+
   	include($folder_accion.$accion.".php");
 
 

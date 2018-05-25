@@ -76,8 +76,6 @@ if ($_REQUEST['op'] == 'm') {
 				<div><hr/></div>
 				<div><a href="login.php">Volver</a></div>
 			<?php } else { ?>
-				<div><p><br/></p></div>
-				<div><a href="main.php?accion=inicio">Volver</a></div>
 				<div><hr/></div>
 				<div><p><br/></p></div>
 				<div><a href="main.php?accion=tarjetas&folder=BROWSE">Tarjetas de Credito</a></div>
