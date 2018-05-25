@@ -91,3 +91,33 @@ div#header {
 	color: #950000;
 	text-decoration: underline;
 }
+
+.image-container {
+  position: relative;
+ 
+  margin:auto;
+  width: 200px;
+  height: 200px;
+}
+
+
+.image {
+    
+  margin:auto;
+  border-radius:50%;
+  opacity: 1;
+  display: block;
+  width: 200px;
+  height: 200px;
+  transition: .5s ease;
+  backface-visibility: hidden;
+}
+
+
+.image-container:hover .image {
+  opacity: 0.3;
+}
+
+.image-container:hover .middle {
+  opacity: 1;
+}

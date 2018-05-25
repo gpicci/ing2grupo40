@@ -97,15 +97,17 @@ function usuarioModifica(
   $apellido,
   $fecha_nacimiento,
   $correo,
-  $clave) {
-	
+  $clave,
+  $foto) {
+	$image = addslashes (file_get_contents($_FILES['foto']['tmp_name']));	
 	$db = DB::singleton();
 	$query = "UPDATE usuario ".
 				"SET nombre = '".$nombre."',".
 				"    apellido = '".$apellido."',".
 				"    fecha_nacimiento = str_to_date('".$fecha_nacimiento."','%d-%m-%Y'),".
 				"    correo_electronico = '".$correo."',".
-				"    clave = '".$clave."' ".
+				"    clave = '".$clave."', ".
+				"    foto = '".$image."'".
 				"WHERE usuario_id = ".$id;
 
 	$rs = $db->executeQuery($query);

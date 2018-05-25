@@ -138,3 +138,12 @@ function checkPostulacion(theForm) {
 		document.getElementById(theForm).submit();
 	}
 }
+
+ function preview_image(event) {//previsualizacion de la portada
+    	    var reader = new FileReader();
+    	    reader.onload = function(){
+            var output = document.getElementById('img');
+            output.src = reader.result;
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        }
