@@ -3,7 +3,13 @@ require_once(DB_DIR.'/viajeDB.php');
 require_once(DB_DIR.'/vehiculoDB.php');
 require_once("./common/combo.php");
 //id de estado correspondiente a los pasajero aprobados
-$aprobado_id = 2;
+
+if ( (isSet($_REQUEST['propios'])) && ($_REQUEST['propios']==0) )  {
+    $propios = 0;
+} else {
+    $propios = 1;
+}
+
 if (($_REQUEST["op"] == "m") || ($_REQUEST["op"] == "b")) {
 	
   $db = DB::singleton();
@@ -165,9 +171,9 @@ if (($_REQUEST['op'] == 'm') || ($_REQUEST['op'] == 'b')) {
 		<div class="box">
 			<?php
 			if ($_REQUEST['op'] == 'a') {
-				echo "<div><a href=\"main.php?accion=viajes&folder=browse\">Volver</a></div>";
+				echo "<div><a href=\"main.php?accion=viajes&propios=$propios&folder=browse\">Volver</a></div>";
 			} else {
-				echo "<div><a href=\"main.php?accion=viajes&folder=browse\">Volver</a></div>";
+				echo "<div><a href=\"main.php?accion=viajes&propios=$propios&folder=browse\">Volver</a></div>";
 			}
 			?>
 <?php
