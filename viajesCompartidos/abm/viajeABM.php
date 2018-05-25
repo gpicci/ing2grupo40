@@ -36,6 +36,7 @@ if ($_REQUEST['op'] == 'a') {
     //aprobacion de postulacion
     $asientos = cantAsientosPorVehiculo($_REQUEST['vehiculo_id']);
     getPaxPorEstado($viaje_id=0, $aprobados, $pendientes, $rechazados, $total);
+    
     if (($aprobados + 1) >= $asientos) {
         $_SESSION['mensajesPendientes'][]="No hay asientos disponibles para nuevos pasajeros";
     } else {

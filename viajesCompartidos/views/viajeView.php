@@ -11,7 +11,6 @@ if ( (isSet($_REQUEST['propios'])) && ($_REQUEST['propios']==0) )  {
 }
 
 if (($_REQUEST["op"] == "m") || ($_REQUEST["op"] == "b")) {
-	
   $db = DB::singleton();
   $rs = getViajePorId($_REQUEST["viaje_id"]);
   $row = $db->fetch_assoc($rs);
@@ -25,7 +24,15 @@ if (($_REQUEST["op"] == "m") || ($_REQUEST["op"] == "b")) {
   $viaje["fecha_salida"] = $row["fecha_salida"];
   $viaje["duracion"] = $row["duracion"];
   $viaje["costo"] = $row["costo"];
+  $viaje["cerrado"] = $row["cerrado"];
+  
   $_SESSION["usuario_actual"] = $viaje;
+  
+  if ($viaje["cerrado"]==1) {
+      $_SESSION['mensajesPendientes'][]="El viaje ha sido cerrado y no puede modificarse".$viaje["cerrado"];
+      header('Location: main.php?accion=viajes&folder='.BROWSE_DIR);
+  }
+  
 } else {
 	$viaje = array();
 	$viaje["viaje_id"] = 0;
