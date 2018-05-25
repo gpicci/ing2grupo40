@@ -42,9 +42,17 @@ if ($_REQUEST['op'] == 'm') {
 			?>
 <?php } ?>
 				<fieldset>
+					<?php
+					if ($_REQUEST['op'] == 'm') { ?>
+					<div class="image-container"><label for="foto">
+						<img src=<?php if ($usuario['foto']==''){
+							echo("./img/avatar-vacio.png"); }else{echo $usuario['foto'] ;}?> class="image" id="img" >
+     					<input type="file" id="foto" name="myimage" accept="image/*" class="inputfile" onchange="preview_image(event)" style="display:none;">
+    				</label></div>
+    				<?php } ?>
 					<legend>Datos del usuario</legend>
-					<div><label for="nombre">Nombre<em>*</em></label><input id="nombre" type="text" size="80" maxlength="100" onBlur="caps(this)" name="nombre" value="<?php print($usuario['nombre']); ?>" /></div>
-					<div><label for="direccion">Apellido<em>*</em></label><input id="apellido" type="text" size="80" maxlength="100" onBlur="caps(this)" name="apellido" value="<?php print($usuario['apellido']); ?>" /></div>
+					<div><label for="nombre">Nombre<em>*</em></label><input id="nombre" type="text" size="80" maxlength="100" name="nombre" value="<?php print($usuario['nombre']); ?>" /></div>
+					<div><label for="direccion">Apellido<em>*</em></label><input id="apellido" type="text" size="80" maxlength="100" name="apellido" value="<?php print($usuario['apellido']); ?>" /></div>
 					<div><label for="direccion">Fecha de Nacimiento<em>*</em></label><input type="text" name="fecha_nacimiento" id="fecha_nacimiento" value="<?php print(($usuario["fecha_nacimiento"]!= '%') ? $usuario["fecha_nacimiento"]: ''); ?>" />
         			<a id="calendarFechaNacimiento" href="javascript:OpenCal('fecha_nacimiento');" style="width:16px"><img class="calendar" src="./img/calendar.png" width="16" height="16" /></a>
 					<div><label for="correo_electronico">Correo Electronico<em>*</em></label><input id="correo_electronico" type="text" size="20" maxlength="20" name="correo_electronico" onchange="validarEmail(this.value)" value="<?php print($usuario['correo_electronico']); ?>" /></div>
@@ -68,12 +76,12 @@ if ($_REQUEST['op'] == 'm') {
 				<div><hr/></div>
 				<div><a href="login.php">Volver</a></div>
 			<?php } else { ?>
-				<div><p><br/></p></div>						
+				<div><p><br/></p></div>
 				<div><a href="main.php?accion=inicio">Volver</a></div>
-				<div><hr/></div>				
+				<div><hr/></div>
 				<div><p><br/></p></div>
 				<div><a href="main.php?accion=tarjetas&folder=BROWSE">Tarjetas de Credito</a></div>
-			<?php } ?> 
+			<?php } ?>
 		<div><hr/></div>
 		<div><p><br/></p></div>
 		<div><p><br/></p></div>
