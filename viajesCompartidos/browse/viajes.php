@@ -8,21 +8,22 @@
 	$viaje_id = -1;
 	$cant = 0;
 
+	if ( (isSet($_REQUEST['propios'])) && ($_REQUEST['propios']==0) )  {
+	    $propios = 0;
+	    $rs = getViajesPorUsuario($idUsuario, $propios);
+	} else {
+	    $propios = 1;
+	    $rs = getViajesPorUsuario($idUsuario, $propios);
+	}
+	
 ?>
 	<form name='formViajes' id='formViajes' method='post' action='' >
 	<input type='hidden' name='op' id='op' value='' />
 	<input type='hidden' name='usuario_id' id='usuario_id' value='<?php print ($idUsuario)?>' />
+	<input type='hidden' name='propios' id='propios' value='<?php print ($propios)?>' />
 	<div id="content">
 		<div id="right">
 <?php
-    if ( (isSet($_REQUEST['propios'])) && ($_REQUEST['propios']==0) )  {
-        $propios = 0;
-        $rs = getViajesPorUsuario($idUsuario, $propios);
-    } else {
-        $propios = 1;
-        $rs = getViajesPorUsuario($idUsuario, $propios);
-    }
-
 
 	if($db->num_rows($rs) == 0) {
 		print('No hay viajes ingresados.');
