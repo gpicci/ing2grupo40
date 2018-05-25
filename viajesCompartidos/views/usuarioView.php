@@ -80,7 +80,7 @@ if ($_REQUEST['op'] == 'm') {
 				<div><a href="main.php?accion=inicio">Volver</a></div>
 				<div><hr/></div>				
 				<div><p><br/></p></div>
-				<div><a href="main.php?accion=inicio">Tarjetas de Credito</a></div>
+				<div><a href="main.php?accion=tarjetas&folder=BROWSE">Tarjetas de Credito</a></div>
 			<?php } ?> 
 		<div><hr/></div>
 		<div><p><br/></p></div>
