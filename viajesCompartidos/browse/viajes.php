@@ -116,15 +116,15 @@
 			<div><a href="javascript:performAltaViaje('formViajes');">Nuevo Viaje</a></div>
 			<div><hr/></div>
 				<?php if ($cant>0) { ?>
-					<div><a href="javascript:performModViaje('formViajes');">Modifica Viaje</a></div>
+					<div><a href="javascript:performModViaje('formViajes');">Detalles del Viaje</a></div>
 					<div><hr/></div>
-					<div><a href="javascript:performBajaViaje('formViajes');">Elimina Viaje</a></div>
+					<div><a href="javascript:performBajaViaje('formViajes');">Eliminar Viaje</a></div>
 					<div><hr/></div>
 					<div><a href="javascript:performCerrarViaje('formViajes');">Cerrar Viaje</a></div>
 					<div><hr/></div>
 				<?php }
 				} elseif ($cant>0) { ?>
-				<div><a href="javascript:performPostulacion('formViajes');">Postularse a Viaje</a></div>
+				<div><a href="javascript:performPostulacion('formViajes');">Postularse a un Viaje</a></div>
 				<div><hr/></div>
 				<div><a href="javascript:performVerViaje('formViajes');">Ver Detalle</a></div>
 				<div><hr/></div>
