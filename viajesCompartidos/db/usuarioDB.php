@@ -99,7 +99,7 @@ function usuarioModifica(
   $correo,
   $clave,
   $foto) {
-	$image = addslashes (file_get_contents($_FILES['foto']['tmp_name']));	
+	$image = addslashes (file_get_contents($_FILES['myimage']['tmp_name']));	
 	$db = DB::singleton();
 	$query = "UPDATE usuario ".
 				"SET nombre = '".$nombre."',".

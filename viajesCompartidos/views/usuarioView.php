@@ -34,7 +34,7 @@ if ($_REQUEST["op"] == "m") {
 <?php
 if ($_REQUEST['op'] == 'm') {
 
-			echo "<form id=\"formUsuarioView\" method=\"post\" action=\"main.php?accion=usuarioABM&op=m&folder=".ABM_DIR."\">";
+			echo "<form id=\"formUsuarioView\"  enctype=\"multipart/form-data\" method=\"post\" action=\"main.php?accion=usuarioABM&op=m&folder=".ABM_DIR."\">";
 ?>
 				<input type="hidden"	name="idUsuario" value="<?php print($usuario["usuario_id"]); ?>">
 <?php } else {
@@ -45,9 +45,8 @@ if ($_REQUEST['op'] == 'm') {
 					<?php
 					if ($_REQUEST['op'] == 'm') { ?>
 					<div class="image-container"><label for="foto">
-						<img src=<?php if ($usuario['foto']==''){
-							echo("./img/avatar-vacio.png"); }else{echo $usuario['foto'] ;}?> class="image" id="img" >
-     					<input type="file" id="foto" name="myimage" accept="image/*" class="inputfile" onchange="preview_image(event)" style="display:none;">
+					<img src="./views/mostrarImagen.php?id=<?php echo $usuario['usuario_id'] ?>" class="image" id="img" >
+     				<input type="file" id="foto" name="myimage" accept="image/*" class="inputfile" onchange="preview_image(event)" style="display:none;">
     				</label></div>
     				<?php } ?>
 					<legend>Datos del usuario</legend>
