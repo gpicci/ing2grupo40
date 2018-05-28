@@ -330,8 +330,8 @@ function viajeBaja($id) {
                                     //para las calificaciones generadas por el sistema
         $puntaje = -1;
         
-        $query = "INSERT INTO calificacion(viaje_id, usuario_evalua_id, usuario_evaluado_id, puntaje, comentario) ".
-            "VALUES ($id,  ID_VALIDADOR_APLICACION, $idUsuario, $puntaje, 'Baja de viaje con postulantes aprobados') ";
+        $query = "INSERT INTO calificacion(viaje_id, usuario_evalua_id, usuario_evaluado_id, puntaje, comentario) ".            
+            "VALUES ($id,  ".ID_VALIDADOR_APLICACION.", $idUsuario, $puntaje, 'Baja de viaje con postulantes aprobados') ";
         $rs = $db->executeQuery($query);
         
         if (!$rs) {

@@ -29,7 +29,7 @@ if ($_REQUEST["op"] == "c") {
 ?>
 			<fieldset>
 				Importe del viaje: <?php echo $importeViaje; ?><br>
-				Importe por pasajero (incluido el pilot): <?php echo $montoPax; ?><br>
+				Importe por pasajero (incluido el piloto): <?php echo $montoPax; ?><br>
 				Comision del viaje (a cargo del dueño del viaje): <?php echo $comision; ?><br>
 				
 				<input type="hidden" name="viaje_id" id="viaje_id" value="<?php print($_REQUEST["viaje_id"]); ?>">

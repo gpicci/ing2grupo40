@@ -55,30 +55,6 @@
 	<script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
 </head>
 <?php
-    //si hay mensajes informativos pendientes, los visaulizo
-    // $_SESSION['mensajesPendientes'] debe ser un array de strings
-    if (isset($_SESSION['mensajesPendientes'])) {
-        $mensajes=$_SESSION['mensajesPendientes'];
-        $cant = count($mensajes);
-
-        if ($cant>0) {
-            echo "<div id=\"content\">";
-            echo "<div class=\"form-container\">";
-            echo "<form action=\"\" method=\"post\">";
-            echo "<fieldset>";
-            for ($i = 0; $i < $cant; $i++) {
-                echo "<div style=\"color: #FF0000;\"><b>".$mensajes[$i]."</b></div>";
-                echo "<br></br>";
-            }
-            echo "</fieldset>";
-            echo "</form>";
-            echo "</div>";
-            echo "</div>";
-
-        }
-        $_SESSION['mensajesPendientes']=array();
-    }
-
 	//acciones que requieren tratamientos particulares
 	if ($accion=="vehiculoView") {
 	  include("./views/vehiculoViewHeader.php");
@@ -91,6 +67,30 @@
    	} else{
    		include("./common/header.php");
    	}
+	   	//si hay mensajes informativos pendientes, los visaulizo
+	   	// $_SESSION['mensajesPendientes'] debe ser un array de strings
+	   	if (isset($_SESSION['mensajesPendientes'])) {
+	   		$mensajes=$_SESSION['mensajesPendientes'];
+	   		$cant = count($mensajes);
+	   		
+	   		if ($cant>0) {
+	   			echo "<div id=\"content\">";
+	   			echo "<div class=\"form-container\">";
+	   			echo "<form action=\"\" method=\"post\">";
+	   			echo "<fieldset>";
+	   			for ($i = 0; $i < $cant; $i++) {
+	   				echo "<div style=\"color: #FF0000;\"><b>".$mensajes[$i]."</b></div>";
+	   				echo "<br></br>";
+	   			}
+	   			echo "</fieldset>";
+	   			echo "</form>";
+	   			echo "</div>";
+	   			echo "</div>";
+	   			
+	   		}
+	   		$_SESSION['mensajesPendientes']=array();
+	   	}
+   	
    } else {
    	//hay que hacer echo del tag body
      echo "<body>";
