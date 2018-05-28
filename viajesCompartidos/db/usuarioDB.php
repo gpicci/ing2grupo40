@@ -139,4 +139,24 @@ function usuarioBaja($id) {
 	return $rs;
 }
 
+function existeUsuario($correo)  {
+	$db = DB::singleton();
+	
+	$query = "SELECT count(1) as cant
+			FROM usuario u 
+			WHERE u.m_baja = 0
+			AND	  u.correo_electronico = '".$correo."'"; 
+	applog($query);
+	$rs = $db->executeQuery($query);
+	
+	$row = $db->fetch_assoc($rs);
+	
+	if ($row['cant']>0) {
+		return true;
+	} else {
+		return false;
+	}
+	
+}
+
 ?>

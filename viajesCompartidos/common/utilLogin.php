@@ -5,23 +5,20 @@ require_once("./db/usuarioDB.php");
 
 function validarUsuario($correo, $clave) {
 	$db = DB::singleton();
-
 	$query = "SELECT usuario_id as numero
 			FROM usuario
 			WHERE correo_electronico = '".$correo."' ".
-   			"AND   clave = '".$clave."'";
-
+			"AND   clave = '".$clave."'";
+	
 	$rs = $db->executeQuery($query);
-
-
-   if (!$rs) {
-   	$res = null;
-   } else {
-   	$row = $db->fetch_assoc($rs);
-   	$res = $row['numero'];
-   }
-   
-   return $res;
+	if (!$rs) {
+		$res = null;
+	} else {
+		$row = $db->fetch_assoc($rs);
+		$res = $row['numero'];
+	}
+	
+	return $res;
 }
 
 function realizarLogin($correo, $clave,$accion){
@@ -30,7 +27,7 @@ function realizarLogin($correo, $clave,$accion){
   
   $userID = validarUsuario($correo, $clave);
 
-  if($userID) {
+  if ($userID) {
 	$_SESSION['logged_in'] = TRUE;
 	$_SESSION['username'] = $correo;
 	$_SESSION['user_id'] = $userID;

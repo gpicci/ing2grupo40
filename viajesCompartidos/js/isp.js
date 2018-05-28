@@ -176,7 +176,7 @@ function performPostulacion(theForm) {
 }
 
 function performVerViaje(theForm) {
-	document.getElementById('op').value = 'v';
+	document.getElementById('op').value = 'd';
 	document.getElementById(theForm).action = 'main.php?accion=viajeView&folder=views';
 	document.getElementById(theForm).submit();
 }

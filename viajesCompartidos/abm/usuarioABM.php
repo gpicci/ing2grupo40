@@ -1,15 +1,23 @@
 <?php
 require_once(DB_DIR.'/usuarioDB.php');
 
+$mensajes=array();
+
 if ($_REQUEST['op'] == 'a') {
-  usuarioAlta(
-    $_REQUEST['nombre'], 
-  	$_REQUEST['apellido'], 
-  	$_REQUEST['fecha_nacimiento'], 
-  	$_REQUEST['correo_electronico'], 
-  	$_REQUEST['clave']);
+	if (existeUsuario($_REQUEST['correo_electronico']))  {
+  	$mensajes[]="El correo electronico ya se encuentra registrado";
+  	$_SESSION['mensajesPendientes'] = $mensajes;
+  	header("Location: main.php?accion=usuarioView&folder=views&op=a");
+  } else  {
+  	usuarioAlta(
+  			$_REQUEST['nombre'],
+  			$_REQUEST['apellido'],
+  			$_REQUEST['fecha_nacimiento'],
+  			$_REQUEST['correo_electronico'],
+  			$_REQUEST['clave']);
+  	header('Location: login.php');
+  }  
   
-  header('Location: login.php');
 } elseif ($_REQUEST['op'] == 'm') {
 	usuarioModifica(
 	$_REQUEST['idUsuario'],
@@ -18,7 +26,7 @@ if ($_REQUEST['op'] == 'a') {
 	$_REQUEST['fecha_nacimiento'],
 	$_REQUEST['correo_electronico'],
 	$_REQUEST['clave'],
-	$_REQUEST['foto']);;
+	$_REQUEST['foto']);
 	
 	header('Location: main.php?accion=inicio');
 } elseif ($_REQUEST['op'] == 'b') {
