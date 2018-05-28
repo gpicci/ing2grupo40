@@ -10,7 +10,7 @@ if ( (isSet($_REQUEST['propios'])) && ($_REQUEST['propios']==0) )  {
     $propios = 1;
 }
 
-if (($_REQUEST["op"] == "m") || ($_REQUEST["op"] == "b")) {
+if (($_REQUEST["op"] == "m") || ($_REQUEST["op"] == "b") || ($_REQUEST["op"] == "d")) {
   $db = DB::singleton();
   $rs = getViajePorId($_REQUEST["viaje_id"]);
   $row = $db->fetch_assoc($rs);
