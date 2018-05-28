@@ -15,6 +15,9 @@ function checkUsuario(theForm) {
 			alert('Verifique la direccion de correo.');
 		}
 	}
+
+
+
 }
 
 function esfechavalida(fecha) {
@@ -121,13 +124,17 @@ function checkVehiculo(theForm) {
 	}
 }
 
+
 function checkViaje(theForm) {
+	var actual = new Date();
 	// Validacion de campos obligatorios
 	if ((document.getElementById('duracion').value == '') ||
 		(document.getElementById('costo').value == '')) {
 		alert('Ingrese un valor para los datos obligatorios.');
 	} else {
-		document.getElementById(theForm).submit();
+		if (esfechavalida(document.getElementById('fecha_salida').value)) {
+			document.getElementById(theForm).submit();
+		}
 	}
 }
 

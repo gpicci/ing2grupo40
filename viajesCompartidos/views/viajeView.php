@@ -25,14 +25,14 @@ if (($_REQUEST["op"] == "m") || ($_REQUEST["op"] == "b")) {
   $viaje["duracion"] = $row["duracion"];
   $viaje["costo"] = $row["costo"];
   $viaje["cerrado"] = $row["cerrado"];
-  
+
   $_SESSION["usuario_actual"] = $viaje;
-  
+
   if ($viaje["cerrado"]==1) {
       $_SESSION['mensajesPendientes'][]="El viaje ha sido cerrado y no puede modificarse".$viaje["cerrado"];
       header('Location: main.php?accion=viajes&folder='.BROWSE_DIR);
   }
-  
+
 } else {
 	$viaje = array();
 	$viaje["viaje_id"] = 0;
@@ -72,29 +72,29 @@ if (($_REQUEST['op'] == 'm') || ($_REQUEST['op'] == 'b')) {
 							$rs = getDiasSemana();
 							comboBox("dia_semana_id", $rs, "dia_semana_id", "dia_semana_nombre", "", $viaje["dia_semana"], "");
 						?>
-					</div>					
-					<div><label for="fecha_salida">Fecha de Salida<em>*</em></label><input type="text" name="fecha_salida" id="fecha_salida" value="<?php print(($viaje["fecha_salida"]!= '%') ? $viaje["fecha_salida"]: ''); ?>" />
-        			<a id="calendarFechaSalida" href="javascript:OpenCal('fecha_salida');" style="width:16px"><img class="calendar" src="./img/calendar.png" width="16" height="16" /></a>											
+					</div>
+					<div><label for="fecha_salida">Fecha de Salida<em>*</em></label><input type="text" name="fecha_salida" id="fecha_salida" onchange="esfechavalida(this.value);" value="<?php print(($viaje["fecha_salida"]!= '%') ? $viaje["fecha_salida"]: ''); ?>" />
+        			<a id="calendarFechaSalida" href="javascript:OpenCal('fecha_salida');" style="width:16px"><img class="calendar" src="./img/calendar.png" width="16" height="16" /></a>
 					<div><label for="localidad_origen_id">Localidad Origen<em>*</em></label>
 						<?php
 							$rs = getLocalidad();
 							comboBox("localidad_origen_id", $rs, "localidad_id", "nombre_localidad", "", $viaje["localidad_origen_id"], "");
 						?>
-					</div>	
+					</div>
 					<div><label for="localidad_destino_id">Localidad Destino<em>*</em></label>
 						<?php
 							$rs = getLocalidad();
 							comboBox("localidad_destino_id", $rs, "localidad_id", "nombre_localidad", "", $viaje["localidad_destino_id"], "");
 						?>
-					</div>	
+					</div>
 					<div><label for="vehiculo_id">Vehiculo<em>*</em></label>
 						<?php
 							$rs = getVehiculosPorUsuario($_SESSION["user_id"]);
 							comboBox("vehiculo_id", $rs, "vehiculo_id", "nombre_vehiculo", "", $viaje["vehiculo_id"], "");
 						?>
-					</div>								
-					<div><label for="duracion">Duracion (en horas)<em>*</em></label><input id="duracion" type="text" name="duracion" size="10" maxlength="50" value="<?php print($viaje['duracion']); ?>" /></div>					
-					<div><label for="costo">Costo total del viaje<em>*</em></label><input id="costo" type="text" name="costo" size="10" maxlength="50" value="<?php print($viaje['costo']); ?>" /></div>					
+					</div>
+					<div><label for="duracion">Duracion (en horas)<em>*</em></label><input id="duracion" type="text" name="duracion" size="10" maxlength="50" value="<?php print($viaje['duracion']); ?>" /></div>
+					<div><label for="costo">Costo total del viaje<em>*</em></label><input id="costo" type="text" name="costo" size="10" maxlength="50" value="<?php print($viaje['costo']); ?>" /></div>
    					<br><br>
     					<?php
     					   if (($_REQUEST["op"] == "m") || ($_REQUEST["op"] == "b")) {
@@ -144,7 +144,7 @@ if (($_REQUEST['op'] == 'm') || ($_REQUEST['op'] == 'b')) {
         					    print("<input type=\"button\" name=\"rechazar\" value=\"Rechazar\" class=\"button\" onClick=\"desapruebaPostulacion('formViajeView');\">");
         					}
     					}
-    					
+
     					if ($_REQUEST["op"] != "a") {
     					    $cantAprob = GetCantPaxPorViaje($_REQUEST["viaje_id"], ID_APROBADO );
     					} else {
@@ -152,7 +152,7 @@ if (($_REQUEST['op'] == 'm') || ($_REQUEST['op'] == 'b')) {
     					}
 
     					echo "<br><br>";
-    					
+
     					if (($cantAprob>0) && ($_REQUEST['op'] == 'b')) {
     					    echo "<fieldset><div style=\"color: #FF0000;\"><b>";
     					    echo "Atencion: el viaje tiene pasajeros aprobados, eliminarlo bajara su puntuacion";
