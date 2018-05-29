@@ -84,7 +84,7 @@ function getEmpresaTarjeta() {
 function tarjetaBaja($id) {
 	$db = DB::singleton();
 
-	$query = "UPDATE tarjeta
+	$query = "UPDATE tarjeta_credito
 	          SET 	 m_baja = 1
 			WHERE id_tarjeta = ".$id;
 
