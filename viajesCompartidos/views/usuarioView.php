@@ -64,7 +64,8 @@ if ($_REQUEST['op'] == 'm') {
 					<?php } else { ?>
 						<input type="button" name="modificar" value="Modificar" class="button" onClick="checkUsuario('formUsuarioView');">
 					<?php } ?>
-					<input type="reset" value="Borrar cambios" class="button">
+					<input type="reset" value="Borrar cambios" class="button" 
+					onclick="reset_image(<?php echo $usuario['usuario_id']?>)">
 				</div>
 			</form>
 			</div>

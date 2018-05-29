@@ -69,6 +69,24 @@ function getVehiculosPorUsuario(
 	return $rs;
 }
 
+function getVehiculoPorPatente(
+    $patente) {
+	$db = DB::singleton();
+
+	$query = "
+	SELECT *
+    FROM vehiculo
+  	WHERE m_baja = 0
+  	AND	patente = '$patente'";
+	$rs = $db->executeQuery($query);
+
+	if (!$rs) {
+		applog($db->db_error(), 1);
+	}
+
+	return $rs;
+}
+
 function getVehiculoPorId(
 		$vehiculo_id) {
 			$db = DB::singleton();
@@ -101,6 +119,7 @@ function getVehiculoPorId(
 			return $rs;
 }
 
+
 function vehiculoBaja($id) {
 	$db = DB::singleton();
 
@@ -126,27 +145,30 @@ function vehiculoAlta(
 	$n_cantidad_asientos,
 	$patente) {
 	$db = DB::singleton();	
-	
-	$query = "INSERT INTO vehiculo (
-			modelo_id,
-			usuario_id,
-			cantidad_asientos,
-			patente)
-			VALUES (".
-			$modelo_id.",".
-			$usuario_id.",".
-			$n_cantidad_asientos.",upper('".
-			$patente."'))";
+
+	$vehiculo_misma_patente=getVehiculoPorPatente($patente);
+	if(mysqli_num_rows ( $vehiculo_misma_patente ) == 0){
+		$query = "INSERT INTO vehiculo (
+				modelo_id,
+				usuario_id,
+				cantidad_asientos,
+				patente)
+				VALUES (".
+				$modelo_id.",".
+				$usuario_id.",".
+				$n_cantidad_asientos.",upper('".
+				$patente."'))";
 	        
 	
-	$rs = $db->executeQuery($query);
+		$rs = $db->executeQuery($query);
 	
-	if (!$rs) {
-		applog($db->db_error(), 1);
+		if (!$rs) {
+			applog($db->db_error(), 1);
+		}
+	
+		return $rs;
 	}
-	
-	return $rs;
-}
+	}
 
 function vehiculoModifica(
   $vehiculo_id,

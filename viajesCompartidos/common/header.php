@@ -10,7 +10,7 @@ $nombreUsuario = "USUARIO: ".$_SESSION['nombre_usuario'];
 ?>
 <body>
 	<div id="header">
-	<p id="alignleft"><?php print(VIEW_PAGE_TITLE.' - '.VIEW_EMPRESA); ?></p>
+	<a href="main.php?accion=inicio" id="alignleft"><?php print(VIEW_PAGE_TITLE.' - '.VIEW_EMPRESA); ?></a>
 	<p id="alignright"><?php print($nombreUsuario);?>
 	</p>
 	</div>

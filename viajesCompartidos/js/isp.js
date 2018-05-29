@@ -208,6 +208,11 @@ function checkPostulacion(theForm) {
             reader.readAsDataURL(event.target.files[0]);
         }
 
+function reset_image(id){
+	document.getElementById("img").src="./views/mostrarImagen.php?id=" + id;
+	document.getElementById("foto").value ='mantener';
+}
+
  function checkTarjeta(theForm) {
 	// Validacion de campos obligatorios
 	if ((document.getElementById('n_tarjeta').value == '') ||

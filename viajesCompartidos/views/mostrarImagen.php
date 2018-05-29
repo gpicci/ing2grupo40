@@ -10,4 +10,8 @@ mysqli_close($link);
 /* se imprime la imagen y se le avisa al navegador que lo que se está
 enviando no es texto, sino que es unaimagen un tipo en particular */
 header("Content-type: image/png") ; 
+if ($row['foto'] == '' || $row['foto'] == null) {
+	readfile('../img/avatar-vacio.png');
+}else{}
 echo $row['foto'];?>
+}

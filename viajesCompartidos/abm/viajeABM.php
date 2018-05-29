@@ -14,7 +14,7 @@ function validaFecha($fecha) {
 		$today = date("Y-m-d H:i:s");
 		$fechaViaje = "$anio-$mes-$dia 00:00:00";
 		
-		return ($fechaViaje > $today);
+		return (($fechaViaje > $today) && ($fechaViaje <= "2018-06-29 23:59:59")); 
 	} else {
 		return false;
 	}

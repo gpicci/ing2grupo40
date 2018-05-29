@@ -99,15 +99,19 @@ function usuarioModifica(
   $correo,
   $clave,
   $foto) {
-	$image = addslashes (file_get_contents($_FILES['myimage']['tmp_name']));	
+  	$sqlfoto='';
+  	if($_FILES['myimage']['size']>0){
+  		$image = addslashes (file_get_contents($_FILES['myimage']['tmp_name']));		
+		$sqlfoto=" , foto= '".$image."'";
+	}
 	$db = DB::singleton();
 	$query = "UPDATE usuario ".
 				"SET nombre = '".$nombre."',".
 				"    apellido = '".$apellido."',".
 				"    fecha_nacimiento = str_to_date('".$fecha_nacimiento."','%d-%m-%Y'),".
 				"    correo_electronico = '".$correo."',".
-				"    clave = '".$clave."', ".
-				"    foto = '".$image."'".
+				"    clave = '".$clave."' ".
+				$sqlfoto.
 				"WHERE usuario_id = ".$id;
 
 	$rs = $db->executeQuery($query);
