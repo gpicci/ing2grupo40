@@ -10,14 +10,15 @@ if ($_REQUEST["op"] == "c") {
   $usuario_id = $_REQUEST["usuario_id"];
   $op = $_REQUEST["op"];
   
-  if (existePostulacion($viaje_id, $usuario_id)) {
-      $mensajes[]="Ya se ha postulado al viaje";
-      header('Location: main.php?accion=viajes&propios=0&folder='.BROWSE_DIR);
-  }
-
   $montoPax = 0;
   $comision = 0;
   $importeViaje = costosViaje($viaje_id, $montoPax, $comision);
+
+  $pendientes = 0;
+  $aprobados = 0;
+  $postulados = 0;
+  // la funcion getPaxPorEstado no incluye al piloto para los calculos
+  getPaxPorEstado($viaje_id, $aprobados, $pendientes, $rechazados, $postulados);
   
 }
 ?>
@@ -28,9 +29,11 @@ if ($_REQUEST["op"] == "c") {
 			echo "<form id=\"formPostulacionView\" method=\"post\" action=\"main.php?accion=viajeABM&folder=".ABM_DIR."\">";
 ?>
 			<fieldset>
+				Piloto : 1<br>
+				Cantidad de copilotos: <?php echo $aprobados; ?><br>
 				Importe del viaje: <?php echo $importeViaje; ?><br>
 				Importe por pasajero (incluido el piloto): <?php echo $montoPax; ?><br>
-				Comision del viaje (a cargo del dueño del viaje): <?php echo $comision; ?><br>
+				Comision del viaje (a cargo del piloto/dueño del viaje): <?php echo $comision; ?><br>
 				
 				<input type="hidden" name="viaje_id" id="viaje_id" value="<?php print($_REQUEST["viaje_id"]); ?>">
 				<input type="hidden" name="usuario_id" id="usuario_id" value="<?php print($_REQUEST["usuario_id"]); ?>">

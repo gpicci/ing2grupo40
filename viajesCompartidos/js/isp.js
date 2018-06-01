@@ -130,6 +130,7 @@ function checkViaje(theForm) {
 	// Validacion de campos obligatorios
 	if ((document.getElementById('duracion').value == '') ||
 		(document.getElementById('vehiculo_id').value == '') ||	
+		(document.getElementById('tarjeta_id').value == -1) ||
 		(document.getElementById('costo').value == '')) {
 		alert('Ingrese un valor para los datos obligatorios.');
 	} else {

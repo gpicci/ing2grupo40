@@ -176,10 +176,11 @@ function viajeAlta(
   $costo,
   $tipo_viaje_id,
   $fecha_salida,
-  $dia_semana) {
+  $dia_semana,
+  $tarjeta_id  ) {
 			
   $db = DB::singleton();					
-			
+  
   $query = "INSERT INTO viaje (
 	usuario_id,
     vehiculo_id,
@@ -205,8 +206,27 @@ function viajeAlta(
 			
   if (!$rs) {
 	applog($db->db_error(), 1);
+	return $rs;
   }
-			
+
+  $query = "SELECT LAST_INSERT_ID() id";
+  $rs = $db->executeQuery($query);
+  if (!$rs) {
+      applog($db->db_error(), 1);
+      return $rs;
+  }
+  $row = $db->fetch_assoc($rs);
+  $viaje_id = $row["id"];
+  
+  $query = "INSERT INTO pasajero (tipo_pasajero_id, viaje_id, usuario_id, estado_id, tarjeta_id)
+              VALUES (".TIPO_PILOTO.",$viaje_id, $usuario_id, ".ID_APROBADO.", $tarjeta_id) ";
+  
+  $rs = $db->executeQuery($query);
+  
+  if (!$rs) {
+      applog($db->db_error(), 1);
+  }
+  
   return $rs;
 }
 
@@ -223,6 +243,8 @@ function viajeModifica(
 	$dia_semana) {
 	$db = DB::singleton();
 	
+	applog("fecha salida: ".$fecha_salida, 8);
+	
 	$str_f_baja = "'".formatPHPFecha(date("d-m-Y"))."'";
 	
 	$query = "UPDATE viaje
@@ -233,7 +255,7 @@ function viajeModifica(
 					costo = ".$costo.",
 					tipo_viaje_id = ".$tipo_viaje_id.",
 					dia_semana = ".$dia_semana.",
-					fecha_salida = str_to_date('".$fecha_salida."','%Y-%m-%d') ".
+					fecha_salida = str_to_date('".$fecha_salida."','%d-%m-%Y') ".
 					" WHERE viaje_id = ".$viaje_id;
 	
 	$rs = $db->executeQuery($query);
@@ -427,6 +449,7 @@ function existePostulacion($viaje_id = 0, $usuario_id=0 ) {
 
 function getPaxPorEstado($viaje_id=0, &$aprobados, &$pendientes, &$rechazados, &$total) {
     //$estado_id es el filtro por estado, si está en 0 devuelve todo
+    //NO se incluye el pasajero-piloto
     $db = DB::singleton();
     
     $query = "
@@ -436,7 +459,8 @@ function getPaxPorEstado($viaje_id=0, &$aprobados, &$pendientes, &$rechazados, &
                     IFNULL(COUNT(1),0) total
             FROM pasajero
             WHERE
-            viaje_id = $viaje_id ";
+            viaje_id = $viaje_id 
+            and tipo_pasajero_id=".TIPO_COPILOTO;
 
 
     $rs = $db->executeQuery($query);
@@ -457,6 +481,8 @@ function costosViaje($viaje_id, &$costoPax, &$comision) {
     $pendientes = 0;
     $aprobados = 0;
     $postulados = 0;
+    
+    // la funcion getPaxPorEstado no incluye al piloto para los calculos
     getPaxPorEstado($viaje_id, $aprobados, $pendientes, $rechazados, $postulados);
     
     $rsViaje = getViajePorId($_REQUEST["viaje_id"]);
@@ -478,24 +504,40 @@ function viajeCierre($id) {
     $pendientes = 0;
     $aprobados = 0;
     $postulados = 0;
+    
+    // la funcion getPaxPorEstado no incluye al piloto para los calculos
     getPaxPorEstado($id, $aprobados, $pendientes, $rechazados, $postulados);
     
     $rsViaje = getViajePorId($_REQUEST["viaje_id"]);
     $rowViaje = $db->fetch_assoc($rsViaje);
     
-    $importaViaje = $rowViaje["costo"];
-    $importeUnitario = $importeViaje / ($aprobados + 1);  //es +1 si en pasajero no incluimos al piloto
+    $importeViaje = $rowViaje["costo"];
+    $importeUnitario = round($importeViaje / ($aprobados + 1),2);  //es +1 si en pasajero no incluimos al piloto
     $comision = round( (COMISION * $importeViaje / 100), 2);
     
     // cargo pago de los pasajero aprobados 
     $query = "UPDATE pasajero set monto_pagado = ".$importeUnitario." ".
-             " WHERE viaje_id = $id and estado_id = ".ID_APROBADO;
+             " WHERE viaje_id = $id and estado_id = ".ID_APROBADO.
+             " and tipo_pasajero_id = ".TIPO_COPILOTO;
     $rs = $db->executeQuery($query);
     if (!$rs) {
         applog($db->db_error(), 1);
         return;
     }
 
+    // cargo pago del piloto
+    $query = "UPDATE pasajero set monto_pagado = ".($importeUnitario + $comision)." ".
+        " WHERE viaje_id = $id ".
+        " and tipo_pasajero_id = ".TIPO_PILOTO;
+    
+    applog($query, 8);
+    
+    $rs = $db->executeQuery($query);
+    if (!$rs) {
+        applog($db->db_error(), 1);
+        return;
+    }
+    
     // elimino postulaciones de pasajeros pendientes de aprobacion
     $query = "DELETE FROM pasajero ".
         " WHERE viaje_id = $id and estado_id = ".ID_APROBACION_PENDIENTE;
@@ -524,6 +566,29 @@ function viajeCerrado($viaje_id) {
     $cerrado = $rowViaje["cerrado"];
     
     return $cerrado;
+}
+
+function GetTarjetaIdPilotoViaje($viaje_id = 0 ) {
+    $db = DB::singleton();
+    
+    //en la tabla de estados el id=2 corresponde a pasajero aprobado para viaje
+    $query = " 
+                SELECT ifNull(tarjeta_id,0) tarjeta_id
+                FROM
+                pasajero
+                WHERE
+                viaje_id = $viaje_id 
+                AND tipo_pasajero_id = ".TIPO_PILOTO;
+   
+    $rs = $db->executeQuery($query);
+    if ($db->num_rows($rs)>0) {
+        $row = $db->fetch_assoc($rs);
+        $result = $row['tarjeta_id'];
+    } else {
+        $result = 0;
+    }
+    
+    return $result;
 }
 
 ?>

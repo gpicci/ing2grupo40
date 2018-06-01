@@ -1,6 +1,7 @@
 <?php
 require_once(DB_DIR.'/viajeDB.php');
 require_once(DB_DIR.'/vehiculoDB.php');
+require_once(DB_DIR."/tarjetaDB.php");
 require_once("./common/combo.php");
 //id de estado correspondiente a los pasajero aprobados
 
@@ -26,6 +27,8 @@ if (($_REQUEST["op"] == "m") || ($_REQUEST["op"] == "b") || ($_REQUEST["op"] == 
   $viaje["costo"] = $row["costo"];
   $viaje["cerrado"] = $row["cerrado"];
 
+  $viaje["tarjeta_id"] = GetTarjetaIdPilotoViaje($_REQUEST["viaje_id"]);
+
   $_SESSION["usuario_actual"] = $viaje;
 
   if ($viaje["cerrado"]==1) {
@@ -44,6 +47,7 @@ if (($_REQUEST["op"] == "m") || ($_REQUEST["op"] == "b") || ($_REQUEST["op"] == 
 	$viaje["fecha_salida"] = '';
 	$viaje["duracion"] = 0;
 	$viaje["costo"] = 0;
+	$viaje["tarjeta_id"] = 1;
 }
 ?>
 	<div id="content">
@@ -95,6 +99,17 @@ if (($_REQUEST['op'] == 'm') || ($_REQUEST['op'] == 'b')) {
 					</div>
 					<div><label for="duracion">Duracion (en horas)<em>*</em></label><input id="duracion" type="text" name="duracion" size="10" maxlength="50" value="<?php print($viaje['duracion']); ?>" /></div>
 					<div><label for="costo">Costo total del viaje<em>*</em></label><input id="costo" type="text" name="costo" size="10" maxlength="50" value="<?php print($viaje['costo']); ?>" /></div>
+					<div><label for="tarjeta">Tarjeta de credito<em>*</em></label>
+						<?php
+						    $rs = getTarjetasUsuario($_SESSION["user_id"]);
+                            // la tarjeta solo se puede elegir al crear el viaje
+						    $disabled = "";
+						    if ( ($_REQUEST["op"] != "a") ) {
+						        $disabled = " disabled ";
+						    }
+						    comboBox("tarjeta_id", $rs, "id_tarjeta", "tarjeta", "--", $viaje["tarjeta_id"], "$disabled");
+						?>
+					</div>				
    					<br><br>
     					<?php
     					   if (($_REQUEST["op"] == "m") || ($_REQUEST["op"] == "b")) {
