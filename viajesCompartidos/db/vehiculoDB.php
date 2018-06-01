@@ -222,5 +222,21 @@ function cantAsientosPorVehiculo($vehiculo_id = 0) {
     return $result;
 }
 
+function existePatente($patente) {
+    $db = DB::singleton();
+    
+    $query = "SELECT count(1) as cant FROM vehiculo WHERE patente = '$patente' ";
+    
+    $rs = $db->executeQuery($query);
+    $row = $db->fetch_assoc($rs);
+    
+    $result = $row['cant'];
+    
+    if ($result>0) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
 
 ?>

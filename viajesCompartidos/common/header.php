@@ -38,7 +38,7 @@ $nombreUsuario = "USUARIO: ".$_SESSION['nombre_usuario'];
 					<li><a href="main.php?accion=viajes&propios=0&folder=<?php print(BROWSE_DIR); ?>">VIAJES DE OTROS</a></li>
 				</ul>
 			</li>
-			<li class="toplast"><a href="logout.php" style="height:18px;line-height:18px;">CERRAR SESION</a></li>
+			<li class="toplast"><a href="javascript:performCerrarSesion()" style="height:18px;line-height:18px;">CERRAR SESION</a></li>
 		</ul>
 	</div>
 	<div><p></div>

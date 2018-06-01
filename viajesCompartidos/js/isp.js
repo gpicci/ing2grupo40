@@ -254,3 +254,10 @@ function performBajaTarjeta(theForm) {
 		document.getElementById(theForm).submit();
 	}
 }
+
+function performCerrarSesion() {
+	check = confirm('Confirme cerrar sesion');
+	if (check) {
+		 window.location.href = "logout.php";
+	}
+}
