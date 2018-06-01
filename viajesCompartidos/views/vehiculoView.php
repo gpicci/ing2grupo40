@@ -61,7 +61,14 @@ if ($_REQUEST['op'] == 'm') {
 						?>
 					</div>
 					<div><label for="cantidad_asientos">Cantidad de Asientos<em>*</em></label><input id="cantidad_asientos" type="text" size="20" maxlength="20" name="cantidad_asientos" value="<?php print($vehiculo['cantidad_asientos']); ?>" /></div>
-					<div><label for="patente">Patente<em>*</em></label><input id="patente" type="text" size="20" maxlength="20" name="patente" value="<?php print($vehiculo['patente']); ?>" /></div>
+					<?php
+					   if ($_REQUEST['op'] == 'a') {
+                            $disabled = "";					       
+					   } else {
+					       $disabled = "disabled ";
+					   }
+					   print ('<div><label for="patente">Patente<em>*</em></label><input id="patente" type="text" '.$disabled.' size="20" maxlength="20" name="patente" value="'.$vehiculo['patente'].'" /></div>');
+					?>
 				</fieldset>
 				<div class="buttonrow">
 					<?php if ($_REQUEST['op'] == 'a') { ?>

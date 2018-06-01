@@ -11,19 +11,24 @@ function validarBaja($id, &$mensajes) {
 }
 
 if ($_REQUEST['op'] == 'a') {
-  vehiculoAlta(
-    $_REQUEST['modelo_id'], 
-  	$_SESSION['user_id'],
-  	$_REQUEST['cantidad_asientos'], 
-  	$_REQUEST['patente']);
-  
+    if (existePatente($_REQUEST['patente'])) {
+        $_SESSION["mensajesPendientes"][]="La patente ya existe";
+        header('Location: main.php?accion=vehiculoView&op=a&folder=views');
+    } else {
+       vehiculoAlta(
+        $_REQUEST['modelo_id'], 
+      	$_SESSION['user_id'],
+      	$_REQUEST['cantidad_asientos'], 
+      	$_REQUEST['patente']);
+       header('Location: main.php?accion=vehiculos&folder='.BROWSE_DIR);
+    }  
 } elseif ($_REQUEST['op'] == 'm') {
 	vehiculoModifica(
 	  $_REQUEST['vehiculo_id'],
 	  $_REQUEST['modelo_id'],
 	  $_REQUEST['cantidad_asientos'],
 	  $_REQUEST['patente']);
-	
+	header('Location: main.php?accion=vehiculos&folder='.BROWSE_DIR);
 } elseif ($_REQUEST['op'] == 'b') {
     $mensajes=array();
     
@@ -32,9 +37,9 @@ if ($_REQUEST['op'] == 'a') {
     } else {
         $_SESSION['mensajesPendientes'] = $mensajes;
     }
-    
+    header('Location: main.php?accion=vehiculos&folder='.BROWSE_DIR);
 }
 
-header('Location: main.php?accion=vehiculos&folder='.BROWSE_DIR);
+
 
 ?>
