@@ -313,9 +313,9 @@ function GetCantPaxPorViaje($viaje_id = 0, $estado_id=0 ) {
     $db = DB::singleton();
 
     //en la tabla de estados el id=2 corresponde a pasajero aprobado para viaje
-    $query = "SELECT COUNT(1) cant FROM pasajero WHERE viaje_id = $viaje_id ";
+    $query = "SELECT COUNT(1) cant FROM pasajero WHERE viaje_id = $viaje_id AND tipo_pasajero_id=".TIPO_COPILOTO;
     if ($estado_id!=0) {
-        $query.="AND estado_id= $estado_id ";
+        $query.=" AND estado_id= $estado_id ";
     }
     
     $rs = $db->executeQuery($query);
@@ -355,7 +355,7 @@ function getPaxPorViaje($viaje_id=0, $estado_id=0) {
                 	ON p.estado_id = e.estado_id
                 WHERE
                 	viaje_id = $viaje_id
-                ";
+                	and tipo_pasajero_id = ".TIPO_COPILOTO." ";
         
         if ($estado_id!=0) {
             $query.="AND p.estado_id= ".$estado_id." ";
@@ -664,7 +664,7 @@ function viajeAgregaOcupacion($viaje_id, $usuario_id, $fechaHora, $duracion) {
     return $rs;
 }
 
-function viajeAgregaOcupacionMultiple($viaje_id, $usuario_id, $fechaHora, $duracion, $cant, $intervalo) {
+function viajeAgregaOcupacionMultiple($viaje_id, $usuario_id, $fechaHora, $duracion, $cant, $intervalo, $table_name="OCUPACION_USUARIO") {
     //intervalo: cada cuantos dias se genera la ocupacion
     //cant: cantidad de ocuapciones a generar
     
@@ -673,7 +673,7 @@ function viajeAgregaOcupacionMultiple($viaje_id, $usuario_id, $fechaHora, $durac
     for($i = 0; $i < $cant; ++$i) {
         $dias = ($i*$intervalo);
         $query = "
-                    INSERT INTO OCUPACION_USUARIO(viaje_id, usuario_id, desde, hasta)
+                    INSERT INTO $table_name(viaje_id, usuario_id, desde, hasta)
                     VALUES ($viaje_id, $usuario_id, '$fechaHora' + INTERVAL $dias DAY, ('$fechaHora' + INTERVAL $dias DAY + INTERVAL $duracion HOUR) )
                     ";
         
@@ -682,10 +682,80 @@ function viajeAgregaOcupacionMultiple($viaje_id, $usuario_id, $fechaHora, $durac
         if (!$rs) {
             applog($db->db_error(), 1);
         }
-    echo $i;
+        echo $i;
     }
     
     return $rs;
+}
+
+function validaOcupacion($viaje_id, $usuario_id, $fechaHora, $tipo_viaje_id, $duracion ) {
+    //para viajes que no existen (es decir para el momento del alta) utilizar algun id inexistente
+    //por ejemplo 0 o -1
+    
+    $db = DB::singleton();
+    
+    $cant = 1;
+    $intervalo = 0;
+    switch ($tipo_viaje_id) {
+        case VIAJE_OCASIONAL:
+            $cant = 1;
+            $intervalo = 0;
+            break;
+        case VIAJE_SEMANAL:
+            $cant = 4;
+            $intervalo = 7;
+            break;
+        case VIAJE_DIARIO:
+            $cant = 30;
+            $intervalo = 1;
+            break;
+    }
+    
+    
+    $query = "CREATE TEMPORARY TABLE IF NOT EXISTS OCUPACION_USUARIO_TMP AS (SELECT * FROM OCUPACION_USUARIO WHERE 1=0)";
+    $rs = $db->executeQuery($query);
+    if (!$rs) {
+        applog($db->db_error(), 1);
+        return $rs;
+    }
+    
+    $query = "TRUNCATE TABLE OCUPACION_USUARIO_TMP ";
+    $rs = $db->executeQuery($query);
+    if (!$rs) {
+        applog($db->db_error(), 1);
+        return $rs;
+    }
+    
+    viajeAgregaOcupacionMultiple($viaje_id, $usuario_id, $fechaHora, $duracion, $cant, $intervalo, "OCUPACION_USUARIO_TMP");
+    
+    $query = "
+                SELECT COUNT(1) cant
+                FROM OCUPACION_USUARIO_TMP OU
+                WHERE
+                (OU.usuario_id=$usuario_id) AND
+                EXISTS (SELECT * FROM OCUPACION_USUARIO OU2
+                	WHERE (OU2.viaje_id<>$viaje_id) AND (OU2.usuario_id=$usuario_id) AND
+                	( ((OU.desde>=OU2.desde) AND (OU.desde<=OU2.hasta)) OR
+                	  ((OU.hasta>=OU2.desde) AND (OU.hasta<=OU2.hasta))
+                	 )
+                	)
+                ";
+    
+    $rs = $db->executeQuery($query);
+    if (!$rs) {
+        applog($db->db_error(), 1);
+        return $rs;
+    }
+    
+    $row = $db->fetch_assoc($rs);
+    
+    if ($row['cant']!=0) {
+        $result = false;
+    } else {
+        $result = true;
+    }
+    
+    return $result;
 }
 
 ?>

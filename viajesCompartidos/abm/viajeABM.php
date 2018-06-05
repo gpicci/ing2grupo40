@@ -25,12 +25,35 @@ function validaFecha($fecha) {
 	
 }
 
-$fechaHora = $_REQUEST['fecha_salida']." ".$_REQUEST['hora_salida'].":".$_REQUEST['min_salida'].":00";
-applog($fechaHora, 8);
+$fechaHoraPHP = $_REQUEST['fecha_salida']." ".$_REQUEST['hora_salida'].":".$_REQUEST['min_salida'].":00";
 
+$fechaHora = formatPHPFechaHora($fechaHoraPHP, $fecha, $hora, $minutos, $segundos);
 if ($_REQUEST['op'] == 'a') {
-	if (!validaFecha($_REQUEST['fecha_salida'])) {
-		$_SESSION['mensajesPendientes'][]="Fecha invalida.";
+    $viaje_id = 0;
+} else {
+    $viaje_id = $_REQUEST['viaje_id'];
+}
+$usuario_id = $_SESSION['user_id'];
+$tipo_viaje_id = $_REQUEST['tipo_viaje_id'];
+$duracion = $_REQUEST['duracion'];
+
+$validaciones = true;
+
+if (($_REQUEST['op'] == 'm') ||  ($_REQUEST['op'] == 'a') ) {
+    if (!validaFecha($_REQUEST['fecha_salida'])) {
+        $_SESSION['mensajesPendientes'][]="Fecha invalida.";
+        $validaciones = false;
+    } else {
+        if (!validaOcupacion($viaje_id, $usuario_id, $fechaHora, $tipo_viaje_id, $duracion )){
+            $_SESSION['mensajesPendientes'][]="El usuario tiene un viaje asociado en las fechas propuestas";
+            $validaciones = false;
+        }
+    }
+}
+
+applog("validacion: ".$validaciones, 8);
+if ($_REQUEST['op'] == 'a') {
+	if (!validaciones) {
 		$redirect = false;
 		header('Location: main.php?accion=viajeView&folder=views&op=a');
 	} else {
@@ -47,8 +70,7 @@ if ($_REQUEST['op'] == 'a') {
 		        $_REQUEST['tarjeta_id']  );
 	}
 } elseif ($_REQUEST['op'] == 'm') {
-	if (!validaFecha($_REQUEST['fecha_salida'])) {
-		$_SESSION['mensajesPendientes'][]="Fecha invalida.";
+	if (!validaciones) {
 		$redirect = false;
 		header('Location: main.php?accion=viajeView&folder=views&op=m&viaje_id='.$_REQUEST['viaje_id']);
 	} else {
