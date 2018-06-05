@@ -39,6 +39,9 @@ $duracion = $_REQUEST['duracion'];
 
 $validaciones = true;
 
+applog("fechaPHP: ".$fechaHoraPHP, 8);
+applog("fechaHora: ".$fechaHora, 8);
+
 if (($_REQUEST['op'] == 'm') ||  ($_REQUEST['op'] == 'a') ) {
     if (!validaFecha($_REQUEST['fecha_salida'])) {
         $_SESSION['mensajesPendientes'][]="Fecha invalida.";
@@ -51,9 +54,8 @@ if (($_REQUEST['op'] == 'm') ||  ($_REQUEST['op'] == 'a') ) {
     }
 }
 
-applog("validacion: ".$validaciones, 8);
 if ($_REQUEST['op'] == 'a') {
-	if (!validaciones) {
+	if (!$validaciones) {
 		$redirect = false;
 		header('Location: main.php?accion=viajeView&folder=views&op=a');
 	} else {
@@ -65,12 +67,12 @@ if ($_REQUEST['op'] == 'a') {
 				$_REQUEST['duracion'],
 				$_REQUEST['costo'],
 				$_REQUEST['tipo_viaje_id'],
-				$fechaHora,
+		        $fechaHoraPHP,
 				$_REQUEST['dia_semana_id'],
 		        $_REQUEST['tarjeta_id']  );
 	}
 } elseif ($_REQUEST['op'] == 'm') {
-	if (!validaciones) {
+	if (!$validaciones) {
 		$redirect = false;
 		header('Location: main.php?accion=viajeView&folder=views&op=m&viaje_id='.$_REQUEST['viaje_id']);
 	} else {
@@ -83,7 +85,7 @@ if ($_REQUEST['op'] == 'a') {
 				$_REQUEST['duracion'],
 				$_REQUEST['costo'],
 				$_REQUEST['tipo_viaje_id'],
-				$fechaHora,
+		        $fechaHoraPHP,
 				$_REQUEST['dia_semana_id']
 		        );
 	}

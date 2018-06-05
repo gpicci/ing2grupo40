@@ -88,8 +88,16 @@ if (($_REQUEST['op'] == 'm') || ($_REQUEST['op'] == 'b')) {
 					</div>
 					<div><label for="fecha_salida">Fecha de Salida<em>*</em></label><input type="text" name="fecha_salida" id="fecha_salida" onchange="esfechavalida(this.value);" value="<?php print(($viaje["fecha_salida"]!= '%') ? $viaje["fecha_salida"]: ''); ?>" />
         			<a id="calendarFechaSalida" href="javascript:OpenCal('fecha_salida');" style="width:16px"><img class="calendar" src="./img/calendar.png" width="16" height="16" /></a>
+					<?php
+					/*
 					hh.<input type="number" min="0" max="24" step="1" name=hora_salida id=hora_salida style="width: 30px;" value=<?php print($viaje["hora_salida"]); ?> ></input>
 					mm.<input type="number" min="0" max="60" step="1" name=min_salida id=min_salida style="width: 30px;"  value=<?php print($viaje["min_salida"]); ?> ></input>
+					*/
+					   echo "hh.";
+					   comboNumerico("hora_salida", 0, 23, 1, $viaje["hora_salida"]);
+					   echo "mm.";
+					   comboNumerico("min_salida", 0, 45, 15, $viaje["min_salida"]);
+					?>
 					</div>
 					<div><label for="localidad_origen_id">Localidad Origen<em>*</em></label>
 						<?php

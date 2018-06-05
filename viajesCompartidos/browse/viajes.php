@@ -75,7 +75,7 @@
 		print('
          <td align="center">' . $row['d_tipo_viaje'] . '</td>
          <td align="center">' . $row['dia_semana'] . '</td>
-         <td align="center">' . formatMSSQLFecha($row['fecha_salida']) . '</td>
+         <td align="center">' . formatMSSQLFechaHora($row['fecha_salida'],$f,$h,$m,$s) . '</td>
          <td align="center">' . $row['localidad_origen'] . '</td>
 		 <td align="center">' . $row['localidad_destino'] . '</td>
          <td align="center">' . $row['nombre_vehiculo'] . '</td>

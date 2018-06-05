@@ -198,7 +198,7 @@ function viajeAlta(
   	$localidad_destino_id.",".
   	$tipo_viaje_id.",".
   	$dia_semana.",".
-  	"str_to_date('".$fecha_salida."','%d-%m-%Y %h:%i:%s'),".
+  	"str_to_date('".$fecha_salida."','%d-%m-%Y %H:%i:%s'),".
 	$duracion.",".
   	$costo.")";
 		
@@ -274,8 +274,10 @@ function viajeModifica(
 					costo = ".$costo.",
 					tipo_viaje_id = ".$tipo_viaje_id.",
 					dia_semana = ".$dia_semana.",
-					fecha_salida = str_to_date('".$fecha_salida."','%d-%m-%Y  %h:%i:%s') ".
+					fecha_salida = str_to_date('".$fecha_salida."','%d-%m-%Y  %H:%i:%s') ".
 					" WHERE viaje_id = ".$viaje_id;
+	
+	applog($query, 8);
 	
 	$rs = $db->executeQuery($query);
 	

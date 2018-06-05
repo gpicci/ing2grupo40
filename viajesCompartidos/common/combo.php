@@ -131,6 +131,22 @@
 	};
   }
 
-
+function comboNumerico($name, $inicio, $fin, $incremento, $seleccion=-1, $format="%02d"){
+    //combo simple que muestra su valor numerico (texto=value) 
+    if ($seleccion==-1) {
+        $seleccion=$inicio;
+    }
+    echo "<select name=\"$name\" id=\"$name\">";
+    for($i = $inicio; $i <= $fin; $i+=$incremento) {
+        if ($i==$seleccion) {
+            $selected = " selected ";
+        } else {
+            $selected = "";
+        }
+        $value = sprintf($format, $i);
+        echo "<option value=\"$value\" $selected>$value</option>";
+    }
+    echo "</select>";
+}
 
 ?>
