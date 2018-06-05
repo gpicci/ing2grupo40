@@ -277,8 +277,6 @@ function viajeModifica(
 					fecha_salida = str_to_date('".$fecha_salida."','%d-%m-%Y  %H:%i:%s') ".
 					" WHERE viaje_id = ".$viaje_id;
 	
-	applog($query, 8);
-	
 	$rs = $db->executeQuery($query);
 	
 	if (!$rs) {

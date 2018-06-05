@@ -39,9 +39,6 @@ $duracion = $_REQUEST['duracion'];
 
 $validaciones = true;
 
-applog("fechaPHP: ".$fechaHoraPHP, 8);
-applog("fechaHora: ".$fechaHora, 8);
-
 if (($_REQUEST['op'] == 'm') ||  ($_REQUEST['op'] == 'a') ) {
     if (!validaFecha($_REQUEST['fecha_salida'])) {
         $_SESSION['mensajesPendientes'][]="Fecha invalida.";
