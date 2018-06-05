@@ -22,7 +22,14 @@ if (($_REQUEST["op"] == "m") || ($_REQUEST["op"] == "b") || ($_REQUEST["op"] == 
   $viaje["localidad_destino_id"] = $row['localidad_destino_id'];
   $viaje["tipo_viaje_id"] = $row['tipo_viaje_id'];
   $viaje["dia_semana"] = $row['dia_semana'];
-  $viaje["fecha_salida"] = formatMSSQLFecha($row["fecha_salida"]);
+  
+  
+  formatMSSQLFechaHora($row["fecha_salida"], $fechaSalida, $horaSalida, $minutosSalida, $segundosSalida);
+  
+  $viaje["fecha_salida"] = $fechaSalida;
+  $viaje["hora_salida"] = $horaSalida;
+  $viaje["min_salida"] = $minutosSalida;
+  
   $viaje["duracion"] = $row["duracion"];
   $viaje["costo"] = $row["costo"];
   $viaje["cerrado"] = $row["cerrado"];
@@ -45,6 +52,8 @@ if (($_REQUEST["op"] == "m") || ($_REQUEST["op"] == "b") || ($_REQUEST["op"] == 
 	$viaje["tipo_viaje_id"] = 0;
 	$viaje["dia_semana"] = 0;
 	$viaje["fecha_salida"] = '';
+	$viaje["hora_salida"] = "08";
+	$viaje["min_salida"] = "00";
 	$viaje["duracion"] = 0;
 	$viaje["costo"] = 0;
 	$viaje["tarjeta_id"] = 1;
@@ -79,6 +88,9 @@ if (($_REQUEST['op'] == 'm') || ($_REQUEST['op'] == 'b')) {
 					</div>
 					<div><label for="fecha_salida">Fecha de Salida<em>*</em></label><input type="text" name="fecha_salida" id="fecha_salida" onchange="esfechavalida(this.value);" value="<?php print(($viaje["fecha_salida"]!= '%') ? $viaje["fecha_salida"]: ''); ?>" />
         			<a id="calendarFechaSalida" href="javascript:OpenCal('fecha_salida');" style="width:16px"><img class="calendar" src="./img/calendar.png" width="16" height="16" /></a>
+					hh.<input type="number" min="0" max="24" step="1" name=horaSalida id=horaSalida style="width: 30px;" value=<?php print($viaje["hora_salida"]); ?> ></input>
+					mm.<input type="number" min="0" max="60" step="1" name=minSalida id=minSalida style="width: 30px;"  value=<?php print($viaje["min_salida"]); ?> ></input>
+					</div>
 					<div><label for="localidad_origen_id">Localidad Origen<em>*</em></label>
 						<?php
 							$rs = getLocalidad();

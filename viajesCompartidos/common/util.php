@@ -28,6 +28,28 @@ function formatMSSQLFecha($fechaMSSQL) {
 	return $fecha;
 }
 
+function formatMSSQLFechaHora($fechaMSSQL, &$fecha, &$hora, &$minutos, &$segundos) {
+    $fechaHora = "";
+    if (!$fechaMSSQL) {
+        $fecha = null;
+    } else {
+        // 2018-05-23 00:00:00
+        $anio = substr($fechaMSSQL, 0, 4);
+        $mes = substr($fechaMSSQL, 5, 2);
+        $dia = substr($fechaMSSQL, 8, 2);
+        $fecha = $dia.'-'.$mes.'-'.$anio;
+        
+        $hora = substr($fechaMSSQL, 11, 2);
+        $minutos = substr($fechaMSSQL, 14, 2);
+        $segundos = substr($fechaMSSQL, 17, 2);
+        
+        $fechaHora = $dia.'-'.$mes.'-'.$anio. " ".$hora.":".$minutos.":".$segundos;
+    }
+    
+    return $fechaHora;
+}
+
+
 function generarPassword(){
 	$password=""; 
     //$ptrn1=$ptrn2=$ptrn3="aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ1234567890";
@@ -86,7 +108,7 @@ function formatPHPFecha2($fechaPHP) {
 }
 
 function quitar_tildes($cadena) {
-$no_permitidas= array ("á","é","í","ó","ú","Á","É","Í","Ó","Ú","ñ","À","Ã","Ì","Ò","Ù");
+$no_permitidas= array ("ï¿½","ï¿½","ï¿½","ï¿½","ï¿½","ï¿½","ï¿½","ï¿½","ï¿½","ï¿½","ï¿½","ï¿½","ï¿½","ï¿½","ï¿½","ï¿½");
 $permitidas= array ("a","e","i","o","u","A","E","I","O","U","n","N","A","E","I","O","U","a","e","i","o","u","c","C","a","e","i","o","u","A","E","I","O","U","u","o","O","i","a","e","U","I","A","E");
 $texto = str_replace($no_permitidas, $permitidas ,$cadena);
 return $texto;

@@ -23,6 +23,7 @@ function getViajesPorUsuario(
 	  CONCAT(nombre_marca,'-',nombre_modelo,': ',patente) as nombre_vehiculo,
 	  d.dia_semana_nombre dia_semana,
 	  fecha_salida,
+      fecha_llegada,  
       v.m_cerrado cerrado
 	FROM
 	  viaje v,
@@ -73,6 +74,7 @@ function getViajePorId(
 	  v.tipo_viaje_id,
 	  v.dia_semana,
 	  v.fecha_salida,
+      v.fecha_llegada,
 	  m.nombre_marca,
 	  mm.nombre_modelo,
 	  vv.patente,
