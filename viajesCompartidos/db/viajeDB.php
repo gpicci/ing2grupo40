@@ -23,7 +23,6 @@ function getViajesPorUsuario(
 	  CONCAT(nombre_marca,'-',nombre_modelo,': ',patente) as nombre_vehiculo,
 	  d.dia_semana_nombre dia_semana,
 	  fecha_salida,
-      fecha_llegada,  
       v.m_cerrado cerrado
 	FROM
 	  viaje v,
@@ -74,7 +73,6 @@ function getViajePorId(
 	  v.tipo_viaje_id,
 	  v.dia_semana,
 	  v.fecha_salida,
-      v.fecha_llegada,
 	  m.nombre_marca,
 	  mm.nombre_modelo,
 	  vv.patente,
@@ -200,7 +198,7 @@ function viajeAlta(
   	$localidad_destino_id.",".
   	$tipo_viaje_id.",".
   	$dia_semana.",".
-  	"str_to_date('".$fecha_salida."','%d-%m-%Y'),".
+  	"str_to_date('".$fecha_salida."','%d-%m-%Y %h:%i:%s'),".
 	$duracion.",".
   	$costo.")";
 		
@@ -227,14 +225,35 @@ function viajeAlta(
   
   if (!$rs) {
       applog($db->db_error(), 1);
+      return $rs;
+  }
+
+  $cant = 1;
+  $intervalo = 0;
+  switch ($tipo_viaje_id) {    
+      case VIAJE_OCASIONAL:
+          $cant = 1;
+          $intervalo = 0;
+          break;
+      case VIAJE_SEMANAL:
+          $cant = 4;
+          $intervalo = 7;
+          break;
+      case VIAJE_DIARIO:  
+          $cant = 30;
+          $intervalo = 1;
+          break;
   }
   
-  return $rs;
+  $fechaHora = formatPHPFechaHora($fecha_salida, $f, $h, $m, $s);
+  return viajeAgregaOcupacionMultiple($viaje_id, $usuario_id, $fechaHora, $duracion, $cant, $intervalo);
+
 }
 
 
 function viajeModifica(
-	$viaje_id,	
+	$viaje_id,
+    $usuario_id,
 	$vehiculo_id,
 	$localidad_origen_id,
 	$localidad_destino_id,
@@ -244,8 +263,6 @@ function viajeModifica(
 	$fecha_salida,
 	$dia_semana) {
 	$db = DB::singleton();
-	
-	applog("fecha salida: ".$fecha_salida, 8);
 	
 	$str_f_baja = "'".formatPHPFecha(date("d-m-Y"))."'";
 	
@@ -257,16 +274,39 @@ function viajeModifica(
 					costo = ".$costo.",
 					tipo_viaje_id = ".$tipo_viaje_id.",
 					dia_semana = ".$dia_semana.",
-					fecha_salida = str_to_date('".$fecha_salida."','%d-%m-%Y') ".
+					fecha_salida = str_to_date('".$fecha_salida."','%d-%m-%Y  %h:%i:%s') ".
 					" WHERE viaje_id = ".$viaje_id;
 	
 	$rs = $db->executeQuery($query);
 	
 	if (!$rs) {
 		applog($db->db_error(), 1);
+		return $rs;
 	}
 	
-	return $rs;
+	
+	$cant = 1;
+	$intervalo = 0;
+	switch ($tipo_viaje_id) {
+	    case VIAJE_OCASIONAL:
+	        $cant = 1;
+	        $intervalo = 0;
+	        break;
+	    case VIAJE_SEMANAL:
+	        $cant = 4;
+	        $intervalo = 7;
+	        break;
+	    case VIAJE_DIARIO:
+	        $cant = 30;
+	        $intervalo = 1;
+	        break;
+	}
+	
+	$fechaHora = formatPHPFechaHora($fecha_salida, $f, $h, $m, $s);
+	
+	viajeLimpiaOcupacion($viaje_id);
+	return viajeAgregaOcupacionMultiple($viaje_id, $usuario_id, $fechaHora, $duracion, $cant, $intervalo);
+	
 }
 
 function GetCantPaxPorViaje($viaje_id = 0, $estado_id=0 ) {
@@ -591,6 +631,61 @@ function GetTarjetaIdPilotoViaje($viaje_id = 0 ) {
     }
     
     return $result;
+}
+
+function viajeLimpiaOcupacion($viaje_id) {
+    $db = DB::singleton();
+    
+    $query = "DELETE FROM ocupacion_usuario where viaje_id= $viaje_id ";
+    $rs = $db->executeQuery($query);
+    
+    if (!$rs) {
+        applog($db->db_error(), 1);
+    }
+    
+    return $rs;
+}
+
+
+function viajeAgregaOcupacion($viaje_id, $usuario_id, $fechaHora, $duracion) {
+    $db = DB::singleton();
+    
+    $query = "
+                INSERT INTO OCUPACION_USUARIO(viaje_id, usuario_id, desde, hasta)
+                VALUES ($viaje_id, $usuario_id, '$fechaHora', ('$fechaHora' + INTERVAL $duracion HOUR) ) 
+                ";
+    
+    $rs = $db->executeQuery($query);
+    
+    if (!$rs) {
+        applog($db->db_error(), 1);
+    }
+    
+    return $rs;
+}
+
+function viajeAgregaOcupacionMultiple($viaje_id, $usuario_id, $fechaHora, $duracion, $cant, $intervalo) {
+    //intervalo: cada cuantos dias se genera la ocupacion
+    //cant: cantidad de ocuapciones a generar
+    
+    $db = DB::singleton();
+    
+    for($i = 0; $i < $cant; ++$i) {
+        $dias = ($i*$intervalo);
+        $query = "
+                    INSERT INTO OCUPACION_USUARIO(viaje_id, usuario_id, desde, hasta)
+                    VALUES ($viaje_id, $usuario_id, '$fechaHora' + INTERVAL $dias DAY, ('$fechaHora' + INTERVAL $dias DAY + INTERVAL $duracion HOUR) )
+                    ";
+        
+        $rs = $db->executeQuery($query);
+        
+        if (!$rs) {
+            applog($db->db_error(), 1);
+        }
+    echo $i;
+    }
+    
+    return $rs;
 }
 
 ?>

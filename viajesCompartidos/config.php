@@ -34,5 +34,8 @@ date_default_timezone_set("America/Argentina/Buenos_Aires");
   define("TIPO_PILOTO", 1);
   define("TIPO_COPILOTO", 2);
   define("COMISION", 10);
+  define("VIAJE_DIARIO", 1);
+  define("VIAJE_SEMANAL", 2);
+  define("VIAJE_OCASIONAL", 3);
   
 ?>

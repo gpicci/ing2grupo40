@@ -25,6 +25,9 @@ function validaFecha($fecha) {
 	
 }
 
+$fechaHora = $_REQUEST['fecha_salida']." ".$_REQUEST['hora_salida'].":".$_REQUEST['min_salida'].":00";
+applog($fechaHora, 8);
+
 if ($_REQUEST['op'] == 'a') {
 	if (!validaFecha($_REQUEST['fecha_salida'])) {
 		$_SESSION['mensajesPendientes'][]="Fecha invalida.";
@@ -39,7 +42,7 @@ if ($_REQUEST['op'] == 'a') {
 				$_REQUEST['duracion'],
 				$_REQUEST['costo'],
 				$_REQUEST['tipo_viaje_id'],
-				$_REQUEST['fecha_salida'],
+				$fechaHora,
 				$_REQUEST['dia_semana_id'],
 		        $_REQUEST['tarjeta_id']  );
 	}
@@ -49,16 +52,16 @@ if ($_REQUEST['op'] == 'a') {
 		$redirect = false;
 		header('Location: main.php?accion=viajeView&folder=views&op=m&viaje_id='.$_REQUEST['viaje_id']);
 	} else {
-		
 		viajeModifica(
 				$_REQUEST['viaje_id'],
+		        $_SESSION['user_id'],
 				$_REQUEST['vehiculo_id'],
 				$_REQUEST['localidad_origen_id'],
 				$_REQUEST['localidad_destino_id'],
 				$_REQUEST['duracion'],
 				$_REQUEST['costo'],
 				$_REQUEST['tipo_viaje_id'],
-				$_REQUEST['fecha_salida'],
+				$fechaHora,
 				$_REQUEST['dia_semana_id']
 		        );
 	}

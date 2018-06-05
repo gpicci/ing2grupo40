@@ -49,6 +49,23 @@ function formatMSSQLFechaHora($fechaMSSQL, &$fecha, &$hora, &$minutos, &$segundo
     return $fechaHora;
 }
 
+function formatPHPFechaHora($fechaPHP, &$fecha, &$hora, &$minutos, &$segundos) {
+    if (!$fechaPHP) {
+        $fechaHora = null;
+    } else {
+        $dia = substr($fechaPHP, 0, 2);
+        $mes = substr($fechaPHP, 3, 2);
+        $anio = substr($fechaPHP, 6, 4);
+        
+        $hora = substr($fechaPHP, 11, 2);
+        $minutos = substr($fechaPHP, 14, 2);
+        $segundos = substr($fechaPHP, 17, 2);
+        
+        $fecha = $anio."-".$mes."-".$dia;
+        $fechaHora = $fecha. " ".$hora.":".$minutos.":".$segundos;
+        return $fechaHora;
+    }
+}
 
 function generarPassword(){
 	$password=""; 

@@ -88,8 +88,8 @@ if (($_REQUEST['op'] == 'm') || ($_REQUEST['op'] == 'b')) {
 					</div>
 					<div><label for="fecha_salida">Fecha de Salida<em>*</em></label><input type="text" name="fecha_salida" id="fecha_salida" onchange="esfechavalida(this.value);" value="<?php print(($viaje["fecha_salida"]!= '%') ? $viaje["fecha_salida"]: ''); ?>" />
         			<a id="calendarFechaSalida" href="javascript:OpenCal('fecha_salida');" style="width:16px"><img class="calendar" src="./img/calendar.png" width="16" height="16" /></a>
-					hh.<input type="number" min="0" max="24" step="1" name=horaSalida id=horaSalida style="width: 30px;" value=<?php print($viaje["hora_salida"]); ?> ></input>
-					mm.<input type="number" min="0" max="60" step="1" name=minSalida id=minSalida style="width: 30px;"  value=<?php print($viaje["min_salida"]); ?> ></input>
+					hh.<input type="number" min="0" max="24" step="1" name=hora_salida id=hora_salida style="width: 30px;" value=<?php print($viaje["hora_salida"]); ?> ></input>
+					mm.<input type="number" min="0" max="60" step="1" name=min_salida id=min_salida style="width: 30px;"  value=<?php print($viaje["min_salida"]); ?> ></input>
 					</div>
 					<div><label for="localidad_origen_id">Localidad Origen<em>*</em></label>
 						<?php
