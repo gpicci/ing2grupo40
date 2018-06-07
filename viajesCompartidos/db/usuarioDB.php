@@ -163,4 +163,21 @@ function existeUsuario($correo)  {
 	
 }
 
+function getCalificacionUsuario($usuario_id) {
+    $db = DB::singleton();
+    
+    $query = "
+                SELECT SUM(puntaje) calificacion
+                FROM calificacion
+                WHERE
+                usuario_evaluado_id= $usuario_id 
+                ";
+    
+    $rs = $db->executeQuery($query);
+    $row = $db->fetch_assoc($rs);
+    
+    $result = $row['calificacion'];
+    
+    return $result;
+}
 ?>

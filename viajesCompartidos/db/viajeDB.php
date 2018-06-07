@@ -394,6 +394,9 @@ function viajeBaja($id) {
                                     //para las calificaciones generadas por el sistema
         $puntaje = -1;
         
+        agregarCalificacion($id, ID_VALIDADOR_APLICACION, $idUsuario, $puntaje, 'Baja de viaje con postulantes aprobados');
+        
+        /*
         $query = "INSERT INTO calificacion(viaje_id, usuario_evalua_id, usuario_evaluado_id, puntaje, comentario) ".            
             "VALUES ($id,  ".ID_VALIDADOR_APLICACION.", $idUsuario, $puntaje, 'Baja de viaje con postulantes aprobados') ";
         $rs = $db->executeQuery($query);
@@ -402,7 +405,10 @@ function viajeBaja($id) {
             applog($db->db_error(), 1);
             return;
         }
+        */
     }
+
+        viajeLimpiaOcupacion($id);
     
     $query = "UPDATE viaje
 	          SET 	 m_baja = 1,
@@ -756,6 +762,20 @@ function validaOcupacion($viaje_id, $usuario_id, $fechaHora, $tipo_viaje_id, $du
     }
     
     return $result;
+}
+
+function agregarCalificacion($viaje_id, $usuario_evalua_id, $usuario_evaluado_id, $puntaje, $comentario) {
+    $db = DB::singleton();
+    
+    $query = "INSERT INTO calificacion(viaje_id, usuario_evalua_id, usuario_evaluado_id, puntaje, comentario) ".
+        "VALUES ($viaje_id,  $usuario_evalua_id, $usuario_evaluado_id, $puntaje, '$comentario') ";
+    $rs = $db->executeQuery($query);
+    
+    if (!$rs) {
+        applog($db->db_error(), 1);
+    }
+
+    return $rs;
 }
 
 ?>

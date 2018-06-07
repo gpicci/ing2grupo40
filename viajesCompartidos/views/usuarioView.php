@@ -57,6 +57,11 @@ if ($_REQUEST['op'] == 'm') {
         			<a>(en formato dd-mm-aaaa)</a>
 					<div><label for="correo_electronico">Correo Electronico<em>*</em></label><input id="correo_electronico" type="text" size="20" maxlength="20" name="correo_electronico" onchange="validarEmail(this.value)" value="<?php print($usuario['correo_electronico']); ?>" /></div>
 					<div><label for="clave">Clave<em>*</em></label><input id="clave" type="text" name="clave" size="50" maxlength="50" value="<?php print($usuario['clave']); ?>" /></div>
+<?php
+                    if ($_REQUEST['op'] == 'm') {
+                        echo "<div><label for=\"calificacion\">Calificación : ".getCalificacionUsuario($usuario['usuario_id'])."</label></div>" ;
+                    }
+?>
  					</fieldset>
 				<div class="buttonrow">
 					<?php if ($_REQUEST['op'] == 'a') { ?>
