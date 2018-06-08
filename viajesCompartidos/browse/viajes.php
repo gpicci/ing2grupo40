@@ -66,7 +66,9 @@
 		//la columna de cant. de asientos la voy a utilizar para
 		//cant. de asientos si el viaje esta abierto
 		//y para mostrar que esta cerrado si es este el caso
-		if ($row["cerrado"]==1) {
+		if ($row["terminado"]==1) {
+		    $asientos = "<div style=\"color: #FF0000;\"><b> Viaje Finalizado</div>";
+		} elseif ($row["cerrado"]==1) {
 		    $asientos = "<div style=\"color: #FF0000;\"><b> Viaje Cerrado</div>";
 		} else {
 		    $asientos = $row['cantidad_asientos'];
@@ -115,6 +117,9 @@
 					<div><a href="javascript:performBajaViaje('formViajes');">Eliminar Viaje</a></div>
 					<div><hr/></div>
 					<div><a href="javascript:performCerrarViaje('formViajes');">Cerrar Viaje</a></div>
+					<div><hr/></div>
+					<div><hr/></div>
+					<div><a href="javascript:performTerminarViaje('formViajes');">Marcar Viaje Terminado</a></div>
 					<div><hr/></div>
 				<?php }
 				} elseif ($cant>0) { ?>

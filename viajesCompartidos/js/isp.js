@@ -271,3 +271,12 @@ function performBajaPostulacion(theForm) {
 		document.getElementById(theForm).submit();
 	}
 }
+
+function performTerminarViaje(theForm) {
+	check = confirm('Al marcar un viaje como terminado dejara de estar activo y las calificaciones estaran pendientes de cargar');
+	if (check) {
+		document.getElementById('op').value = 't';
+		document.getElementById(theForm).action = 'main.php?accion=viajeABM&folder=abm';
+		document.getElementById(theForm).submit();
+	}
+}

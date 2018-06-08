@@ -23,7 +23,8 @@ function getViajesPorUsuario(
 	  CONCAT(nombre_marca,'-',nombre_modelo,': ',patente) as nombre_vehiculo,
 	  d.dia_semana_nombre dia_semana,
 	  fecha_salida,
-      v.m_cerrado cerrado
+      v.m_cerrado cerrado,
+      IfNull(v.m_terminado,0) terminado
 	FROM
 	  viaje v,
 	  vehiculo vv,
@@ -80,7 +81,8 @@ function getViajePorId(
 	  lo.nombre_localidad AS localidad_id_origen,
 	  ld.nombre_localidad AS localidad_id_destino,
 	  t.nombre AS d_tipo_viaje,
-      v.m_cerrado cerrado	  
+      v.m_cerrado cerrado,
+      IfNull(v.m_terminado,0) terminado	  
 	FROM
 	  viaje v,
 	  vehiculo vv,
@@ -651,9 +653,20 @@ function viajeCerrado($viaje_id) {
     $rsViaje = getViajePorId($_REQUEST["viaje_id"]);
     $rowViaje = $db->fetch_assoc($rsViaje);
     
-    $cerrado = $rowViaje["cerrado"];
+    $cerrado = ($rowViaje["cerrado"]==VIAJE_CERRADO);
     
     return $cerrado;
+}
+
+function viajeTerminado($viaje_id) {
+    $db = DB::singleton();
+    
+    $rsViaje = getViajePorId($_REQUEST["viaje_id"]);
+    $rowViaje = $db->fetch_assoc($rsViaje);
+    
+    $result = $rowViaje["terminado"];
+    
+    return $result;
 }
 
 function GetTarjetaIdPilotoViaje($viaje_id = 0 ) {
@@ -816,6 +829,23 @@ function agregarCalificacion($viaje_id, $usuario_evalua_id, $usuario_evaluado_id
     }
 
     return $rs;
+}
+
+function viajeFinalizar($id) {
+    $db = DB::singleton();
+    
+    $str_f_baja = "'".formatPHPFecha(date("d-m-Y"))."'";
+    
+    $query = "UPDATE viaje set m_terminado = 1 WHERE viaje_id = $id ";
+    $rs = $db->executeQuery($query);
+    
+    if (!$rs) {
+        applog($db->db_error(), 1);
+    }
+    
+    return $rs;
+    
+    
 }
 
 ?>
