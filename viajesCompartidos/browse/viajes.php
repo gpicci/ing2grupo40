@@ -81,13 +81,7 @@
          <td align="center">' . $row['nombre_vehiculo'] . '</td>
 		 <td align="center">' . $asientos . '</td>');
                         if ($propios!=1) {
-                            $rsPostulacion = viajeEstadoCopiloto($row['viaje_id'], $idUsuario );
-                            if($db->num_rows($rsPostulacion) == 0) {
-                                $estadoPostulacion = "Sin postularse"; 
-                            } else {
-                                $rowP = $db->fetch_assoc($rsPostulacion);
-                                $estadoPostulacion =  $rowP["descripcion_estado"];
-                            }
+                            viajeEstadoCopiloto($row['viaje_id'], $idUsuario, $estado_id, $estadoPostulacion );
                             print ('<td align="center"> '. $estadoPostulacion . '</td>');
                         }
                         

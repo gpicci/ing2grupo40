@@ -458,7 +458,17 @@ function viajeSetEstadoCopiloto($viaje_id, $idUsuarioPax, $idEstado) {
     return $rs;
 }
 
-function viajeEstadoCopiloto($viaje_id, $idUsuarioPax ) {
+function viajeRechazarPostulacion($viaje_id, $idUsuarioPax, $idUsuarioRechaza) {
+    
+    viajeEstadoCopiloto($viaje_id, $idUsuarioPax, $estado_id, $descripcion_estado);
+    
+    if  ($estado_id==ID_APROBADO) {
+        agregarCalificacion($viaje_id, ID_VALIDADOR_APLICACION, $idUsuarioRechaza, -1, "Rechaza usuario aprobado");
+    }
+    viajeSetEstadoCopiloto($viaje_id, $idUsuarioPax, ID_RECHAZADO);
+}
+
+function viajeEstadoCopiloto($viaje_id, $idUsuarioPax, &$estado_id, &$descripcion ) {
     $db = DB::singleton();
     
     $query = "   
@@ -473,11 +483,20 @@ function viajeEstadoCopiloto($viaje_id, $idUsuarioPax ) {
 
     $rs = $db->executeQuery($query);
     
+    if($db->num_rows($rs) == 0) {
+        $descripcion = "Sin postularse";
+        $estado_id=-1;
+    } else {
+        $row = $db->fetch_assoc($rs);
+        $descripcion =  $row["descripcion_estado"];
+        $estado_id =  $row["estado_id"];
+    }
+    
     if (!$rs) {
         applog($db->db_error(), 1);
     }
     
-    return $rs;
+    return $estado_id;
 }
 
 function existePostulacion($viaje_id = 0, $usuario_id=0 ) {

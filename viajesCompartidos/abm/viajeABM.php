@@ -104,7 +104,8 @@ if ($_REQUEST['op'] == 'a') {
 	}
 } elseif ($_REQUEST['op'] == 'z') {
 	//rechazo postulacion
-	viajeSetEstadoCopiloto($_REQUEST['viaje_id'], $_REQUEST['idUsuarioPax'], ID_RECHAZADO);
+    viajeRechazarPostulacion($_REQUEST['viaje_id'], $_REQUEST['idUsuarioPax'], $usuario_id);
+	//viajeSetEstadoCopiloto($_REQUEST['viaje_id'], $_REQUEST['idUsuarioPax'], ID_RECHAZADO);
 } elseif ($_REQUEST['op'] == 'c') {
 	viajeCierre($_REQUEST['viaje_id']);
 }
