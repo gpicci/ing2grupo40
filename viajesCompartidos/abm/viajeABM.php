@@ -25,17 +25,19 @@ function validaFecha($fecha) {
 	
 }
 
-$fechaHoraPHP = $_REQUEST['fecha_salida']." ".$_REQUEST['hora_salida'].":".$_REQUEST['min_salida'].":00";
-
-$fechaHora = formatPHPFechaHora($fechaHoraPHP, $fecha, $hora, $minutos, $segundos);
-if ($_REQUEST['op'] == 'a') {
-    $viaje_id = 0;
-} else {
-    $viaje_id = $_REQUEST['viaje_id'];
+if (($_REQUEST['op'] == 'm') ||  ($_REQUEST['op'] == 'a') ||  ($_REQUEST['op'] == 'b') ) {
+    $fechaHoraPHP = $_REQUEST['fecha_salida']." ".$_REQUEST['hora_salida'].":".$_REQUEST['min_salida'].":00";
+    
+    $fechaHora = formatPHPFechaHora($fechaHoraPHP, $fecha, $hora, $minutos, $segundos);
+    if ($_REQUEST['op'] == 'a') {
+        $viaje_id = 0;
+    } else {
+        $viaje_id = $_REQUEST['viaje_id'];
+    }
+    $usuario_id = $_SESSION['user_id'];
+    $tipo_viaje_id = $_REQUEST['tipo_viaje_id'];
+    $duracion = $_REQUEST['duracion'];
 }
-$usuario_id = $_SESSION['user_id'];
-$tipo_viaje_id = $_REQUEST['tipo_viaje_id'];
-$duracion = $_REQUEST['duracion'];
 
 $validaciones = true;
 
@@ -108,10 +110,27 @@ if ($_REQUEST['op'] == 'a') {
 	//viajeSetEstadoCopiloto($_REQUEST['viaje_id'], $_REQUEST['idUsuarioPax'], ID_RECHAZADO);
 } elseif ($_REQUEST['op'] == 'c') {
 	viajeCierre($_REQUEST['viaje_id']);
+} elseif ($_REQUEST['op'] == 'bp') {
+    $validaPostulacion=true;
+    if (!existePostulacion($_REQUEST['viaje_id'], $_REQUEST['usuario_id'])) {
+        $validaPostulacion=false;
+        $_SESSION["mensajesPendientes"][] = "No existe postulacion para el viaje seleccionado";
+    }
+    
+    viajeEstadoCopiloto($_REQUEST['viaje_id'], $_REQUEST['usuario_id'], $estado_id, $descripcion );
+    if ($estado_id==ID_RECHAZADO) {
+        $validaPostulacion=false;
+        $_SESSION["mensajesPendientes"][] = "Postulacion rechazada, no se puede eliminar";
+    }
+
+    if ($validaPostulacion) {
+        viajeAnulaPostulacion($_REQUEST['viaje_id'], $_REQUEST['usuario_id']);
+    }
 }
 
+
 if ($redirect) { 
-    if ($_REQUEST['op'] == 'p') {
+    if (($_REQUEST['op'] == 'p') || ($_REQUEST['op'] == 'bp')) {
     	header('Location: main.php?accion=viajes&propios=0&folder='.BROWSE_DIR);
     } elseif (($_REQUEST['op'] == 'v') || ($_REQUEST['op'] == 'z')){
     	header('Location: main.php?accion=viajeView&folder=views&op=m&viaje_id='.$_REQUEST['viaje_id']);

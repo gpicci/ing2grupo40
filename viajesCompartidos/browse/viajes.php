@@ -120,6 +120,8 @@
 				} elseif ($cant>0) { ?>
 				<div><a href="javascript:performPostulacion('formViajes');">Postularse a un Viaje</a></div>
 				<div><hr/></div>
+				<div><a href="javascript:performBajaPostulacion('formViajes');">Anular postulacion</a></div>
+				<div><hr/></div>
 				<div><a href="javascript:performVerViaje('formViajes');">Ver Detalle</a></div>
 				<div><hr/></div>
 			<?php }; ?>

@@ -262,3 +262,12 @@ function performCerrarSesion() {
 		 window.location.href = "logout.php";
 	}
 }
+
+function performBajaPostulacion(theForm) {
+	check = confirm('Confirme la baja de la postulacion. En caso de que ya haya sido aprobada bajara su calificacion');
+	if (check) {
+		document.getElementById('op').value = 'bp';
+		document.getElementById(theForm).action = 'main.php?accion=viajeABM&folder=abm';
+		document.getElementById(theForm).submit();
+	}
+}

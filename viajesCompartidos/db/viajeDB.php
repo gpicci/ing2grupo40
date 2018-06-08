@@ -387,7 +387,7 @@ function viajeBaja($id) {
         return ;
     }
     
-    $cantAprob = getPaxPorViaje($id, 2);
+    getPaxPorEstado($id, $cantAprob, $p, $r, $t);
     if ($cantAprob>0) {
         $idUsuario = GetUsuarioPorViaje($id);
         $id_usuario_evaluador = 0;  //id de un usuario que haría de avaluador 
@@ -431,6 +431,27 @@ function viajePostulaCopiloto($viaje_id, $usuario_id, $tarjeta_id) {
     
     $query = "INSERT INTO pasajero (tipo_pasajero_id, viaje_id, usuario_id, estado_id, tarjeta_id)
               VALUES (".TIPO_COPILOTO.",$viaje_id, $usuario_id, ".ID_APROBACION_PENDIENTE.", $tarjeta_id) ";
+    $rs = $db->executeQuery($query);
+    
+    if (!$rs) {
+        applog($db->db_error(), 1);
+    }
+    
+    return $rs;
+}
+
+function viajeAnulaPostulacion($viaje_id, $usuario_id) {
+    $db = DB::singleton();
+    
+    $str_f_baja = "'".formatPHPFecha(date("d-m-Y"))."'";
+    
+    viajeEstadoCopiloto($viaje_id, $usuario_id, $estado_id, $descripcion );
+    if ($estado_id == ID_APROBADO) {
+        agregarCalificacion($viaje_id, ID_VALIDADOR_APLICACION, $usuario_id, -1, "Anula postulacion aprobada");
+    }
+    
+    $query = "DELETE FROM pasajero WHERE viaje_id=$viaje_id and usuario_id=$usuario_id";
+    
     $rs = $db->executeQuery($query);
     
     if (!$rs) {
