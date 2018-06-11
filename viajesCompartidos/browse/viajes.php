@@ -1,21 +1,65 @@
 <?php
 	require_once(DB_DIR.'/viajeDB.php');
+	require_once("./db/vehiculoDB.php");
+	require_once("./common/combo.php");
+	require_once("./common/filtroDB.php");
 
 	$db = DB::singleton();
 
 	// Obtener el id actual, por defecto es el primero
 	$idUsuario = (isset($_SESSION['user_id'])) ? $_SESSION['user_id']: -1;
+	$f_desde = (isset($_REQUEST['f_desde'])) ? $_REQUEST['f_desde']: date('d-m-Y');
+	$f_hasta = (isset($_REQUEST['f_hasta'])) ? $_REQUEST['f_hasta']: date('d-m-Y',strtotime(date('d-m-Y')."+ 30 days"));
+	$piloto = (isset($_REQUEST['piloto'])) ? $_REQUEST['piloto']: -1;
+	$localidad_origen_id= (isset($_REQUEST['localidad_origen_id'])) ? $_REQUEST['localidad_origen_id']: -1;
+	$localidad_destino_id= (isset($_REQUEST['localidad_destino_id'])) ? $_REQUEST['localidad_destino_id']: -1;
+	$tipo_viaje_id= (isset($_REQUEST['tipo_viaje_id'])) ? $_REQUEST['tipo_viaje_id']: -1;
 	$viaje_id = -1;
 	$cant = 0;
 
+	$filtros = array();
+
+	if ($piloto<>-1) {
+		$filtro = new FiltroDB();
+		$filtro->campo = "v.usuario_id";
+		$filtro->valor = $piloto;
+		$filtro->tipoDato = "N";
+		$filtros [] = $filtro;
+	}
+
+	if ($localidad_origen_id<>-1) {
+		$filtro = new FiltroDB();
+		$filtro->campo = "v.localidad_origen_id";
+		$filtro->valor = $localidad_origen_id;
+		$filtro->tipoDato = "N";
+		$filtros [] = $filtro;
+	}
+
+	if ($localidad_destino_id<>-1) {
+		$filtro = new FiltroDB();
+		$filtro->campo = "v.localidad_destino_id";
+		$filtro->valor = $localidad_destino_id;
+		$filtro->tipoDato = "N";
+		$filtros [] = $filtro;
+	}
+
+	if ($tipo_viaje_id<>-1) {
+		$filtro = new FiltroDB();
+		$filtro->campo = "v.tipo_viaje_id";
+		$filtro->valor = $tipo_viaje_id;
+		$filtro->tipoDato = "N";
+		$filtros [] = $filtro;
+	}
+
 	if ( (isSet($_REQUEST['propios'])) && ($_REQUEST['propios']==0) )  {
 	    $propios = 0;
-	    $rs = getViajesPorUsuario($idUsuario, $propios);
+	    $rs = getViajesPorUsuario($idUsuario, $propios,$filtros,$f_desde,$f_hasta);
 	} else {
 	    $propios = 1;
-	    $rs = getViajesPorUsuario($idUsuario, $propios);
+	    $rs = getViajesPorUsuario($idUsuario, $propios,$filtros,$f_desde,$f_hasta);
 	}
-	
+
+
 ?>
 	<form name='formViajes' id='formViajes' method='post' action='' >
 	<input type='hidden' name='op' id='op' value='' />
@@ -33,18 +77,19 @@
 	<table>
 		<tr>
       		<td align="center"><b>SEL</b></td>
+      		<td align="center"><b>CODIGO</b></td>
       		<td align="center"><b>TIPO DE VIAJE</b></td>
-         	<td align="center"><b>DIA</b></td>
          	<td align="center"><b>FECHA SALIDA</b></td>
          	<td align="center"><b>ORIGEN</b></td>
          	<td align="center"><b>DESTINO</b></td>
+         	<td align="center"><b>PILOTO</b></td>
          	<td align="center"><b>VEHICULO</b></td>
          	<td align="center"><b>ASIENTOS</b></td>
 <?php
             if ($propios!=1) {
                 print ('<td align="center"><b>APROBACION</b></td>');
             }
-?>         	
+?>
 			<td align="center"><b>Postulados</b></td>
 			<td align="center"><b>Aprobados</b></td>
    	</tr>
@@ -62,7 +107,7 @@
 		 		print('<td align="center"><input type="radio" name="viaje_id" id="viaje_id" value="'.$row['viaje_id'].'" /></td>');
 		 	}
 		}
-		
+
 		//la columna de cant. de asientos la voy a utilizar para
 		//cant. de asientos si el viaje esta abierto
 		//y para mostrar que esta cerrado si es este el caso
@@ -73,20 +118,21 @@
 		} else {
 		    $asientos = $row['cantidad_asientos'];
 		}
-		
+
 		print('
+		 <td align="center">' . $row['viaje_id'] . '</td>
          <td align="center">' . $row['d_tipo_viaje'] . '</td>
-         <td align="center">' . $row['dia_semana'] . '</td>
          <td align="center">' . formatMSSQLFechaHora($row['fecha_salida'],$f,$h,$m,$s) . '</td>
          <td align="center">' . $row['localidad_origen'] . '</td>
 		 <td align="center">' . $row['localidad_destino'] . '</td>
+ 		 <td align="center">' . $row['piloto'] . '</td>
          <td align="center">' . $row['nombre_vehiculo'] . '</td>
 		 <td align="center">' . $asientos . '</td>');
                         if ($propios!=1) {
                             viajeEstadoCopiloto($row['viaje_id'], $idUsuario, $estado_id, $estadoPostulacion );
                             print ('<td align="center"> '. $estadoPostulacion . '</td>');
                         }
-                        
+
         $pendientes = 0;
         $aprobados = 0;
         $postulados = 0;
@@ -95,7 +141,7 @@
         print('
         <td align="center">' . $postulados . '</td>
         <td align="center">' . $aprobados . '</td>');
-        
+
 		print ('</tr>');
 	}
 	print("</table>");
@@ -132,6 +178,73 @@
 			<?php }; ?>
 			<div><p><br/></p></div>
 			<div><hr/></div>
+			<fieldset>
+			<legend>BUSCAR</legend>
+				<fieldset>
+				<legend>Por Tipo de Viaje</legend>
+					<div><p></p></div>
+					<div>
+						<?php
+						$rs = getTipoViajeViajesActuales($idUsuario,$propios);
+						comboBox("tipo_viaje_id", $rs, "tipo_viaje_id", "tipo_viaje", "", $tipo_viaje_id, "");
+						?>
+					</div>
+				</fieldset>
+				<div><p></p></div>
+				<fieldset>
+				<legend>Por Fecha de Salida</legend>
+					<div><p></p></div>
+					<div>
+						<label for="f_desde">Desde</label>
+	        			<input size="12" type="text" id="f_desde" name="f_desde" style="width:80px" value="<?php print $f_desde; ?>"/>
+	        			<span id="f_desde"></span>
+	        			<?php echo'<a id="calendarDesde" href="javascript:OpenCal('."'f_desde'".');" style="width:16px"><img class="calendar" src="./img/calendar.png" width="16" height="16" />';?></a>
+					</div>
+					<div><p></p></div>
+					<div>
+						<label for="f_hasta">Hasta</label>
+	        			<input size="12" type="text" id="f_hasta" name="f_hasta" style="width:80px" value="<?php print $f_hasta; ?>"/>
+	        			<span id="f_hasta"></span>
+	        			<?php echo'<a id="calendarHasta" href="javascript:OpenCal('."'f_hasta'".');" style="width:16px"><img class="calendar" src="./img/calendar.png" width="16" height="16" />';?></a>
+					</div>
+				</fieldset>
+				<div><p></p></div>
+				<?php if ($propios == 0){ ?>
+				<fieldset>
+				<legend>Por Piloto</legend>
+					<div><p></p></div>
+					<div><label for="piloto">Piloto </label>
+					<?php 	$rs = getPilotosViajesActuales($idUsuario,$propios);
+						comboBox("piloto", $rs, "usuario_id", "piloto", "", $piloto, "");
+
+				echo ('</fieldset>');
+				}?>
+				<div><p></p></div>
+				<fieldset>
+				<legend>Por Origen</legend>
+					<div><p></p></div>
+					<div>
+						<?php
+						$rs = getLocOrigenViajesActuales($idUsuario,$propios);
+							comboBox("localidad_origen_id", $rs, "localidad_origen_id", "localidad_origen", "", $localidad_origen_id, "");
+						?>
+					</div>
+				</fieldset>
+				<div><p></p></div>
+				<fieldset>
+				<legend>Por Destino</legend>
+					<div><p></p></div>
+					<div>
+						<?php
+						$rs = getLocDestinoViajesActuales($idUsuario,$propios);
+							comboBox("localidad_destino_id", $rs, "localidad_destino_id", "localidad_destino", "", $localidad_destino_id, "");
+						?>
+					</div>
+				</fieldset>
+				<p>
+					<a href="javascript:performFiltrosViajes('formViajes');">Aplicar Filtros</a>
+				</p>
+			</fieldset>
 		</div>
 	</div>
 	</form>

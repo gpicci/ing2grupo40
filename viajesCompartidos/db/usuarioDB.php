@@ -67,7 +67,7 @@ function usuarioAlta(
 		$clave) {
 
 	$db = DB::singleton();
-	
+
 	$query =
 	"INSERT INTO usuario (
 	  nombre,
@@ -101,7 +101,7 @@ function usuarioModifica(
   $foto) {
   	$sqlfoto='';
   	if($_FILES['myimage']['size']>0){
-  		$image = addslashes (file_get_contents($_FILES['myimage']['tmp_name']));		
+  		$image = addslashes (file_get_contents($_FILES['myimage']['tmp_name']));
 		$sqlfoto=" , foto= '".$image."'";
 	}
 	$db = DB::singleton();
@@ -126,9 +126,9 @@ function usuarioModifica(
 
 function usuarioBaja($id) {
 	$db = DB::singleton();
-	
-	$str_f_baja = "'".formatPHPFecha(date("d/m/Y"))."'";	
-	
+
+	$str_f_baja = "'".formatPHPFecha(date("d/m/Y"))."'";
+
 	$query = "UPDATE usuario
 	          SET 	 m_baja = 1,
 					f_baja = ".$str_f_baja.
@@ -145,39 +145,39 @@ function usuarioBaja($id) {
 
 function existeUsuario($correo)  {
 	$db = DB::singleton();
-	
+
 	$query = "SELECT count(1) as cant
-			FROM usuario u 
+			FROM usuario u
 			WHERE u.m_baja = 0
-			AND	  u.correo_electronico = '".$correo."'"; 
-	applog($query);
+			AND	  u.correo_electronico = '".$correo."'";
+
 	$rs = $db->executeQuery($query);
-	
+
 	$row = $db->fetch_assoc($rs);
-	
+
 	if ($row['cant']>0) {
 		return true;
 	} else {
 		return false;
 	}
-	
+
 }
 
 function getCalificacionUsuario($usuario_id) {
     $db = DB::singleton();
-    
+
     $query = "
                 SELECT IFNULL(SUM(puntaje),0) calificacion
                 FROM calificacion
                 WHERE
-                usuario_evaluado_id= $usuario_id 
+                usuario_evaluado_id= $usuario_id
                 ";
-    
+
     $rs = $db->executeQuery($query);
     $row = $db->fetch_assoc($rs);
-    
+
     $result = $row['calificacion'];
-     
+
     return $result;
 }
 ?>
