@@ -216,23 +216,31 @@ function reset_image(id){
 
  function checkTarjeta(theForm) {
 	// Validacion de campos obligatorios
-	if ((document.getElementById('n_tarjeta').value == '') ||
-		(document.getElementById('n_codigo_verificador').value == '') ||
-		(document.getElementById('d_nombre_titular').value == '')) {
-		alert('Ingrese un valor para los datos obligatorios.');
+	if (document.getElementById('n_tarjeta').value == '') {
+		alert('El numero de tarjeta es obligatorio, por favor verifique los datos ingresados');
 	} else {
-		if (document.getElementById('n_tarjeta').value.length < 16) {
-			alert('Debe ingresar 16 digitos para el numero de tarjeta');
+		if ((document.getElementById('n_mes_vence').value == '0') || (document.getElementById('n_anio_vence').value == '0')) {
+			alert('La fecha de vencimiento es obligatoria, por favor verifique los datos ingresados');
 		} else {
-			if (document.getElementById('n_codigo_verificador').value.length < 3) {
-				alert('Debe ingresar 3 digitos para el codigo verificador de tarjeta');
+			if (document.getElementById('n_codigo_verificador').value == '') {
+				alert('El digito verificador es obligatorio, por favor verifique los datos ingresados');
 			} else {
-				document.getElementById(theForm).submit();
+				if (document.getElementById('d_nombre_titular').value == '') {
+					alert('El nombre del titular es obligatorio, por favor verifique los datos ingresados');
+				} else {
+					if (document.getElementById('n_tarjeta').value.length < 16) {
+						alert('Debe ingresar 16 digitos para el numero de tarjeta');
+					} else {
+						if (document.getElementById('n_codigo_verificador').value.length < 3) {
+							alert('Debe ingresar 3 digitos para el codigo verificador de tarjeta');
+						} else {
+							document.getElementById(theForm).submit();
+						}
+					}
+				}
 			}
 		}
-
 	}
-
 }
 
 function performAltaTarjeta(theForm) {
@@ -248,7 +256,7 @@ function performModTarjeta(theForm) {
 }
 
 function performBajaTarjeta(theForm) {
-	check = confirm('Confirme la eliminacion del vehiculo.');
+	check = confirm('Confirme la eliminacion de la tarjeta.');
 	if (check) {
 		document.getElementById('op').value = 'b';
 		document.getElementById(theForm).action = 'main.php?accion=tarjetaABM&folder=abm';

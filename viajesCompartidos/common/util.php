@@ -179,4 +179,8 @@ function browserDetect() {
 
 }
 
+function getUltimoDiaMes($nAnio,$nMes) {
+	return date("d",(mktime(0,0,0,$nMes+1,1,$nAnio)-1));
+}
+
 ?>

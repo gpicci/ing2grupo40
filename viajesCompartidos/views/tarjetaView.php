@@ -55,11 +55,11 @@ if ($_REQUEST['op'] == 'm') {
 					<div><label for="d_nombre_titular">Nombre Titular<em>*</em></label><input id="d_nombre_titular" type="text" size="20" maxlength="20" name="d_nombre_titular" value="<?php print($tarjeta['d_nombre_titular']); ?>" /></div>
 					<legend>Vencimiento</legend>
 					<div>
-						<select name="n_mes_vence">
+						<select name="n_mes_vence" id="n_mes_vence">
 						<option value="0">Mes</option>
                       		<?php  for($i=1;$i<=12;$i++) { echo "<option value='".$i."'>".$i."</option>"; } ?>
                     	</select>
-						<select name="n_anio_vence">
+						<select name="n_anio_vence" id="n_anio_vence">
 						<option value="0">A&ntildeo</option>
                       		<?php  for($i=2018;$i<=2028;$i++) { echo "<option value='".$i."'>".$i."</option>"; } ?>
                     	</select>
