@@ -164,7 +164,10 @@
 					<div><hr/></div>
 					<div><a href="javascript:performCerrarViaje('formViajes');">Cerrar Viaje</a></div>
 					<div><hr/></div>
+					<?php if ($propios==1) { ?>
+					<div><a href="javascript:performCerrarViaje('formViajes');">Mostrar Pendientes de Puntuacion</a></div>
 					<div><hr/></div>
+					<?php } ?>
 					<div><a href="javascript:performTerminarViaje('formViajes');">Marcar Viaje Terminado</a></div>
 					<div><hr/></div>
 				<?php }
