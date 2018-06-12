@@ -42,15 +42,25 @@ if (($_REQUEST['op'] == 'm') ||  ($_REQUEST['op'] == 'a') ||  ($_REQUEST['op'] =
 $validaciones = true;
 
 if (($_REQUEST['op'] == 'm') ||  ($_REQUEST['op'] == 'a') ) {
-    if (!validaFecha($_REQUEST['fecha_salida'])) {
-        $_SESSION['mensajesPendientes'][]="Fecha invalida.";
-        $validaciones = false;
-    } else {
-        if (!validaOcupacion($viaje_id, $usuario_id, $fechaHora, $tipo_viaje_id, $duracion )){
-            $_SESSION['mensajesPendientes'][]="El usuario tiene un viaje asociado en las fechas propuestas";
-            $validaciones = false;
-        }
-    }
+	if ($_REQUEST['duracion'] == 0) {
+		$_SESSION['mensajesPendientes'][]="Debe cargar Duracion del viaje.";
+		$validaciones = false;
+	} else {
+		if ($_REQUEST['costo'] == 0) {
+			$_SESSION['mensajesPendientes'][]="Debe cargar costo del viaje.";
+			$validaciones = false;
+		} else {
+		    if (!validaFecha($_REQUEST['fecha_salida'])) {
+		        $_SESSION['mensajesPendientes'][]="Fecha invalida.";
+		        $validaciones = false;
+		    } else {
+		        if (!validaOcupacion($viaje_id, $usuario_id, $fechaHora, $tipo_viaje_id, $duracion )){
+		            $_SESSION['mensajesPendientes'][]="El usuario tiene un viaje asociado en las fechas propuestas";
+		            $validaciones = false;
+		        } 
+		    }
+		}
+	}
 }
 
 if ($_REQUEST['op'] == 'a') {
