@@ -39,7 +39,7 @@ if (($_REQUEST["op"] == "m") || ($_REQUEST["op"] == "b") || ($_REQUEST["op"] == 
   $_SESSION["usuario_actual"] = $viaje;
 
   if ($viaje["cerrado"]==1) {
-      $_SESSION['mensajesPendientes'][]="El viaje ha sido cerrado y no puede modificarse".$viaje["cerrado"];
+      $_SESSION['mensajesPendientes'][]="El viaje ha sido cerrado y no puede modificarse";
       header('Location: main.php?accion=viajes&folder='.BROWSE_DIR);
   }
 

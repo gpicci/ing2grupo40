@@ -297,3 +297,9 @@ function performSoloPendientes(theForm, soloPendientes) {
 	document.getElementById('soloPendientes').value = soloPendientes;
 	document.getElementById(theForm).submit();
 }
+
+function performCalificarViaje(theForm) {
+	document.getElementById('op').value = 'califica';
+	document.getElementById(theForm).action = 'main.php?accion=calificacionView&folder=views';
+	document.getElementById(theForm).submit();
+}

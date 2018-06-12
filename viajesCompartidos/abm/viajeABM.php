@@ -122,6 +122,12 @@ if ($_REQUEST['op'] == 'a') {
 	viajeCierre($_REQUEST['viaje_id']);
 } elseif ($_REQUEST['op'] == 't') {
     viajeFinalizar($_REQUEST['viaje_id']);
+} elseif ($_REQUEST['op'] == 'califica') {
+    //viajeCalificar($_REQUEST['viaje_id'], $usuario_id, $_REQUEST['idUsuarioPax'] );
+    $_SESSION["mensajesPendientes"][] = $_REQUEST['op'];
+    $_SESSION["mensajesPendientes"][] = $_REQUEST['calificacion'];
+    $_SESSION["mensajesPendientes"][] = $_REQUEST['comentario'];
+    
 } elseif ($_REQUEST['op'] == 'bp') {
     $validaPostulacion=true;
     if (!existePostulacion($_REQUEST['viaje_id'], $_REQUEST['usuario_id'])) {
