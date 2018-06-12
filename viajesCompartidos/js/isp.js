@@ -290,6 +290,10 @@ function performTerminarViaje(theForm) {
 }
 
 function performFiltrosViajes(theForm) {
+	document.getElementById(theForm).submit();
+}
 
+function performSoloPendientes(theForm, soloPendientes) {
+	document.getElementById('soloPendientes').value = soloPendientes;
 	document.getElementById(theForm).submit();
 }

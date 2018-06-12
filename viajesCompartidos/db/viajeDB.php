@@ -7,7 +7,8 @@ function getViajesPorUsuario(
   $propios=1,
   $filtros = array(),
   $f_desde,
-  $f_hasta) {
+  $f_hasta,
+  $pendientesPuntuacion=false  ) {
 
   $db = DB::singleton();
 
@@ -68,6 +69,11 @@ function getViajesPorUsuario(
     	}
     };
 
+    if ($pendientesPuntuacion) {
+        $query .= " AND IFNULL(m_terminado,0) = 1 ";
+        $query .= " AND viaje_id NOT IN (SELECT viaje_id FROM calificacion WHERE usuario_evalua_id=$usuario_id) ";
+    };
+    
   $rs = $db->executeQuery($query);
 
   if (!$rs) {

@@ -53,18 +53,25 @@
 
 	if ( (isSet($_REQUEST['propios'])) && ($_REQUEST['propios']==0) )  {
 	    $propios = 0;
-	    $rs = getViajesPorUsuario($idUsuario, $propios,$filtros,$f_desde,$f_hasta);
 	} else {
 	    $propios = 1;
-	    $rs = getViajesPorUsuario($idUsuario, $propios,$filtros,$f_desde,$f_hasta);
 	}
 
-
+	
+	if ( (isSet($_REQUEST['soloPendientes'])) && ($_REQUEST['soloPendientes']==1) )  {
+	    $soloPendientes = 1;
+	} else {
+	    $soloPendientes = 0;
+	}
+	
+	$rs = getViajesPorUsuario($idUsuario, $propios,$filtros,$f_desde,$f_hasta, $soloPendientes);
+	
 ?>
 	<form name='formViajes' id='formViajes' method='post' action='' >
 	<input type='hidden' name='op' id='op' value='' />
 	<input type='hidden' name='usuario_id' id='usuario_id' value='<?php print ($idUsuario)?>' />
 	<input type='hidden' name='propios' id='propios' value='<?php print ($propios)?>' />
+	<input type='hidden' name='soloPendientes' id='soloPendientes' value='<?php print ($soloPendientes)?>' />
 	<div id="content">
 		<div id="right">
 <?php
@@ -164,8 +171,11 @@
 					<div><hr/></div>
 					<div><a href="javascript:performCerrarViaje('formViajes');">Cerrar Viaje</a></div>
 					<div><hr/></div>
-					<?php if ($propios==1) { ?>
-					<div><a href="javascript:performCerrarViaje('formViajes');">Mostrar Pendientes de Puntuacion</a></div>
+					<?php if (!$soloPendientes) { ?>
+					<div><a href="javascript:performSoloPendientes('formViajes',1);">Mostrar Pendientes de Puntuacion</a></div>
+					<div><hr/></div>
+					<?php } else {?>
+					<div><a href="javascript:performSoloPendientes('formViajes',0);">Mostrar Todos</a></div>
 					<div><hr/></div>
 					<?php } ?>
 					<div><a href="javascript:performTerminarViaje('formViajes');">Marcar Viaje Terminado</a></div>
