@@ -99,6 +99,7 @@
 ?>
 			<td align="center"><b>Postulados</b></td>
 			<td align="center"><b>Aprobados</b></td>
+			<td align="center"><b>PREGUNTAS</b></td>
    	</tr>
 <?php
 	while ($row = $db->fetch_assoc($rs)) {
@@ -145,9 +146,11 @@
         $postulados = 0;
         $rechazados = 0;
         getPaxPorEstado($row['viaje_id'], $aprobados, $pendientes, $rechazados, $postulados);
+        if (($row['cant_preguntas'])>0){$tiene_preguntas = 'SI';} else {$tiene_preguntas = 'NO';}
         print('
         <td align="center">' . $postulados . '</td>
-        <td align="center">' . $aprobados . '</td>');
+        <td align="center">' . $aprobados . '</td>
+		<td align="center">'. $tiene_preguntas. '</td>');
 
 		print ('</tr>');
 	}
@@ -189,6 +192,8 @@
 				<div><a href="javascript:performBajaPostulacion('formViajes');">Anular postulacion</a></div>
 				<div><hr/></div>
 				<div><a href="javascript:performVerViaje('formViajes');">Ver Detalle</a></div>
+				<div><hr/></div>
+				<div><a href="javascript:performVerPreguntas('formViajes');">Preguntas/Respuestas</a></div>
 				<div><hr/></div>
 				<?php if (!$soloPendientes) { ?>
 				<div><a href="javascript:performSoloPendientes('formViajes',1);">Mostrar Pendientes de Puntuacion</a></div>

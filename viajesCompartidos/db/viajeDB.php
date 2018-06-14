@@ -17,7 +17,7 @@ function getViajesPorUsuario(
 	  v.viaje_id,
 	  v.vehiculo_id,
 	  m.nombre_marca,
-	  mm.nombre_modelo,
+	  mm.nombre_modelo,	 
 	  vv.patente,
 	  vv.cantidad_asientos,
 	  lo.nombre_localidad AS localidad_origen,
@@ -25,12 +25,13 @@ function getViajesPorUsuario(
 	  t.nombre AS d_tipo_viaje,
 	  v.duracion,
 	  v.costo,
-	  CONCAT(nombre_marca,'-',nombre_modelo,': ',patente) as nombre_vehiculo,
+	  CONCAT(nombre_marca,'-',nombre_modelo) as nombre_vehiculo,
 	  d.dia_semana_nombre dia_semana,
 	  fecha_salida,
       v.m_cerrado cerrado,
       IfNull(v.m_terminado,0) terminado,
-	  CONCAT(u.nombre,' ',u.apellido) piloto
+	  CONCAT(u.nombre,' ',u.apellido) piloto,
+	  (select count(1) from pregunta_respuesta r where r.viaje_id = v.viaje_id) as cant_preguntas
 	FROM
 	  viaje v,
 	  vehiculo vv,
