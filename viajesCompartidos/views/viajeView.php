@@ -12,6 +12,13 @@ if ( (isSet($_REQUEST['propios'])) && ($_REQUEST['propios']==0) )  {
     $propios = 1;
 }
 
+if ($_REQUEST["op"] == "a") {
+    if (calificacionPendienteExcedida ($_SESSION["user_id"], LIMITE_DIAS_CALIFICACION)) {
+        $_SESSION['mensajesPendientes'][]="Hay calificaciones pendientes con mas de ".LIMITE_DIAS_CALIFICACION." dias de antiguedad";
+        header('Location: main.php?accion=viajes&folder='.BROWSE_DIR);
+    }
+}
+
 if (($_REQUEST["op"] == "m") || ($_REQUEST["op"] == "b") || ($_REQUEST["op"] == "d")) {
   $db = DB::singleton();
   $rs = getViajePorId($_REQUEST["viaje_id"]);

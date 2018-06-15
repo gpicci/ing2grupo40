@@ -30,17 +30,8 @@ if ( ($validaCalif) && ($_REQUEST["op"] == "califica") )  {
         $id_usuario_piloto = GetUsuarioPorViaje($viaje_id);
         $rsUsuarioPax = getUsuario($id_usuario_piloto);
     }
-    /*
-    if (existePostulacion($viaje_id, $usuario_id) ) {
-        $_SESSION['mensajesPendientes'][]="Ya se ha postulado al viaje previamente";
-        header('Location: main.php?accion=viajes&propios=0&folder='.BROWSE_DIR);
-    }
     
-    if (viajeCerrado($viaje_id) ) {
-        $_SESSION['mensajesPendientes'][]="El viaje fue cerrado, no es posible postularse";
-        header('Location: main.php?accion=viajes&propios=0&folder='.BROWSE_DIR);
-    }
-    */
+    
 }
 ?>
 	<div id="content">

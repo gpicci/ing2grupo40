@@ -70,6 +70,7 @@ function getViajesPorUsuario(
     	}
     };
 
+    
     if ($pendientesPuntuacion) {
         $query .= " AND IFNULL(m_terminado,0) = 1 ";
         if ($propios==0) {
@@ -79,10 +80,11 @@ function getViajesPorUsuario(
             // si estoy evaluando los viajes del usuario , los pendientes son los que tengan diferencias
             // entre los aprobados para el viaje y los calificados para el viaje 
             $query .= "  AND ((SELECT COUNT(1) FROM pasajero WHERE tipo_pasajero_id=".TIPO_COPILOTO." AND estado_id=".ID_APROBADO." AND viaje_id=v.viaje_id)
-                            = (SELECT (1) FROM calificacion WHERE usuario_evalua_id  = $usuario_id AND viaje_id=v.viaje_id) ) ";
+                            <> (SELECT COUNT(1) FROM calificacion WHERE usuario_evalua_id  = $usuario_id AND viaje_id=v.viaje_id) ) ";
                 
         }
     };
+    
     
   $rs = $db->executeQuery($query);
 
@@ -655,7 +657,6 @@ function viajeCierre($id) {
         " WHERE viaje_id = $id ".
         " and tipo_pasajero_id = ".TIPO_PILOTO;
 
-    applog($query, 8);
 
     $rs = $db->executeQuery($query);
     if (!$rs) {
@@ -1033,8 +1034,6 @@ function usuarioEsPasajero($usuario_id, $viaje_id) {
                 and usuario_id = $usuario_id 
                 and estado_id=".ID_APROBADO; 
     
-    //applog($query,8);
-    
     $rs = $db->executeQuery($query);
     if (!$rs) {
         applog($db->db_error(), 1);
@@ -1051,27 +1050,15 @@ function usuarioEsPasajero($usuario_id, $viaje_id) {
 }
 
 function calificacionPendienteExcedida ($usuario_id, $diasLimite) {
-    /*
-    if ($pendientesPuntuacion) {
-        $query .= " AND IFNULL(m_terminado,0) = 1 ";
-        if ($propios==0) {
-            $query .= " AND viaje_id NOT IN (SELECT viaje_id FROM calificacion WHERE usuario_evalua_id=$usuario_id) ";
-            $query .= " AND viaje_id IN (SELECT viaje_id FROM pasajero  WHERE usuario_id=$usuario_id and tipo_pasajero_id=".TIPO_COPILOTO." AND estado_id=".ID_APROBADO.") ";
-        } else {
-            // si estoy evaluando los viajes del usuario , los pendientes son los que tengan diferencias
-            // entre los aprobados para el viaje y los calificados para el viaje
-            $query .= "  AND ((SELECT COUNT(1) FROM pasajero WHERE tipo_pasajero_id=".TIPO_COPILOTO." AND estado_id=".ID_APROBADO." AND viaje_id=v.viaje_id)
-                            = (SELECT (1) FROM calificacion WHERE usuario_evalua_id  = $usuario_id AND viaje_id=v.viaje_id) ) ";
-            
-        }
-    };
-    */
+    $pendientesPiloto = cantCalifPendPiloto($usuario_id, $diasLimite);
+    $pendientesCopiloto = cantCalifPendCopiloto($usuario_id, $diasLimite);
     
+    return ( ($pendientesPiloto + $pendientesCopiloto) > 0);
 }
 
 function cantCalifPendPiloto ($usuario_id, $diasLimite) {
     $db = DB::singleton();
-    
+    // valido que el piloto haya calificado pasajeros (pasajero.usuario_id in calificacion)
     $query = "
      SELECT COUNT(1) cant
      FROM (
@@ -1111,8 +1098,30 @@ function cantCalifPendPiloto ($usuario_id, $diasLimite) {
 
 function cantCalifPendCopiloto ($usuario_id, $diasLimite) {
     $db = DB::singleton();
-    
+    // valido que el copiloto haya calificado al piloto (viaje.usuario_id in calificacion)
     $query = "
+     SELECT COUNT(1) cant
+     FROM (
+     SELECT p.viaje_id, p.usuario_id
+     FROM
+     viaje v
+     INNER JOIN pasajero p
+     ON v.viaje_id = p.viaje_id
+     WHERE
+     p.usuario_id = $usuario_id
+     AND p.tipo_pasajero_id = ".TIPO_COPILOTO."
+     AND IFNULL(v.m_terminado,0) = 1
+     AND v.f_terminado < DATE_SUB(NOW(), INTERVAL $diasLimite DAY) 
+     AND p.estado_id = ".ID_APROBADO."
+     AND (p.viaje_id, v.usuario_id) NOT IN
+     (
+     SELECT c.viaje_id, c.usuario_evaluado_id
+     FROM
+     calificacion c
+     WHERE
+     c.usuario_evalua_id = $usuario_id 
+     )
+     ) pendientes
      ";
     
     $rs = $db->executeQuery($query);
@@ -1127,5 +1136,27 @@ function cantCalifPendCopiloto ($usuario_id, $diasLimite) {
     
 }
 
+function existeCalificacion($usuario_evalua_id, $usuario_evaluado_id, $viaje_id) {
+    $db = DB::singleton();
+    $query = "
+                SELECT COUNT(1) cant
+                FROM calificacion
+                WHERE
+                usuario_evalua_id = $usuario_evalua_id
+                AND usuario_evaluado_id = $usuario_evaluado_id
+                AND viaje_id =  $viaje_id
+            ";
+
+    $rs = $db->executeQuery($query);
+    if ($db->num_rows($rs)>0) {
+        $row = $db->fetch_assoc($rs);
+        $result = $row['cant'];
+    } else {
+        $result = 0;
+    }
+    
+    return ($result>0);
+    
+}
 
 ?>

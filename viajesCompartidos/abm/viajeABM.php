@@ -22,7 +22,6 @@ function validaFecha($fecha) {
 	} else {
 		return false;
 	}
-	
 }
 
 if (($_REQUEST['op'] == 'm') ||  ($_REQUEST['op'] == 'a') ||  ($_REQUEST['op'] == 'b') ) {
@@ -128,16 +127,30 @@ if ($_REQUEST['op'] == 'a') {
         $_SESSION["mensajesPendientes"][] = "No se ha seleccionado un usuario para calificar";
         $validaCalif = false;
     }
+    
+    if (existeCalificacion($_REQUEST['usuario_id'], $_REQUEST['usuario_pax_id'], $_REQUEST['viaje_id'])) {
+        $_SESSION["mensajesPendientes"][] = "El usuario ya ha sido calificado";
+        $validaCalif = false;
+    }
+    
     //viajeCalificar($_REQUEST['viaje_id'], $usuario_id, $_REQUEST['idUsuarioPax'] );
     if ($validaCalif) {
-        //agregarCalificacion($_REQUEST['viaje_id'], $usuario_evalua_id, $usuario_evaluado_id, $puntaje, $comentario, $tipo_pasajero_id)
+        if ($propios) {
+            $tipo_pasajero_id = TIPO_PILOTO;
+        } else {
+            $tipo_pasajero_id = TIPO_COPILOTO;
+        }
+        agregarCalificacion($_REQUEST['viaje_id'], $_REQUEST['usuario_id'], $_REQUEST['usuario_pax_id'], $_REQUEST['calificacion'], $_REQUEST['comentario'], $tipo_pasajero_id);
     }
+/*
     $_SESSION["mensajesPendientes"][] = $_REQUEST['op'];
     $_SESSION["mensajesPendientes"][] = $_REQUEST['calificacion'];
     $_SESSION["mensajesPendientes"][] = $_REQUEST['comentario'];
     $_SESSION["mensajesPendientes"][] = $_REQUEST['usuario_pax_id'];
     $_SESSION["mensajesPendientes"][] = $_REQUEST['usuario_id'];
     $_SESSION["mensajesPendientes"][] = $_REQUEST['propios'];
+    $_SESSION["mensajesPendientes"][] = $_REQUEST['viaje_id'];
+  */
     
 } elseif ($_REQUEST['op'] == 'bp') {
     $validaPostulacion=true;
@@ -159,9 +172,11 @@ if ($_REQUEST['op'] == 'a') {
 
 
 if ($redirect) { 
-    if (($_REQUEST['op'] == 'p') || ($_REQUEST['op'] == 'bp')) {
+    if (($_REQUEST['op'] == 'p') || ($_REQUEST['op'] == 'bp') ) {
     	header('Location: main.php?accion=viajes&propios=0&folder='.BROWSE_DIR);
-    } elseif (($_REQUEST['op'] == 'v') || ($_REQUEST['op'] == 'z')){
+    } elseif (($_REQUEST['op'] == 'califica') ){
+        header('Location: main.php?accion=viajes&propios=$propios&folder='.BROWSE_DIR);
+    } elseif (($_REQUEST['op'] == 'v') || ($_REQUEST['op'] == 'z') ){
     	header('Location: main.php?accion=viajeView&folder=views&op=m&viaje_id='.$_REQUEST['viaje_id']);
     } else {
     	header('Location: main.php?accion=viajes&folder='.BROWSE_DIR);

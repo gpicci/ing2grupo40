@@ -38,4 +38,5 @@ date_default_timezone_set("America/Argentina/Buenos_Aires");
   define("VIAJE_SEMANAL", 2);
   define("VIAJE_OCASIONAL", 3);
   define("VIAJE_CERRADO", 1);
+  define("LIMITE_DIAS_CALIFICACION", 30);
 ?>

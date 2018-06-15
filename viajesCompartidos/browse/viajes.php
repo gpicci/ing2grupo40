@@ -174,13 +174,6 @@
 					<div><hr/></div>
 					<div><a href="javascript:performCerrarViaje('formViajes');">Cerrar Viaje</a></div>
 					<div><hr/></div>
-					<?php if (!$soloPendientes) { ?>
-					<div><a href="javascript:performSoloPendientes('formViajes',1);">Mostrar Pendientes de Puntuacion</a></div>
-					<div><hr/></div>
-					<?php } else {?>
-					<div><a href="javascript:performSoloPendientes('formViajes',0);">Mostrar Todos</a></div>
-					<div><hr/></div>
-					<?php } ?>
 					<div><a href="javascript:performTerminarViaje('formViajes');">Marcar Viaje Terminado</a></div>
 					<div><hr/></div>
 					<div><a href="javascript:performCalificarViaje('formViajes');">Calificar Viaje</a></div>
