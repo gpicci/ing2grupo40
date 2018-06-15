@@ -195,16 +195,16 @@
 				<div><hr/></div>
 				<div><a href="javascript:performVerPreguntas('formViajes');">Preguntas/Respuestas</a></div>
 				<div><hr/></div>
+				<div><a href="javascript:performCalificarViaje('formViajes');">Calificar Viaje</a></div>
+				<div><hr/></div>
+			<?php }; ?>
 				<?php if (!$soloPendientes) { ?>
 				<div><a href="javascript:performSoloPendientes('formViajes',1);">Mostrar Pendientes de Puntuacion</a></div>
 				<div><hr/></div>
 				<?php } else {?>
 				<div><a href="javascript:performSoloPendientes('formViajes',0);">Mostrar Todos</a></div>
 				<div><hr/></div>
-				<div><a href="javascript:performCalificarViaje('formViajes');">Calificar Viaje</a></div>
-				<div><hr/></div>
 				<?php } ?>
-			<?php }; ?>
 			<div><p><br/></p></div>
 			<div><hr/></div>
 			<fieldset>

@@ -5,7 +5,20 @@ require_once("./db/viajeDB.php");
 require_once("./db/usuarioDB.php");
 require_once("./common/combo.php");
 
-if ($_REQUEST["op"] == "califica") {
+$validaCalif = true;
+if (!viajeTerminado($_REQUEST["viaje_id"])) {
+    $validaCalif = false;
+    $_SESSION["mensajesPendientes"][] = "El viaje no se ha realizado";
+    header('Location: main.php?accion=viajes&propios='.$_REQUEST["propios"].'&folder='.BROWSE_DIR);
+}
+
+if (!usuarioEsPasajero($_REQUEST["usuario_id"], $_REQUEST["viaje_id"])) {
+    $validaCalif = false;
+    $_SESSION["mensajesPendientes"][] = "No es pasajero del viaje";
+    header('Location: main.php?accion=viajes&propios='.$_REQUEST["propios"].'&folder='.BROWSE_DIR);
+}
+
+if ( ($validaCalif) && ($_REQUEST["op"] == "califica") )  {
     $viaje_id = $_REQUEST["viaje_id"];
     $usuario_id = $_REQUEST["usuario_id"];
     $op = $_REQUEST["op"];

@@ -123,10 +123,21 @@ if ($_REQUEST['op'] == 'a') {
 } elseif ($_REQUEST['op'] == 't') {
     viajeFinalizar($_REQUEST['viaje_id']);
 } elseif ($_REQUEST['op'] == 'califica') {
+    $validaCalif = true;
+    if ($_REQUEST['usuario_pax_id']==-1) {
+        $_SESSION["mensajesPendientes"][] = "No se ha seleccionado un usuario para calificar";
+        $validaCalif = false;
+    }
     //viajeCalificar($_REQUEST['viaje_id'], $usuario_id, $_REQUEST['idUsuarioPax'] );
+    if ($validaCalif) {
+        //agregarCalificacion($_REQUEST['viaje_id'], $usuario_evalua_id, $usuario_evaluado_id, $puntaje, $comentario, $tipo_pasajero_id)
+    }
     $_SESSION["mensajesPendientes"][] = $_REQUEST['op'];
     $_SESSION["mensajesPendientes"][] = $_REQUEST['calificacion'];
     $_SESSION["mensajesPendientes"][] = $_REQUEST['comentario'];
+    $_SESSION["mensajesPendientes"][] = $_REQUEST['usuario_pax_id'];
+    $_SESSION["mensajesPendientes"][] = $_REQUEST['usuario_id'];
+    $_SESSION["mensajesPendientes"][] = $_REQUEST['propios'];
     
 } elseif ($_REQUEST['op'] == 'bp') {
     $validaPostulacion=true;
