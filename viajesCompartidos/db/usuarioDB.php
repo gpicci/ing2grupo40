@@ -163,7 +163,7 @@ function existeUsuario($correo)  {
 
 }
 
-function getCalificacionUsuario($usuario_id) {
+function getCalificacionUsuario($usuario_id, $tipo_pasajero_id=0) {
     $db = DB::singleton();
 
     $query = "
@@ -172,7 +172,10 @@ function getCalificacionUsuario($usuario_id) {
                 WHERE
                 usuario_evaluado_id= $usuario_id
                 ";
-
+    
+    if ($tipo_pasajero_id!=0) {
+        $query .= " AND tipo_pasajero_id = $tipo_pasajero_id "; 
+    }
     $rs = $db->executeQuery($query);
     $row = $db->fetch_assoc($rs);
 

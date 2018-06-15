@@ -422,7 +422,7 @@ function viajeBaja($id) {
                                     //para las calificaciones generadas por el sistema
         $puntaje = -1;
 
-        agregarCalificacion($id, ID_VALIDADOR_APLICACION, $idUsuario, $puntaje, 'Baja de viaje con postulantes aprobados');
+        agregarCalificacion($id, ID_VALIDADOR_APLICACION, $idUsuario, $puntaje, 'Baja de viaje con postulantes aprobados', TIPO_PILOTO);
 
         /*
         $query = "INSERT INTO calificacion(viaje_id, usuario_evalua_id, usuario_evaluado_id, puntaje, comentario) ".
@@ -475,7 +475,7 @@ function viajeAnulaPostulacion($viaje_id, $usuario_id) {
 
     viajeEstadoCopiloto($viaje_id, $usuario_id, $estado_id, $descripcion );
     if ($estado_id == ID_APROBADO) {
-        agregarCalificacion($viaje_id, ID_VALIDADOR_APLICACION, $usuario_id, -1, "Anula postulacion aprobada");
+        agregarCalificacion($viaje_id, ID_VALIDADOR_APLICACION, $usuario_id, -1, "Anula postulacion aprobada", TIPO_COPILOTO);
     }
 
     $query = "DELETE FROM pasajero WHERE viaje_id=$viaje_id and usuario_id=$usuario_id";
@@ -512,7 +512,7 @@ function viajeRechazarPostulacion($viaje_id, $idUsuarioPax, $idUsuarioRechaza) {
     viajeEstadoCopiloto($viaje_id, $idUsuarioPax, $estado_id, $descripcion_estado);
 
     if  ($estado_id==ID_APROBADO) {
-        agregarCalificacion($viaje_id, ID_VALIDADOR_APLICACION, $idUsuarioRechaza, -1, "Rechaza usuario aprobado");
+        agregarCalificacion($viaje_id, ID_VALIDADOR_APLICACION, $idUsuarioRechaza, -1, "Rechaza usuario aprobado", TIPO_PILOTO);
     }
     viajeSetEstadoCopiloto($viaje_id, $idUsuarioPax, ID_RECHAZADO);
 }
@@ -843,11 +843,11 @@ function validaOcupacion($viaje_id, $usuario_id, $fechaHora, $tipo_viaje_id, $du
     return $result;
 }
 
-function agregarCalificacion($viaje_id, $usuario_evalua_id, $usuario_evaluado_id, $puntaje, $comentario) {
+function agregarCalificacion($viaje_id, $usuario_evalua_id, $usuario_evaluado_id, $puntaje, $comentario, $tipo_pasajero_id) {
     $db = DB::singleton();
 
-    $query = "INSERT INTO calificacion(viaje_id, usuario_evalua_id, usuario_evaluado_id, puntaje, comentario) ".
-        "VALUES ($viaje_id,  $usuario_evalua_id, $usuario_evaluado_id, $puntaje, '$comentario') ";
+    $query = "INSERT INTO calificacion(viaje_id, usuario_evalua_id, usuario_evaluado_id, puntaje, comentario, tipo_pasajero_id) ".
+        "VALUES ($viaje_id,  $usuario_evalua_id, $usuario_evaluado_id, $puntaje, '$comentario', $tipo_pasajero_id) ";
     $rs = $db->executeQuery($query);
 
     if (!$rs) {

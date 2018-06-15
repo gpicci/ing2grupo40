@@ -1,6 +1,7 @@
 <?php
 require_once(DB_DIR.'/viajeDB.php');
 require_once(DB_DIR.'/vehiculoDB.php');
+require_once(DB_DIR.'/usuarioDB.php');
 require_once(DB_DIR."/tarjetaDB.php");
 require_once("./common/combo.php");
 //id de estado correspondiente a los pasajero aprobados
@@ -80,12 +81,7 @@ if (($_REQUEST['op'] == 'm') || ($_REQUEST['op'] == 'b')) {
 							comboBox("tipo_viaje_id", $rs, "tipo_viaje_id", "nombre", "", $viaje["tipo_viaje_id"], "");
 						?>
 					</div>
-					<div><label for="dia_semana">Dia de Salida<em>*</em></label>
-						<?php
-							$rs = getDiasSemana();
-							comboBox("dia_semana_id", $rs, "dia_semana_id", "dia_semana_nombre", "", $viaje["dia_semana"], "");
-						?>
-					</div>
+					<input type="hidden" name="dia_semana_id" id="dia_semana_id" value="1">					
 					<div><label for="fecha_salida">Fecha de Salida<em>*</em></label><input type="text" name="fecha_salida" id="fecha_salida" onchange="esfechavalida(this.value);" value="<?php print(($viaje["fecha_salida"]!= '%') ? $viaje["fecha_salida"]: ''); ?>" />
         			<a id="calendarFechaSalida" href="javascript:OpenCal('fecha_salida');" style="width:16px"><img class="calendar" src="./img/calendar.png" width="16" height="16" /></a>
 					<?php
@@ -150,6 +146,7 @@ if (($_REQUEST['op'] == 'm') || ($_REQUEST['op'] == 'b')) {
     					<td><b>Sel</b></td>
     					<td><b>Nombre</a></b></td>
     					<td><b>Estado</b></td>
+    					<td><b>Calificacion Copiloto</b></td>
     					</tr>
     					<?php
     					   while ($row = $db->fetch_assoc($rs)) {
@@ -167,6 +164,7 @@ if (($_REQUEST['op'] == 'm') || ($_REQUEST['op'] == 'b')) {
     					    }
     					    print('<td>' . $row['apellido'] . ", ". $row['nombre'] . '</td>');
                             print('<td>' . $row['estado'] . '</td>');
+                            print('<td>' . getCalificacionUsuario($row['usuario_id'], TIPO_COPILOTO) . '</td>');
                     		print ('</tr>');
                         					}
     					print("</table>");
