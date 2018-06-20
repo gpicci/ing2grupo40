@@ -71,7 +71,7 @@ function getViajesPorUsuario(
     	}
     };
 
-
+    
     if ($pendientesPuntuacion) {
         $query .= " AND IFNULL(m_terminado,0) = 1 ";
         if ($propios==0) {
@@ -79,13 +79,12 @@ function getViajesPorUsuario(
             $query .= " AND viaje_id IN (SELECT viaje_id FROM pasajero  WHERE usuario_id=$usuario_id and tipo_pasajero_id=".TIPO_COPILOTO." AND estado_id=".ID_APROBADO.") ";
         } else {
             // si estoy evaluando los viajes del usuario , los pendientes son los que tengan diferencias
-            // entre los aprobados para el viaje y los calificados para el viaje
+            // entre los aprobados para el viaje y los calificados para el viaje 
             $query .= "  AND ((SELECT COUNT(1) FROM pasajero WHERE tipo_pasajero_id=".TIPO_COPILOTO." AND estado_id=".ID_APROBADO." AND viaje_id=v.viaje_id)
                             <> (SELECT COUNT(1) FROM calificacion WHERE usuario_evalua_id  = $usuario_id AND viaje_id=v.viaje_id) ) ";
-
+                
         }
     };
-
   $rs = $db->executeQuery($query);
 
   if (!$rs) {
@@ -401,7 +400,7 @@ function getPaxPorViaje($viaje_id=0, $estado_id=0) {
         }
 
         $query.="Order by u.apellido, u.nombre ";
-
+applog($query,8);
         $rs = $db->executeQuery($query);
 
         if (!$rs) {
@@ -872,7 +871,7 @@ function viajeFinalizar($id) {
     $str_f_fin = "'".formatPHPFecha(date("d-m-Y"))."'";
 
     $query = "UPDATE viaje set m_terminado = 1,
-              f_terminado = $str_f_fin
+              f_terminado = $str_f_fin  
               WHERE viaje_id = $id ";
     $rs = $db->executeQuery($query);
 
@@ -1013,35 +1012,35 @@ function getTipoViajeFiltro( ) {
 
 function usuarioEsPasajero($usuario_id, $viaje_id) {
     $db = DB::singleton();
-
+  
     $query = "
                 SELECT count(1) cant
                 FROM
                 pasajero
                 WHERE
                 viaje_id = $viaje_id
-                and usuario_id = $usuario_id
-                and estado_id=".ID_APROBADO;
-
+                and usuario_id = $usuario_id 
+                and estado_id=".ID_APROBADO; 
+    
     $rs = $db->executeQuery($query);
     if (!$rs) {
         applog($db->db_error(), 1);
     }
-
+    
     if ($db->num_rows($rs)>0) {
         $row = $db->fetch_assoc($rs);
         $result = ($row['cant']>0);
     } else {
         $result = 0;
     }
-
+    
     return $result;
 }
 
 function calificacionPendienteExcedida ($usuario_id, $diasLimite) {
     $pendientesPiloto = cantCalifPendPiloto($usuario_id, $diasLimite);
     $pendientesCopiloto = cantCalifPendCopiloto($usuario_id, $diasLimite);
-
+    
     return ( ($pendientesPiloto + $pendientesCopiloto) > 0);
 }
 
@@ -1060,7 +1059,7 @@ function cantCalifPendPiloto ($usuario_id, $diasLimite) {
      v.usuario_id = $usuario_id
      AND p.tipo_pasajero_id = ".TIPO_COPILOTO."
      AND IFNULL(v.m_terminado,0) = 1
-     AND v.f_terminado < DATE_SUB(NOW(), INTERVAL $diasLimite DAY)
+     AND v.f_terminado < DATE_SUB(NOW(), INTERVAL $diasLimite DAY) 
      AND p.estado_id = ".ID_APROBADO."
      AND (p.viaje_id, p.usuario_id) NOT IN
      (
@@ -1068,11 +1067,11 @@ function cantCalifPendPiloto ($usuario_id, $diasLimite) {
      FROM
      calificacion c
      WHERE
-     c.usuario_evalua_id = $usuario_id
+     c.usuario_evalua_id = $usuario_id 
      )
      ) pendientes
      ";
-
+    
     $rs = $db->executeQuery($query);
     if ($db->num_rows($rs)>0) {
         $row = $db->fetch_assoc($rs);
@@ -1080,9 +1079,9 @@ function cantCalifPendPiloto ($usuario_id, $diasLimite) {
     } else {
         $result = 0;
     }
-
+    
     return $result;
-
+    
 }
 
 function cantCalifPendCopiloto ($usuario_id, $diasLimite) {
@@ -1100,7 +1099,7 @@ function cantCalifPendCopiloto ($usuario_id, $diasLimite) {
      p.usuario_id = $usuario_id
      AND p.tipo_pasajero_id = ".TIPO_COPILOTO."
      AND IFNULL(v.m_terminado,0) = 1
-     AND v.f_terminado < DATE_SUB(NOW(), INTERVAL $diasLimite DAY)
+     AND v.f_terminado < DATE_SUB(NOW(), INTERVAL $diasLimite DAY) 
      AND p.estado_id = ".ID_APROBADO."
      AND (p.viaje_id, v.usuario_id) NOT IN
      (
@@ -1108,11 +1107,11 @@ function cantCalifPendCopiloto ($usuario_id, $diasLimite) {
      FROM
      calificacion c
      WHERE
-     c.usuario_evalua_id = $usuario_id
+     c.usuario_evalua_id = $usuario_id 
      )
      ) pendientes
      ";
-
+    
     $rs = $db->executeQuery($query);
     if ($db->num_rows($rs)>0) {
         $row = $db->fetch_assoc($rs);
@@ -1120,9 +1119,9 @@ function cantCalifPendCopiloto ($usuario_id, $diasLimite) {
     } else {
         $result = 0;
     }
-
+    
     return $result;
-
+    
 }
 
 function existeCalificacion($usuario_evalua_id, $usuario_evaluado_id, $viaje_id) {
@@ -1143,9 +1142,9 @@ function existeCalificacion($usuario_evalua_id, $usuario_evaluado_id, $viaje_id)
     } else {
         $result = 0;
     }
-
+    
     return ($result>0);
-
+    
 }
 
 ?>
