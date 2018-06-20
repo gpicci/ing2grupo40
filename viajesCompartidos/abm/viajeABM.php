@@ -22,6 +22,7 @@ function validaFecha($fecha) {
 	} else {
 		return false;
 	}
+
 }
 
 if (($_REQUEST['op'] == 'm') ||  ($_REQUEST['op'] == 'a') ||  ($_REQUEST['op'] == 'b') ) {
@@ -53,10 +54,15 @@ if (($_REQUEST['op'] == 'm') ||  ($_REQUEST['op'] == 'a') ) {
 		        $_SESSION['mensajesPendientes'][]="Fecha invalida.";
 		        $validaciones = false;
 		    } else {
-		        if (!validaOcupacion($viaje_id, $usuario_id, $fechaHora, $tipo_viaje_id, $duracion )){
-		            $_SESSION['mensajesPendientes'][]="El usuario tiene un viaje asociado en las fechas propuestas";
-		            $validaciones = false;
-		        }
+		    	if ($_REQUEST['localidad_origen_id']==$_REQUEST['localidad_destino_id']) {
+		    		$_SESSION['mensajesPendientes'][]="El destino y origen deben ser distintos.";
+		    		$validaciones = false;
+		    	} else {
+			        if (!validaOcupacion($viaje_id, $usuario_id, $fechaHora, $tipo_viaje_id, $duracion )){
+			            $_SESSION['mensajesPendientes'][]="El usuario tiene un viaje asociado en las fechas propuestas";
+			            $validaciones = false;
+			        }
+		    	}
 		    }
 		}
 	}
@@ -122,27 +128,10 @@ if ($_REQUEST['op'] == 'a') {
 } elseif ($_REQUEST['op'] == 't') {
     viajeFinalizar($_REQUEST['viaje_id']);
 } elseif ($_REQUEST['op'] == 'califica') {
-    $validaCalif = true;
-    if ($_REQUEST['usuario_pax_id']==-1) {
-        $_SESSION["mensajesPendientes"][] = "No se ha seleccionado un usuario para calificar";
-        $validaCalif = false;
-    }
-
-    if (existeCalificacion($_REQUEST['usuario_id'], $_REQUEST['usuario_pax_id'], $_REQUEST['viaje_id'])) {
-        $_SESSION["mensajesPendientes"][] = "El usuario ya ha sido calificado";
-        $validaCalif = false;
-    }
-
     //viajeCalificar($_REQUEST['viaje_id'], $usuario_id, $_REQUEST['idUsuarioPax'] );
-    if ($validaCalif) {
-        if ($propios) {
-            $tipo_pasajero_id = TIPO_PILOTO;
-        } else {
-            $tipo_pasajero_id = TIPO_COPILOTO;
-        }
-        agregarCalificacion($_REQUEST['viaje_id'], $_REQUEST['usuario_id'], $_REQUEST['usuario_pax_id'], $_REQUEST['calificacion'], $_REQUEST['comentario'], $tipo_pasajero_id);
-    }
-
+    $_SESSION["mensajesPendientes"][] = $_REQUEST['op'];
+    $_SESSION["mensajesPendientes"][] = $_REQUEST['calificacion'];
+    $_SESSION["mensajesPendientes"][] = $_REQUEST['comentario'];
 
 } elseif ($_REQUEST['op'] == 'bp') {
     $validaPostulacion=true;
@@ -164,11 +153,9 @@ if ($_REQUEST['op'] == 'a') {
 
 
 if ($redirect) {
-    if (($_REQUEST['op'] == 'p') || ($_REQUEST['op'] == 'bp') ) {
+    if (($_REQUEST['op'] == 'p') || ($_REQUEST['op'] == 'bp')) {
     	header('Location: main.php?accion=viajes&propios=0&folder='.BROWSE_DIR);
-    } elseif (($_REQUEST['op'] == 'califica') ){
-        header('Location: main.php?accion=viajes&propios='.$propios.'&folder='.BROWSE_DIR);
-    } elseif (($_REQUEST['op'] == 'v') || ($_REQUEST['op'] == 'z') ){
+    } elseif (($_REQUEST['op'] == 'v') || ($_REQUEST['op'] == 'z')){
     	header('Location: main.php?accion=viajeView&folder=views&op=m&viaje_id='.$_REQUEST['viaje_id']);
     } else {
     	header('Location: main.php?accion=viajes&folder='.BROWSE_DIR);

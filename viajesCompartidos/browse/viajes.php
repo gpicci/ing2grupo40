@@ -1,3 +1,10 @@
+<script type="text/javascript" src="ajax.js"></script>
+<script type="text/javascript">
+$(function() {
+    $( "#localidad_origen_id" ).combobox();
+    $( "#localidad_destino_id" ).combobox();
+  });
+</script>
 <?php
 	require_once(DB_DIR.'/viajeDB.php');
 	require_once("./db/vehiculoDB.php");
@@ -57,15 +64,15 @@
 	    $propios = 1;
 	}
 
-	
+
 	if ( (isSet($_REQUEST['soloPendientes'])) && ($_REQUEST['soloPendientes']==1) )  {
 	    $soloPendientes = 1;
 	} else {
 	    $soloPendientes = 0;
 	}
-	
+
 	$rs = getViajesPorUsuario($idUsuario, $propios,$filtros,$f_desde,$f_hasta, $soloPendientes);
-	
+
 ?>
 	<form name='formViajes' id='formViajes' method='post' action='' >
 	<input type='hidden' name='op' id='op' value='' />
@@ -99,7 +106,7 @@
 ?>
 			<td align="center"><b>Postulados</b></td>
 			<td align="center"><b>Aprobados</b></td>
-			<td align="center"><b>PREGUNTAS</b></td>
+			<td align="center"><b>PREG. / RTAS.</b></td>
    	</tr>
 <?php
 	while ($row = $db->fetch_assoc($rs)) {
@@ -146,11 +153,11 @@
         $postulados = 0;
         $rechazados = 0;
         getPaxPorEstado($row['viaje_id'], $aprobados, $pendientes, $rechazados, $postulados);
-        if (($row['cant_preguntas'])>0){$tiene_preguntas = 'SI';} else {$tiene_preguntas = 'NO';}
+
         print('
         <td align="center">' . $postulados . '</td>
         <td align="center">' . $aprobados . '</td>
-		<td align="center">'. $tiene_preguntas. '</td>');
+		<td align="center">'. $row['cant_preguntas'].' / '. $row['cant_respuestas']. '</td>');
 
 		print ('</tr>');
 	}
@@ -174,6 +181,18 @@
 					<div><hr/></div>
 					<div><a href="javascript:performCerrarViaje('formViajes');">Cerrar Viaje</a></div>
 					<div><hr/></div>
+<<<<<<< HEAD
+					<?php if (!$soloPendientes) { ?>
+					<div><a href="javascript:performSoloPendientes('formViajes',1);">Mostrar Pendientes de Puntuacion</a></div>
+					<div><hr/></div>
+					<div><a href="javascript:performVerPreguntas('formViajes');">Preguntas</a></div>
+					<div><hr/></div>
+					<?php } else {?>
+					<div><a href="javascript:performSoloPendientes('formViajes',0);">Mostrar Todos</a></div>
+					<div><hr/></div>
+					<?php } ?>
+=======
+>>>>>>> 9d88cca75be2e2597e89e1b5d0b123279af0c3fc
 					<div><a href="javascript:performTerminarViaje('formViajes');">Marcar Viaje Terminado</a></div>
 					<div><hr/></div>
 					<div><a href="javascript:performCalificarViaje('formViajes');">Calificar Viaje</a></div>
@@ -186,7 +205,7 @@
 				<div><hr/></div>
 				<div><a href="javascript:performVerViaje('formViajes');">Ver Detalle</a></div>
 				<div><hr/></div>
-				<div><a href="javascript:performVerPreguntas('formViajes');">Preguntas/Respuestas</a></div>
+				<div><a href="javascript:performVerPreguntas('formViajes');">Preguntas</a></div>
 				<div><hr/></div>
 				<div><a href="javascript:performCalificarViaje('formViajes');">Calificar Viaje</a></div>
 				<div><hr/></div>
@@ -207,8 +226,8 @@
 					<div><p></p></div>
 					<div>
 						<?php
-						$rs = getTipoViajeViajesActuales($idUsuario,$propios);
-						comboBox("tipo_viaje_id", $rs, "tipo_viaje_id", "tipo_viaje", "", $tipo_viaje_id, "");
+						$rs = getTipoViajeFiltro();
+						comboBox("tipo_viaje_id", $rs, "tipo_viaje_id", "nombre", "", $tipo_viaje_id, "");
 						?>
 					</div>
 				</fieldset>
@@ -247,8 +266,9 @@
 					<div><p></p></div>
 					<div>
 						<?php
-						$rs = getLocOrigenViajesActuales($idUsuario,$propios);
-							comboBox("localidad_origen_id", $rs, "localidad_origen_id", "localidad_origen", "", $localidad_origen_id, "");
+
+							$rs = getLocalidad();
+							comboBox("localidad_origen_id", $rs, "localidad_id", "nombre_localidad", "", $localidad_origen_id, "");
 						?>
 					</div>
 				</fieldset>
@@ -258,8 +278,8 @@
 					<div><p></p></div>
 					<div>
 						<?php
-						$rs = getLocDestinoViajesActuales($idUsuario,$propios);
-							comboBox("localidad_destino_id", $rs, "localidad_destino_id", "localidad_destino", "", $localidad_destino_id, "");
+						$rs = getLocalidad();
+						comboBox("localidad_destino_id", $rs, "localidad_id", "nombre_localidad", "", $localidad_destino_id, "");
 						?>
 					</div>
 				</fieldset>

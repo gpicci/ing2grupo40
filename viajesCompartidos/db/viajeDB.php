@@ -31,7 +31,8 @@ function getViajesPorUsuario(
       v.m_cerrado cerrado,
       IfNull(v.m_terminado,0) terminado,
 	  CONCAT(u.nombre,' ',u.apellido) piloto,
-	  (select count(1) from pregunta_respuesta r where r.viaje_id = v.viaje_id) as cant_preguntas
+	  (select count(1) from pregunta_respuesta r where r.viaje_id = v.viaje_id) as cant_preguntas,
+	  (select count(1) from pregunta_respuesta r where r.viaje_id = v.viaje_id and pregunta_original_id is not null) as cant_respuestas
 	FROM
 	  viaje v,
 	  vehiculo vv,
@@ -84,7 +85,6 @@ function getViajesPorUsuario(
 
         }
     };
-
 
   $rs = $db->executeQuery($query);
 
@@ -657,7 +657,6 @@ function viajeCierre($id) {
         " WHERE viaje_id = $id ".
         " and tipo_pasajero_id = ".TIPO_PILOTO;
 
-
     $rs = $db->executeQuery($query);
     if (!$rs) {
         applog($db->db_error(), 1);
@@ -988,30 +987,20 @@ function getLocDestinoViajesActuales($usuario_id, $propios ) {
 	return $rs;
 }
 
-function getTipoViajeViajesActuales($usuario_id, $propios ) {
+function getTipoViajeFiltro( ) {
 	$db = DB::singleton();
 
 	$query = "
 	SELECT
 	  -1 tipo_viaje_id,
- 	  'TODOS' tipo_viaje
+ 	  'TODOS' nombre
 	union
-	SELECT DISTINCT
+	SELECT
       t.tipo_viaje_id,
-	  t.nombre tipo_viaje
+	  t.nombre nombre
 	FROM
-	  viaje v,
-	  tipo_de_viaje t
-	WHERE v.m_baja = 0
-	AND   v.tipo_viaje_id = t.tipo_viaje_id
-	AND	  v.m_terminado =0
-	AND	  v.m_cerrado = 0  ";
+	  tipo_de_viaje t ";
 
-	if ($propios==1) {
-		$query .= "AND   v.usuario_id = ".$usuario_id;
-	} else {
-		$query .= "AND   v.usuario_id <> ".$usuario_id;
-	}
 
 	$rs = $db->executeQuery($query);
 

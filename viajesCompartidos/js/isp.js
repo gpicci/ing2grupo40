@@ -303,3 +303,36 @@ function performCalificarViaje(theForm) {
 	document.getElementById(theForm).action = 'main.php?accion=calificacionView&folder=views';
 	document.getElementById(theForm).submit();
 }
+
+function performVerPreguntas(theForm) {
+	document.getElementById(theForm).action = 'main.php?accion=preguntaRespuestaViaje&folder=browse';
+	document.getElementById(theForm).submit();
+}
+
+function performPregunta(theForm) {
+	document.getElementById(theForm).action = 'main.php?accion=preguntaRespuestaView&op=p&folder=views';
+	document.getElementById(theForm).submit();
+}
+
+function performRespuesta(theForm) {
+	document.getElementById(theForm).action = 'main.php?accion=preguntaRespuestaView&op=r&folder=views';
+	document.getElementById(theForm).submit();
+}
+
+function checkRespuesta(theForm) {
+	// Validacion de campos obligatorios
+	if (document.getElementById('respuesta').value == '') {
+		alert('Ingrese un valor para los datos obligatorios.');
+	} else {
+		document.getElementById(theForm).submit();
+	}
+}
+
+function checkPregunta(theForm) {
+	// Validacion de campos obligatorios
+	if (document.getElementById('pregunta').value == '') {
+		alert('Ingrese un valor para los datos obligatorios.');
+	} else {
+		document.getElementById(theForm).submit();
+	}
+}

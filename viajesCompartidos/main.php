@@ -53,6 +53,7 @@
 	<script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 	<script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
+	<script type="text/javascript" src="js/filtroCombo.js"></script>
 </head>
 <?php
 	//acciones que requieren tratamientos particulares
@@ -72,7 +73,7 @@
 	   	if (isset($_SESSION['mensajesPendientes'])) {
 	   		$mensajes=$_SESSION['mensajesPendientes'];
 	   		$cant = count($mensajes);
-	   		
+
 	   		if ($cant>0) {
 	   			echo "<div id=\"content\">";
 	   			echo "<div class=\"form-container\">";
@@ -86,11 +87,11 @@
 	   			echo "</form>";
 	   			echo "</div>";
 	   			echo "</div>";
-	   			
+
 	   		}
 	   		$_SESSION['mensajesPendientes']=array();
 	   	}
-   	
+
    } else {
    	//hay que hacer echo del tag body
      echo "<body>";

@@ -1,3 +1,10 @@
+<script type="text/javascript" src="ajax.js"></script>
+<script type="text/javascript">
+$(function() {
+    $( "#localidad_origen_id" ).combobox();
+    $( "#localidad_destino_id" ).combobox();
+  });
+</script>
 <?php
 require_once(DB_DIR.'/viajeDB.php');
 require_once(DB_DIR.'/vehiculoDB.php');
@@ -30,14 +37,14 @@ if (($_REQUEST["op"] == "m") || ($_REQUEST["op"] == "b") || ($_REQUEST["op"] == 
   $viaje["localidad_destino_id"] = $row['localidad_destino_id'];
   $viaje["tipo_viaje_id"] = $row['tipo_viaje_id'];
   $viaje["dia_semana"] = $row['dia_semana'];
-  
-  
+
+
   formatMSSQLFechaHora($row["fecha_salida"], $fechaSalida, $horaSalida, $minutosSalida, $segundosSalida);
-  
+
   $viaje["fecha_salida"] = $fechaSalida;
   $viaje["hora_salida"] = $horaSalida;
   $viaje["min_salida"] = $minutosSalida;
-  
+
   $viaje["duracion"] = $row["duracion"];
   $viaje["costo"] = $row["costo"];
   $viaje["cerrado"] = $row["cerrado"];
@@ -88,7 +95,7 @@ if (($_REQUEST['op'] == 'm') || ($_REQUEST['op'] == 'b')) {
 							comboBox("tipo_viaje_id", $rs, "tipo_viaje_id", "nombre", "", $viaje["tipo_viaje_id"], "");
 						?>
 					</div>
-					<input type="hidden" name="dia_semana_id" id="dia_semana_id" value="1">					
+					<input type="hidden" name="dia_semana_id" id="dia_semana_id" value="1">
 					<div><label for="fecha_salida">Fecha de Salida<em>*</em></label><input type="text" name="fecha_salida" id="fecha_salida" onchange="esfechavalida(this.value);" value="<?php print(($viaje["fecha_salida"]!= '%') ? $viaje["fecha_salida"]: ''); ?>" />
         			<a id="calendarFechaSalida" href="javascript:OpenCal('fecha_salida');" style="width:16px"><img class="calendar" src="./img/calendar.png" width="16" height="16" /></a>
 					<?php
@@ -132,7 +139,7 @@ if (($_REQUEST['op'] == 'm') || ($_REQUEST['op'] == 'b')) {
 						    }
 						    comboBox("tarjeta_id", $rs, "id_tarjeta", "tarjeta", "--", $viaje["tarjeta_id"], "$disabled");
 						?>
-					</div>				
+					</div>
    					<br><br>
     					<?php
     					   if (($_REQUEST["op"] == "m") || ($_REQUEST["op"] == "b")) {

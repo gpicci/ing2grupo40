@@ -167,16 +167,15 @@ function getCalificacionUsuario($usuario_id, $tipo_pasajero_id=0) {
     $db = DB::singleton();
 
     $query = "
-                SELECT CASE WHEN IFNULL(SUM(puntaje),0)<0 THEN 0 ELSE IFNULL(SUM(puntaje),0) END calificacion
+                SELECT IFNULL(SUM(puntaje),0) calificacion
                 FROM calificacion
                 WHERE
                 usuario_evaluado_id= $usuario_id
                 ";
-
+    
     if ($tipo_pasajero_id!=0) {
-        $query .= " AND tipo_pasajero_id = $tipo_pasajero_id ";
+        $query .= " AND tipo_pasajero_id = $tipo_pasajero_id "; 
     }
-    applog($query,8);
     $rs = $db->executeQuery($query);
     $row = $db->fetch_assoc($rs);
 
