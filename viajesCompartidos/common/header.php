@@ -1,17 +1,52 @@
 <?php
 ob_start();
 require_once("db/usuarioDB.php");
+require_once("db/preguntaRespuestaDB.php");
 
 $db = DB::singleton();
 
 $nombreUsuario = "USUARIO: ".$_SESSION['nombre_usuario'];
 
-//echo "<div id=\"header\">";
+  $mensaje= '';
+  
+  if (getCantPreguntas($_SESSION['user_id'])>0) {
+	$hasAlerta=TRUE;	
+	$mensaje = 'tiene preguntas por responder';	
+  } else{			
+	$hasAlerta= FALSE;
+  }
+	
+  if (getCantRespuestas($_SESSION['user_id'])>0) {
+	$hasAlerta=TRUE;
+	if (isset($mensaje)&($mensaje<>'')) {
+	  $mensaje = $mensaje." y ";	  
+	}
+	$mensaje = $mensaje.'han respondido a sus preguntas';	
+  } else{
+	if (!$hasAlerta){
+		$hasAlerta= FALSE;
+	}
+  }
+	
 ?>
 <body>
-	<div id="header">
+
+	
+	<?php 
+if ($hasAlerta) {
+	echo "<div style=\"background: #AA7474;\"id=\"header\">";
+} else {
+	echo "<div id=\"header\">";	
+}
+?>
+
 	<a href="main.php?accion=inicio" id="alignleft"><?php print(VIEW_PAGE_TITLE.' - '.VIEW_EMPRESA); ?></a>
 	<p id="alignright"><?php print($nombreUsuario);?>
+	<?php
+	  if ($hasAlerta) {
+		echo " [".$mensaje."]";
+	  } 
+	?>
 	</p>
 	</div>
 	<div style="background: #7dbde9;">

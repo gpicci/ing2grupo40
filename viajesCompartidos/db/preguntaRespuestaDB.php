@@ -88,6 +88,13 @@ function altaRespuesta(
 
 	if (!$rs) {
 	  applog($db->db_error(), 1);
+	} else {
+		$query = "
+		UPDATE pregunta_respuesta 
+		SET	m_notificado = 1
+		WHERE pregunta_respuesta_id = ".$idPregunta;
+		
+		$rs = $db->executeQuery($query);
 	}
 
 	return $rs;
@@ -114,5 +121,75 @@ function getPreguntaById(
 
   return $rs;
 }
+
+function getCantPreguntas($idUsuario) {
+  $cant = 0;
+  $db = DB::singleton();
+  
+  $query = "
+	SELECT
+	  COUNT(1) AS cant	
+	FROM
+	  pregunta_respuesta p,
+	  viaje v
+	WHERE p.viaje_id = v.viaje_id
+	AND   v.usuario_id = ".$idUsuario."
+	AND   p.m_notificado = 0
+	AND   p.d_tipo = 'P'
+	AND	  v.m_baja = 0
+	AND	  v.m_cerrado = 0
+	AND	  v.m_terminado = 0";
+	
+  $rs = $db->executeQuery($query);
+  $row = $db->fetch_assoc($rs);
+	
+  $cant= $row['cant'];
+  
+  return $cant;
+}
+
+function getCantRespuestas($idUsuario) {
+  $cant = 0;
+  
+  $db = DB::singleton();
+  
+  $query = "
+	SELECT
+	  COUNT(1) AS cant	
+	FROM
+	  pregunta_respuesta p,
+	  pregunta_respuesta r
+	WHERE IFNULL(r.pregunta_original_id,0) = p.pregunta_respuesta_id
+	AND   p.usuario_id = ".$idUsuario."
+	AND   r.d_tipo = 'R'
+	AND   p.d_tipo = 'P'
+	AND   r.m_notificado = 0";
+	
+  $rs = $db->executeQuery($query);
+  $row = $db->fetch_assoc($rs);
+	
+  $cant= $row['cant'];
+  
+  return $cant;
+}
+
+function marcarRespuestasLeidas($idUsuario) {
+	$cant = 0;
+	
+	$db = DB::singleton();
+	
+	$query = "
+	UPDATE pregunta_respuesta 
+	SET	   m_notificado = 1
+	WHERE  d_tipo = 'R'	
+	AND    m_notificado = 0
+	AND	   usuario_id = ".$idUsuario;
+	applog($query,8);
+	$rs = $db->executeQuery($query);
+	
+	return $rs;
+}
+
+
 
 ?>

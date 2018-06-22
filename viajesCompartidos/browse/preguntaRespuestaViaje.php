@@ -14,6 +14,11 @@
 	$rowViaje = $db->fetch_assoc($rsViaje);
 
 	$pregunta_respuesta_id=-1;
+	
+	if (getCantRespuestas($_SESSION['user_id'])>0) {
+		applog('TIENE',8);
+		marcarRespuestasLeidas($_SESSION['user_id']);
+	} 
 ?>
 	<form name='formPregResp' id='formPregResp' method='post' action='' >
 	<input type="hidden"	name="viaje_id" value="<?php print($_REQUEST["viaje_id"]); ?>">
@@ -69,7 +74,14 @@
 				}
 			}
 		}
-
+		
+		if ($row['d_tipo'] == 'P') { ?>
+			<td><img src="./img/pregunta.ico" height="21" width="21" id="img"></td>
+		<?php
+		} else { ?>
+			<td><img src="./img/respuesta.ico" height="21" width="21" id="img"></td>
+		<?php }
+		
 		print('
 		<td>' . $row['anotacion'] . '</td>
 		</tr>');

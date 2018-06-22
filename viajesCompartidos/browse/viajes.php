@@ -72,6 +72,14 @@ $(function() {
 	}
 
 	$rs = getViajesPorUsuario($idUsuario, $propios,$filtros,$f_desde,$f_hasta, $soloPendientes);
+	
+	$cantRespuestas = getCantRespuestas($_SESSION['user_id']);
+	
+	$respuestas = "";
+	
+	if ($cantRespuestas>0) {
+		$respuestas="($cantRespuestas)";
+	}
 
 ?>
 	<form name='formViajes' id='formViajes' method='post' action='' >
@@ -153,11 +161,17 @@ $(function() {
         $postulados = 0;
         $rechazados = 0;
         getPaxPorEstado($row['viaje_id'], $aprobados, $pendientes, $rechazados, $postulados);
+        
+        if ($row['cant_preguntas'] <> $row['cant_respuestas']) {
+        	$preguntas = "<div style=\"color: #FF0000;\"><b> ".$row['cant_preguntas'].' / '. $row['cant_respuestas']."</div>";
+        } else {
+        	$preguntas = $row['cant_preguntas'].' / '. $row['cant_respuestas'];
+        }
 
         print('
         <td align="center">' . $postulados . '</td>
         <td align="center">' . $aprobados . '</td>
-		<td align="center">'. $row['cant_preguntas'].' / '. $row['cant_respuestas']. '</td>');
+		<td align="center">'.$preguntas. '</td>');
 
 		print ('</tr>');
 	}
@@ -202,7 +216,7 @@ $(function() {
 				<div><hr/></div>
 				<div><a href="javascript:performVerViaje('formViajes');">Ver Detalle</a></div>
 				<div><hr/></div>
-				<div><a href="javascript:performVerPreguntas('formViajes');">Preguntas</a></div>
+				<div><a href="javascript:performVerPreguntas('formViajes');">Preguntas/Respuestas</a></div>
 				<div><hr/></div>
 				<div><a href="javascript:performCalificarViaje('formViajes');">Calificar Viaje</a></div>
 				<div><hr/></div>
@@ -264,7 +278,7 @@ $(function() {
 					<div>
 						<?php
 
-							$rs = getLocalidad();
+						$rs = getLocalidadFiltroViajes();
 							comboBox("localidad_origen_id", $rs, "localidad_id", "nombre_localidad", "", $localidad_origen_id, "");
 						?>
 					</div>
@@ -275,7 +289,7 @@ $(function() {
 					<div><p></p></div>
 					<div>
 						<?php
-						$rs = getLocalidad();
+						$rs = getLocalidadFiltroViajes();
 						comboBox("localidad_destino_id", $rs, "localidad_id", "nombre_localidad", "", $localidad_destino_id, "");
 						?>
 					</div>

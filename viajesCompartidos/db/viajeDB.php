@@ -31,8 +31,8 @@ function getViajesPorUsuario(
       v.m_cerrado cerrado,
       IfNull(v.m_terminado,0) terminado,
 	  CONCAT(u.nombre,' ',u.apellido) piloto,
-	  (select count(1) from pregunta_respuesta r where r.viaje_id = v.viaje_id) as cant_preguntas,
-	  (select count(1) from pregunta_respuesta r where r.viaje_id = v.viaje_id and pregunta_original_id is not null) as cant_respuestas
+	  (select count(1) from pregunta_respuesta r where r.viaje_id = v.viaje_id and d_tipo = 'P') as cant_preguntas,
+	  (select count(1) from pregunta_respuesta r where r.viaje_id = v.viaje_id and pregunta_original_id is not null and d_tipo = 'R') as cant_respuestas
 	FROM
 	  viaje v,
 	  vehiculo vv,
@@ -85,6 +85,7 @@ function getViajesPorUsuario(
                 
         }
     };
+    
   $rs = $db->executeQuery($query);
 
   if (!$rs) {
@@ -1145,6 +1146,30 @@ function existeCalificacion($usuario_evalua_id, $usuario_evaluado_id, $viaje_id)
     
     return ($result>0);
     
+}
+
+function getLocalidadFiltroViajes() {
+	
+	$db = DB::singleton();
+	
+	$query = "
+  SELECT
+    -1 as localidad_id,
+	'TODOS' as nombre_localidad
+  UNION ALL
+  SELECT
+	localidad_id,
+	nombre_localidad
+  FROM
+	localidad l";
+	
+	$rs = $db->executeQuery($query);
+	
+	if (!$rs) {
+		applog($db->db_error(), 1);
+	}
+	
+	return $rs;
 }
 
 ?>

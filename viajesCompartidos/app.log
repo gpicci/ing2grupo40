@@ -1,0 +1,7 @@
+[14:18:37 22/06/18] [8] [1529687917] [CHROME] TIENE 	at C:\Users\PC66\Documents\GitHub\ing2grupo40\viajesCompartidos\browse\preguntaRespuestaViaje.php (line 19)	at C:\Users\PC66\Documents\GitHub\ing2grupo40\viajesCompartidos\main.php (line 100) user: 
+[14:18:37 22/06/18] [8] [1529687917] [CHROME] 
+	UPDATE pregunta_respuesta 
+	SET	   m_notificado = 1
+	WHERE  d_tipo = 'R'	
+	AND    m_notificado = 0
+	AND	   usuario_id = 4 	at C:\Users\PC66\Documents\GitHub\ing2grupo40\viajesCompartidos\db\preguntaRespuestaDB.php (line 187)	at C:\Users\PC66\Documents\GitHub\ing2grupo40\viajesCompartidos\browse\preguntaRespuestaViaje.php (line 20)	at C:\Users\PC66\Documents\GitHub\ing2grupo40\viajesCompartidos\main.php (line 100) user: 
