@@ -90,10 +90,10 @@ function altaRespuesta(
 	  applog($db->db_error(), 1);
 	} else {
 		$query = "
-		UPDATE pregunta_respuesta 
+		UPDATE pregunta_respuesta
 		SET	m_notificado = 1
 		WHERE pregunta_respuesta_id = ".$idPregunta;
-		
+
 		$rs = $db->executeQuery($query);
 	}
 
@@ -125,10 +125,10 @@ function getPreguntaById(
 function getCantPreguntas($idUsuario) {
   $cant = 0;
   $db = DB::singleton();
-  
+
   $query = "
 	SELECT
-	  COUNT(1) AS cant	
+	  COUNT(1) AS cant
 	FROM
 	  pregunta_respuesta p,
 	  viaje v
@@ -139,23 +139,23 @@ function getCantPreguntas($idUsuario) {
 	AND	  v.m_baja = 0
 	AND	  v.m_cerrado = 0
 	AND	  v.m_terminado = 0";
-	
+
   $rs = $db->executeQuery($query);
   $row = $db->fetch_assoc($rs);
-	
+
   $cant= $row['cant'];
-  
+
   return $cant;
 }
 
 function getCantRespuestas($idUsuario) {
   $cant = 0;
-  
+
   $db = DB::singleton();
-  
+
   $query = "
 	SELECT
-	  COUNT(1) AS cant	
+	  COUNT(1) AS cant
 	FROM
 	  pregunta_respuesta p,
 	  pregunta_respuesta r
@@ -164,29 +164,34 @@ function getCantRespuestas($idUsuario) {
 	AND   r.d_tipo = 'R'
 	AND   p.d_tipo = 'P'
 	AND   r.m_notificado = 0";
-	
+
   $rs = $db->executeQuery($query);
   $row = $db->fetch_assoc($rs);
-	
+
   $cant= $row['cant'];
-  
+
   return $cant;
 }
 
 function marcarRespuestasLeidas($idUsuario) {
 	$cant = 0;
-	
+
 	$db = DB::singleton();
-	
+
 	$query = "
-	UPDATE pregunta_respuesta 
+	UPDATE pregunta_respuesta
 	SET	   m_notificado = 1
-	WHERE  d_tipo = 'R'	
-	AND    m_notificado = 0
-	AND	   usuario_id = ".$idUsuario;
-	applog($query,8);
+	WHERE  d_tipo = 'R'
+	AND    (pregunta_original_id,viaje_id)
+	IN ( SELECT * FROM (
+			SELECT pregunta_respuesta_id,viaje_id
+			FROM pregunta_respuesta
+			WHERE d_tipo = 'P'
+			AND   usuario_id = ".$idUsuario.") alias)
+	";
+
 	$rs = $db->executeQuery($query);
-	
+
 	return $rs;
 }
 

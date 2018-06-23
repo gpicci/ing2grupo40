@@ -15,7 +15,7 @@ $(function() {
 
 	// Obtener el id actual, por defecto es el primero
 	$idUsuario = (isset($_SESSION['user_id'])) ? $_SESSION['user_id']: -1;
-	$f_desde = (isset($_REQUEST['f_desde'])) ? $_REQUEST['f_desde']: date('d-m-Y');
+	$f_desde = (isset($_REQUEST['f_desde'])) ? $_REQUEST['f_desde']:date('d-m-Y', mktime(0,0,0, date('m'), 1, date('Y')));
 	$f_hasta = (isset($_REQUEST['f_hasta'])) ? $_REQUEST['f_hasta']: date('d-m-Y',strtotime(date('d-m-Y')."+ 30 days"));
 	$piloto = (isset($_REQUEST['piloto'])) ? $_REQUEST['piloto']: -1;
 	$localidad_origen_id= (isset($_REQUEST['localidad_origen_id'])) ? $_REQUEST['localidad_origen_id']: -1;
@@ -72,11 +72,11 @@ $(function() {
 	}
 
 	$rs = getViajesPorUsuario($idUsuario, $propios,$filtros,$f_desde,$f_hasta, $soloPendientes);
-	
+
 	$cantRespuestas = getCantRespuestas($_SESSION['user_id']);
-	
+
 	$respuestas = "";
-	
+
 	if ($cantRespuestas>0) {
 		$respuestas="($cantRespuestas)";
 	}
@@ -161,7 +161,7 @@ $(function() {
         $postulados = 0;
         $rechazados = 0;
         getPaxPorEstado($row['viaje_id'], $aprobados, $pendientes, $rechazados, $postulados);
-        
+
         if ($row['cant_preguntas'] <> $row['cant_respuestas']) {
         	$preguntas = "<div style=\"color: #FF0000;\"><b> ".$row['cant_preguntas'].' / '. $row['cant_respuestas']."</div>";
         } else {
