@@ -163,24 +163,38 @@ function existeUsuario($correo)  {
 
 }
 
-function getCalificacionUsuario($usuario_id, $tipo_pasajero_id=0) {
+function getCalificacionUsuario($usuario_id, $tipo_pasajero_id) {
     $db = DB::singleton();
+  $query = "
+            SELECT SUM(puntaje) AS value_sum
+            FROM calificacion
+            WHERE usuario_evaluado_id= $usuario_id and tipo_pasajero_id= $tipo_pasajero_id";
+  $rs = $db->executeQuery($query);
+  $row = $db->fetch_assoc($rs);
+  $sum = $row['value_sum'];
+  if ($sum <= 0) {
+      return 0;
+  } else {
+      return $sum;
+  }
 
-    $query = "
-                SELECT IFNULL(SUM(puntaje),0) calificacion
-                FROM calificacion
-                WHERE
-                usuario_evaluado_id= $usuario_id
-                ";
-    
-    if ($tipo_pasajero_id!=0) {
-        $query .= " AND tipo_pasajero_id = $tipo_pasajero_id "; 
-    }
-    $rs = $db->executeQuery($query);
-    $row = $db->fetch_assoc($rs);
+} 
 
-    $result = $row['calificacion'];
+function yaExisteCorreo($correo, $id){
+	$db = DB::singleton();
+  $query = "
+            SELECT COUNT(usuario_id) AS value_sum
+            FROM usuario
+            WHERE usuario_id <> $id and  correo_electronico = $correo";
+  $rs = $db->executeQuery($query);
+  $row = $db->fetch_assoc($rs);
+  $sum = $row['value_sum'];
+  #creo que no anda
+  if ($sum <> 0) {
+      return true;
+  } else {
+      return false;
+  }
 
-    return $result;
-}
+} 
 ?>

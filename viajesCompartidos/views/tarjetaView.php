@@ -50,7 +50,7 @@ if ($_REQUEST['op'] == 'm') {
 							comboBox("id_empresa", $rs, "id_empresa", "d_nombre_empresa", "", $tarjeta["id_empresa"], "");
 						?>
 					</div>
-					<div><label for="n_tarjeta">Numero<em>*</em></label><input id="n_tarjeta" type="text" size="16" maxlength="16" name="n_tarjeta" onkeypress="return isNumberKey(event)" value="<?php print($tarjeta['n_tarjeta']); ?>" /></div>
+					<div><label for="n_tarjeta">Numero<em>*</em></label><input id="n_tarjeta" type="text" size="16" maxlength="16" name="n_tarjeta" autocomplete="off" onkeypress="return isNumberKey(event)" value="<?php print($tarjeta['n_tarjeta']); ?>" /></div>
 					<div><label for="n_codigo_verificador">Codigo Verificador<em>*</em></label><input id="n_codigo_verificador" type="text" size="3" maxlength="3" name="n_codigo_verificador" onkeypress="return isNumberKey(event)" value="<?php print($tarjeta['n_codigo_verificador']); ?>" /></div>
 					<div><label for="d_nombre_titular">Nombre Titular<em>*</em></label><input id="d_nombre_titular" type="text" size="20" maxlength="20" name="d_nombre_titular" value="<?php print($tarjeta['d_nombre_titular']); ?>" /></div>
 					<legend>Vencimiento</legend>

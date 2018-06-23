@@ -47,8 +47,8 @@ div.form-container label, div.form-container span.label { margin-right: 10px; pa
 div.form-container label.error, div.form-container span.error { color: #C00; }
 div.form-container label em, div.form-container span.label em { position: absolute; right: 0; font-size: 120%; font-style: normal; color: #C00; }
 div.form-container input.error { border-color: #C00; background-color: #FEF; }
-div.form-container input:focus, div.form-container input.error:focus, div.form-container textarea:focus { background-color: #FFC; border-color: #FC6; text-transform:uppercase;}
-div.form-container div.controlset label, div.form-container div.controlset input { display: inline; float: none; text-transform:uppercase;}
+div.form-container input:focus, div.form-container input.error:focus, div.form-container textarea:focus { background-color: #FFC; border-color: #FC6}
+div.form-container div.controlset label, div.form-container div.controlset input { display: inline; float: none}
 div.form-container div.controlset div { margin-left: 170px; }
 div.form-container div.buttonrow { margin-left: 180px; }
 
@@ -63,6 +63,6 @@ div.form-container-just label.error, div.form-container-just span.error { color:
 div.form-container-just label em, div.form-container-just span.label em { position: absolute; right: 0; font-size: 120%; font-style: normal; color: #C00; }
 div.form-container-just input.error { border-color: #C00; background-color: #FEF; }
 div.form-container-just input:focus, div.form-container-just input.error:focus, div.form-container-just textarea:focus { background-color: #FFC; border-color: #FC6; text-transform:uppercase;}
-div.form-container-just div.controlset label, div.form-container-just div.controlset input { display: inline; float: none; text-transform:uppercase;}
+div.form-container-just div.controlset label, div.form-container-just div.controlset input { display: inline; float: none}
 div.form-container-just div.controlset div { margin-left: 170px; }
 div.form-container-just div.buttonrow { margin-left: 180px; }

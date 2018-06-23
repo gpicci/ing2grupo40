@@ -3,7 +3,7 @@ require_once(DB_DIR.'/tarjetaDB.php');
 require_once(COM_DIR.'/util.php');
 
 if ($_REQUEST['op'] == 'a') {
-	if (getUltimoDiaMes($_REQUEST['n_anio_vence'],$_REQUEST['n_mes_vence']) > getUltimoDiaMes(date('Y'),date('m'))) {
+	if ($_REQUEST['n_anio_vence']<=date('Y') && $_REQUEST['n_mes_vence'] < date('m') ) {
 	  $mensajes[]="El mes de vencimiento es menor al mes corriente";
 	  $_SESSION['mensajesPendientes'] = $mensajes;
 	  header("Location: main.php?accion=tarjetaView&folder=views&op=a");

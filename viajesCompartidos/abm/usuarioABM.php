@@ -19,7 +19,7 @@ if ($_REQUEST['op'] == 'a') {
   }  
   
 } elseif ($_REQUEST['op'] == 'm') {
-	if (existeUsuario($_REQUEST['correo_electronico']))  {
+	if (yaExisteCorreo($_REQUEST['correo_electronico'], $_REQUEST['usuario_id']))  {
   		$mensajes[]="El correo electronico ya se encuentra registrado";
   		$_SESSION['mensajesPendientes'] = $mensajes;
   		header("Location: main.php?accion=usuarioView&folder=views&op=m");
@@ -33,7 +33,7 @@ if ($_REQUEST['op'] == 'a') {
 			$_REQUEST['clave'],
 			$_REQUEST['foto']
 		);
-		header('Location: main.php?accion=inicio');
+		header("Location: main.php?accion=usuarioView&folder=views&op=m");
 	}
 } elseif ($_REQUEST['op'] == 'b') {
 	usuarioBaja($_REQUEST['idUsuario']);

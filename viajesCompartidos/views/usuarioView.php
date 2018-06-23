@@ -56,10 +56,11 @@ if ($_REQUEST['op'] == 'm') {
         			<a id="calendarFechaNacimiento" href="javascript:OpenCal('fecha_nacimiento');" style="width:16px"><img class="calendar" src="./img/calendar.png" width="16" height="16" /></a>
         			<a>(en formato dd-mm-aaaa)</a>
 					<div><label for="correo_electronico">Correo Electronico<em>*</em></label><input id="correo_electronico" type="text" size="20" maxlength="20" name="correo_electronico" onchange="validarEmail(this.value)" value="<?php print($usuario['correo_electronico']); ?>" /></div>
-					<div><label for="clave">Clave<em>*</em></label><input id="clave" type="text" name="clave" size="50" maxlength="50" value="<?php print($usuario['clave']); ?>" /></div>
+					<div><label for="clave">Clave<em>*</em></label><input id="clave" type="password" name="clave" size="50" maxlength="50" value="<?php print($usuario['clave']); ?>" /></div>
 <?php
                     if ($_REQUEST['op'] == 'm') {
-                        echo "<div><label for=\"calificacion\">Calificación : ".getCalificacionUsuario($usuario['usuario_id'])."</label></div>" ;
+                        echo "<div><label for=\"calificacion\">Calificación Piloto: ".getCalificacionUsuario($usuario['usuario_id'], TIPO_PILOTO)."</label></div>" ;
+                        echo "<div><label for=\"calificacion\">Calificación Copiloto: ".getCalificacionUsuario($usuario['usuario_id'], TIPO_COPILOTO)."</label></div>" ;
                     }
 ?>
  					</fieldset>
