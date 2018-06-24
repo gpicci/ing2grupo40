@@ -487,7 +487,11 @@ function viajeAnulaPostulacion($viaje_id, $usuario_id) {
 
     viajeEstadoCopiloto($viaje_id, $usuario_id, $estado_id, $descripcion );
     if ($estado_id == ID_APROBADO) {
+        $_SESSION['mensajesPendientes'][]="Se ha dado de baja como copiloto";
+        $_SESSION['mensajesPendientes'][]="Advertencia: darse de baja cuando ya fue aprobado disminuye su reputación como copiloto";
         agregarCalificacion($viaje_id, ID_VALIDADOR_APLICACION, $usuario_id, -1, "Anula postulacion aprobada", TIPO_COPILOTO);
+    }else{
+            $_SESSION['mensajesPendientes'][]="Se ha dado de baja su postulación";
     }
 
     $query = "DELETE FROM pasajero WHERE viaje_id=$viaje_id and usuario_id=$usuario_id";
@@ -519,15 +523,36 @@ function viajeSetEstadoCopiloto($viaje_id, $idUsuarioPax, $idEstado) {
     return $rs;
 }
 
+function esChofer($viaje_id, $id ) {
+    $db = DB::singleton();
+    //en la tabla de estados el id=2 corresponde a pasajero aprobado para viaje
+    $query = "SELECT COUNT(usuario_id)as 'cant' 
+              FROM viaje 
+              WHERE viaje_id = $viaje_id AND usuario_id = $id ";
+    $rs = $db->executeQuery($query);
+    $row = $db->fetch_assoc($rs);
+    $result = $row['cant'];
+    if( $result == 1 ){
+      return true;
+    }else{
+      return false;
+    }
+}
+
 function viajeRechazarPostulacion($viaje_id, $idUsuarioPax, $idUsuarioRechaza) {
 
     viajeEstadoCopiloto($viaje_id, $idUsuarioPax, $estado_id, $descripcion_estado);
 
     if  ($estado_id==ID_APROBADO) {
+        $_SESSION['mensajesPendientes'][]="El copiloto ha sido rechazado";
+        $_SESSION['mensajesPendientes'][]="Advertencia: rechazar pasajeros ya aprobados disminuye su reputación como piloto";
         agregarCalificacion($viaje_id, ID_VALIDADOR_APLICACION, $idUsuarioRechaza, -1, "Rechaza usuario aprobado", TIPO_PILOTO);
+    }else{
+       $_SESSION['mensajesPendientes'][]="El postulante ha sido rechazado";
     }
     viajeSetEstadoCopiloto($viaje_id, $idUsuarioPax, ID_RECHAZADO);
 }
+
 
 function viajeEstadoCopiloto($viaje_id, $idUsuarioPax, &$estado_id, &$descripcion ) {
     $db = DB::singleton();

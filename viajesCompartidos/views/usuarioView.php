@@ -36,7 +36,7 @@ if ($_REQUEST['op'] == 'm') {
 
 			echo "<form id=\"formUsuarioView\"  enctype=\"multipart/form-data\" method=\"post\" action=\"main.php?accion=usuarioABM&op=m&folder=".ABM_DIR."\">";
 ?>
-				<input type="hidden"	name="idUsuario" value="<?php print($usuario["usuario_id"]); ?>">
+				<input type="hidden" name="idUsuario" id="usuario_id" value="<?php print($usuario["usuario_id"]); ?>">
 <?php } else {
 			echo "<form id=\"formUsuarioView\" method=\"post\" action=\"main.php?accion=usuarioABM&op=a&folder=".ABM_DIR."\">";
 			?>

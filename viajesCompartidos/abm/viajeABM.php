@@ -120,7 +120,7 @@ if ($_REQUEST['op'] == 'a') {
 	}
 } elseif ($_REQUEST['op'] == 'z') {
 	//rechazo postulacion
-    viajeRechazarPostulacion($_REQUEST['viaje_id'], $_REQUEST['idUsuarioPax'], $usuario_id);
+    viajeRechazarPostulacion($_REQUEST['viaje_id'], $_REQUEST['idUsuarioPax'], $_SESSION['user_id']);
 	//viajeSetEstadoCopiloto($_REQUEST['viaje_id'], $_REQUEST['idUsuarioPax'], ID_RECHAZADO);
 } elseif ($_REQUEST['op'] == 'c') {
 	viajeCierre($_REQUEST['viaje_id']);
@@ -148,10 +148,13 @@ if ($_REQUEST['op'] == 'a') {
 
     //viajeCalificar($_REQUEST['viaje_id'], $usuario_id, $_REQUEST['idUsuarioPax'] );
     if ($validaCalif) {
-        if ($propios) {
-            $tipo_pasajero_id = TIPO_PILOTO;
-        } else {
+    	$vid = $_REQUEST['viaje_id'];
+    	$uid = $_REQUEST['usuario_id'];
+        if (esChofer($vid, $uid)) {
+        	#si soy chofer entonces estoy calificando a un pasajero
             $tipo_pasajero_id = TIPO_COPILOTO;
+        } else {
+            $tipo_pasajero_id = TIPO_PILOTO;
         }
         agregarCalificacion($_REQUEST['viaje_id'], $_REQUEST['usuario_id'], $_REQUEST['usuario_pax_id'], $_REQUEST['calificacion'], $_REQUEST['comentario'], $tipo_pasajero_id);
     }

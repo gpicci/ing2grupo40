@@ -180,17 +180,17 @@ function getCalificacionUsuario($usuario_id, $tipo_pasajero_id) {
 
 } 
 
-function yaExisteCorreo($correo, $id){
-	$db = DB::singleton();
+function yaExisteCorreo($correo, $user_id){
+  $db = DB::singleton();
   $query = "
-            SELECT COUNT(usuario_id) AS value_sum
+            SELECT COUNT(*) AS cant
             FROM usuario
-            WHERE usuario_id <> $id and  correo_electronico = $correo";
+            WHERE usuario_id <> $user_id and  correo_electronico = '$correo'";
   $rs = $db->executeQuery($query);
   $row = $db->fetch_assoc($rs);
-  $sum = $row['value_sum'];
+  $sum = $row['cant'];
   #creo que no anda
-  if ($sum <> 0) {
+  if ($sum != 0) {
       return true;
   } else {
       return false;

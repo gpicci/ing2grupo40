@@ -19,7 +19,7 @@ if ($_REQUEST['op'] == 'a') {
   }  
   
 } elseif ($_REQUEST['op'] == 'm') {
-	if (yaExisteCorreo($_REQUEST['correo_electronico'], $_REQUEST['usuario_id']))  {
+	if (yaExisteCorreo($_REQUEST['correo_electronico'], $_REQUEST['idUsuario']))  {
   		$mensajes[]="El correo electronico ya se encuentra registrado";
   		$_SESSION['mensajesPendientes'] = $mensajes;
   		header("Location: main.php?accion=usuarioView&folder=views&op=m");

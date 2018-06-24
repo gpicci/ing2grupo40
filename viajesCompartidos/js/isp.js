@@ -120,7 +120,11 @@ function checkVehiculo(theForm) {
 		(document.getElementById('patente').value == '')) {
 		alert('Ingrese un valor para los datos obligatorios.');
 	} else {
-		document.getElementById(theForm).submit();
+		if(document.getElementById('cantidad_asientos').value <= 0 ){
+			alert('La cantidad de asientos debe ser mayor a cero')
+		}else{
+			document.getElementById(theForm).submit();
+		}
 	}
 }
 
