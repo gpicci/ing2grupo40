@@ -148,7 +148,7 @@ $(function() {
          <td align="center">' . formatMSSQLFechaHora($row['fecha_salida'],$f,$h,$m,$s) . '</td>
          <td align="center">' . $row['localidad_origen'] . '</td>
 		 <td align="center">' . $row['localidad_destino'] . '</td>
- 		 <td align="center">' . $row['piloto'] . '</td>
+ 		 <td align="center">' . $row['piloto'].'('.getCalificacionUsuario($row['piloto_id'], TIPO_PILOTO).')'. '</td>
          <td align="center">' . $row['nombre_vehiculo'] . '</td>
 		 <td align="center">' . $asientos . '</td>');
                         if ($propios!=1) {

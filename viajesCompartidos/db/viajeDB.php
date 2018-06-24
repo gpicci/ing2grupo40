@@ -31,6 +31,7 @@ function getViajesPorUsuario(
       v.m_cerrado cerrado,
       IfNull(v.m_terminado,0) terminado,
 	  CONCAT(u.nombre,' ',u.apellido) piloto,
+	  v.usuario_id as piloto_id,
 	  (select count(1) from pregunta_respuesta r where r.viaje_id = v.viaje_id and d_tipo = 'P') as cant_preguntas,
 	  (select count(1) from pregunta_respuesta r where r.viaje_id = v.viaje_id and pregunta_original_id is not null and d_tipo = 'R') as cant_respuestas
 	FROM
