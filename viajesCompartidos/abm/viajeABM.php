@@ -125,19 +125,27 @@ if ($_REQUEST['op'] == 'a') {
 } elseif ($_REQUEST['op'] == 'c') {
 	viajeCierre($_REQUEST['viaje_id']);
 } elseif ($_REQUEST['op'] == 't') {
-    viajeFinalizar($_REQUEST['viaje_id']);
+	//valido que el vieja este cerrado antes de terminarlo
+	if (viajeCerrado($_REQUEST['viaje_id'])){
+	  viajeFinalizar($_REQUEST['viaje_id']);
+	} else {
+	  $_SESSION["mensajesPendientes"][] = "El viaje aun no ha sido cerrado";
+	}
+
+
+
 } elseif ($_REQUEST['op'] == 'califica') {
     $validaCalif = true;
     if ($_REQUEST['usuario_pax_id']==-1) {
         $_SESSION["mensajesPendientes"][] = "No se ha seleccionado un usuario para calificar";
         $validaCalif = false;
     }
-    
+
     if (existeCalificacion($_REQUEST['usuario_id'], $_REQUEST['usuario_pax_id'], $_REQUEST['viaje_id'])) {
         $_SESSION["mensajesPendientes"][] = "El usuario ya ha sido calificado";
         $validaCalif = false;
     }
-    
+
     //viajeCalificar($_REQUEST['viaje_id'], $usuario_id, $_REQUEST['idUsuarioPax'] );
     if ($validaCalif) {
         if ($propios) {
