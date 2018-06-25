@@ -10,6 +10,11 @@ if ($_REQUEST["op"] == "p") {
   $usuario_id = $_REQUEST["usuario_id"];
   $op = $_REQUEST["op"];
   
+	if (calificacionPendienteExcedida ($_SESSION["user_id"], 30)) {
+        $_SESSION['mensajesPendientes'][]="Hay calificaciones pendientes con mas de ".LIMITE_DIAS_CALIFICACION." dias de antiguedad";
+        header('Location: main.php?accion=viajes&folder='.BROWSE_DIR);
+    }
+
   if (existePostulacion($viaje_id, $usuario_id) ) {
       $_SESSION['mensajesPendientes'][]="Ya se ha postulado al viaje previamente";
       header('Location: main.php?accion=viajes&propios=0&folder='.BROWSE_DIR);

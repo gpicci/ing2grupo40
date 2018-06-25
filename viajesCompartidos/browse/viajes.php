@@ -198,7 +198,7 @@ $(function() {
 					<?php if (!$soloPendientes) { ?>
 					<div><a href="javascript:performSoloPendientes('formViajes',1);">Mostrar Pendientes de Puntuacion</a></div>
 					<div><hr/></div>
-					<div><a href="javascript:performVerPreguntas('formViajes');">Preguntas</a></div>
+					<div><a href="javascript:performVerPreguntas('formViajes');">Responder Preguntas</a></div>
 					<div><hr/></div>
 					<?php } else {?>
 					<div><a href="javascript:performSoloPendientes('formViajes',0);">Mostrar Todos</a></div>
