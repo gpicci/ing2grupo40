@@ -12,6 +12,10 @@ function getViajesPorUsuario(
 
   $db = DB::singleton();
 
+  if($pendientesPuntuacion){
+    $f_desde = '00-00-0000';
+  }
+
   $query = "
 	SELECT
 	  v.viaje_id,
