@@ -8,7 +8,8 @@ function getViajesPorUsuario(
   $filtros = array(),
   $f_desde,
   $f_hasta,
-  $pendientesPuntuacion=false  ) {
+  $pendientesPuntuacion=false,  
+  $postulados=false ) {
 
   $db = DB::singleton();
 
@@ -89,6 +90,10 @@ function getViajesPorUsuario(
                             <> (SELECT COUNT(1) FROM calificacion WHERE usuario_evalua_id  = $usuario_id AND viaje_id=v.viaje_id) ) ";
 
         }
+    };
+
+    if ($postulados) {
+     $query .= " AND viaje_id IN (SELECT viaje_id FROM pasajero  WHERE usuario_id=$usuario_id and tipo_pasajero_id=".TIPO_COPILOTO.")";
     };
 
   $rs = $db->executeQuery($query);

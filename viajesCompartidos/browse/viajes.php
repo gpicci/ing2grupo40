@@ -71,7 +71,13 @@ $(function() {
 	    $soloPendientes = 0;
 	}
 
-	$rs = getViajesPorUsuario($idUsuario, $propios,$filtros,$f_desde,$f_hasta, $soloPendientes);
+	if ( (isSet($_REQUEST['soloPostulados'])) && ($_REQUEST['soloPostulados']==1) )  {
+	    $soloPostulados = 1;
+	} else {
+	    $soloPostulados = 0;
+	}
+
+	$rs = getViajesPorUsuario($idUsuario, $propios,$filtros,$f_desde,$f_hasta, $soloPendientes, $soloPostulados);
 
 	$cantRespuestas = getCantRespuestas($_SESSION['user_id']);
 
@@ -86,6 +92,7 @@ $(function() {
 	<input type='hidden' name='op' id='op' value='' />
 	<input type='hidden' name='usuario_id' id='usuario_id' value='<?php print ($idUsuario)?>' />
 	<input type='hidden' name='propios' id='propios' value='<?php print ($propios)?>' />
+	<input type='hidden' name='soloPostulados' id='soloPostulados' value='<?php print ($soloPostulados)?>' />
 	<input type='hidden' name='soloPendientes' id='soloPendientes' value='<?php print ($soloPendientes)?>' />
 	<div id="content">
 		<div id="right">
@@ -221,6 +228,13 @@ $(function() {
 				<div><a href="javascript:performCalificarViaje('formViajes');">Calificar Viaje</a></div>
 				<div><hr/></div>
 			<?php }; ?>
+				<?php if (!$soloPostulados) { ?>
+				<div><a href="javascript:performSoloPostulados('formViajes',1);">Mis Postulaciones</a></div>
+				<div><hr/></div>
+				<?php } else {?>
+				<div><a href="javascript:performSoloPostulados('formViajes',0);">Mostrar Todos</a></div>
+				<div><hr/></div>
+				<?php } ?>
 				<?php if (!$soloPendientes) { ?>
 				<div><a href="javascript:performSoloPendientes('formViajes',1);">Mostrar Pendientes de Puntuacion</a></div>
 				<div><hr/></div>

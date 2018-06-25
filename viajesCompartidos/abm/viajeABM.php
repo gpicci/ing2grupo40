@@ -157,6 +157,7 @@ if ($_REQUEST['op'] == 'a') {
             $tipo_pasajero_id = TIPO_PILOTO;
         }
         agregarCalificacion($_REQUEST['viaje_id'], $_REQUEST['usuario_id'], $_REQUEST['usuario_pax_id'], $_REQUEST['calificacion'], $_REQUEST['comentario'], $tipo_pasajero_id);
+        $_SESSION["mensajesPendientes"][] = "Se ha emitido la calificacion!";
     }
 
 

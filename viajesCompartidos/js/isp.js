@@ -302,6 +302,11 @@ function performSoloPendientes(theForm, soloPendientes) {
 	document.getElementById(theForm).submit();
 }
 
+function performSoloPostulados(theForm, soloPostulados) {
+	document.getElementById('soloPostulados').value = soloPostulados;
+	document.getElementById(theForm).submit();
+}
+
 function performCalificarViaje(theForm) {
 	document.getElementById('op').value = 'califica';
 	document.getElementById(theForm).action = 'main.php?accion=calificacionView&folder=views';
