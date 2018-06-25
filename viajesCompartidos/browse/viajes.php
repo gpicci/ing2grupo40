@@ -92,7 +92,7 @@ $(function() {
 <?php
 
 	if($db->num_rows($rs) == 0) {
-		print('No hay viajes ingresados.');
+		print('No se han encontrado viajes.');
 	} else {
 		// Table header
 ?>

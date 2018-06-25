@@ -6,7 +6,8 @@ require_once("db/preguntaRespuestaDB.php");
 $db = DB::singleton();
 
 $nombreUsuario = "USUARIO: ".$_SESSION['nombre_usuario'];
-
+$califPiloto= getCalificacionUsuario($_SESSION['user_id'], 1);
+$califCopiloto= getCalificacionUsuario($_SESSION['user_id'], 2);
   $mensaje= '';
   
   if (getCantPreguntas($_SESSION['user_id'])>0) {
@@ -41,7 +42,7 @@ if ($hasAlerta) {
 ?>
 
 	<a href="main.php?accion=inicio" id="alignleft"><?php print(VIEW_PAGE_TITLE.' - '.VIEW_EMPRESA); ?></a>
-	<p id="alignright"><?php print($nombreUsuario);?>
+	<p id="alignright"><?php echo "★P: $califPiloto ★C: $califCopiloto | "; print($nombreUsuario);?>
 	<?php
 	  if ($hasAlerta) {
 		echo " [".$mensaje."]";

@@ -413,6 +413,16 @@ function getPaxPorViaje($viaje_id=0, $estado_id=0) {
 
 }
 
+function cantPasajerosAprobados($viaje_id){
+     $db = DB::singleton();
+     $query= "SELECT COUNT(*) as cant
+              FROM pasajero
+              WHERE viaje_id = 5 AND tipo_pasajero_id = 2 AND estado_id = 2";
+     $rs = $db->executeQuery($query);
+     $row = $db->fetch_assoc($rs);
+     return $row['cant'];
+}
+
 function viajeBaja($id) {
     $db = DB::singleton();
 
@@ -426,15 +436,18 @@ function viajeBaja($id) {
         applog($db->db_error(), 1);
         return ;
     }
-
+    $_SESSION['mensajesPendientes'][]="Se ha dado de baja el viaje.";
     getPaxPorEstado($id, $cantAprob, $p, $r, $t);
-    if ($cantAprob>0) {
+    $cantAprob=cantPasajerosAprobados($id);
+    if ($cantAprob > 0) {
+        $_SESSION['mensajesPendientes'][]="Advertencia: dar de baja viajes con pasajeros aprobados disminuirá su reputación";
         $idUsuario = GetUsuarioPorViaje($id);
         $id_usuario_evaluador = 0;  //id de un usuario que haría de avaluador
                                     //para las calificaciones generadas por el sistema
         $puntaje = -1;
 
         agregarCalificacion($id, ID_VALIDADOR_APLICACION, $idUsuario, $puntaje, 'Baja de viaje con postulantes aprobados', TIPO_PILOTO);
+
 
         /*
         $query = "INSERT INTO calificacion(viaje_id, usuario_evalua_id, usuario_evaluado_id, puntaje, comentario) ".
@@ -540,15 +553,16 @@ function esChofer($viaje_id, $id ) {
 }
 
 function viajeRechazarPostulacion($viaje_id, $idUsuarioPax, $idUsuarioRechaza) {
+  #agregarCalificacion($viaje_id, $usuario_evalua_id, $usuario_evaluado_id, $puntaje, $comentario, $tipo_pasajero_id)
 
-    viajeEstadoCopiloto($viaje_id, $idUsuarioPax, $estado_id, $descripcion_estado);
+    $estado_id=viajeEstadoCopiloto($viaje_id, $idUsuarioPax, $estado_id, $descripcion_estado);
 
     if  ($estado_id==ID_APROBADO) {
         $_SESSION['mensajesPendientes'][]="El copiloto ha sido rechazado";
         $_SESSION['mensajesPendientes'][]="Advertencia: rechazar pasajeros ya aprobados disminuye su reputación como piloto";
         agregarCalificacion($viaje_id, ID_VALIDADOR_APLICACION, $idUsuarioRechaza, -1, "Rechaza usuario aprobado", TIPO_PILOTO);
     }else{
-       $_SESSION['mensajesPendientes'][]="El postulante ha sido rechazado";
+      $_SESSION['mensajesPendientes'][]="El postulante ha sido rechazado";
     }
     viajeSetEstadoCopiloto($viaje_id, $idUsuarioPax, ID_RECHAZADO);
 }
